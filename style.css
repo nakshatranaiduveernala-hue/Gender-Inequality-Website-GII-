@@ -605,3 +605,109 @@ p {
     padding: 19px;
   }
 }
+
+/* =================================
+   RESEARCH AND CRITERION B SECTION
+================================= */
+
+#research {
+  scroll-margin-top: 100px;
+}
+
+#research .section-heading {
+  max-width: 850px;
+  margin-bottom: 38px;
+}
+
+#research .section-heading > p:last-child {
+  color: #63758d;
+  line-height: 1.8;
+  max-width: 760px;
+}
+
+#research .content-card {
+  background: linear-gradient(145deg, #ffffff, #f0f6ff);
+  border: 1px solid #dce8f7;
+  border-radius: 20px;
+  padding: 28px;
+  margin: 20px 0;
+  box-shadow: 0 8px 25px rgba(38, 79, 130, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#research .content-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(38, 79, 130, 0.11);
+}
+
+#research .content-card h3 {
+  color: #173c68;
+  margin-bottom: 13px;
+  font-size: 1.2rem;
+}
+
+#research .content-card p {
+  color: #52677f;
+  line-height: 1.85;
+  font-size: 0.96rem;
+}
+
+#research .content-card a {
+  color: #2866ad;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#research .content-card a:hover {
+  text-decoration: underline;
+}
+
+#research .subheading {
+  color: #173c68;
+  font-size: 1.65rem;
+  margin: 48px 0 22px;
+}
+
+#research .card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0;
+}
+
+#research .card-grid .content-card {
+  margin: 0;
+  min-height: 190px;
+}
+
+#research .eyebrow {
+  color: #5284bd;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+#research .content-card ul {
+  padding-left: 22px;
+  line-height: 2.2;
+  color: #52677f;
+}
+
+#research .content-card li {
+  padding-left: 5px;
+}
+
+@media (max-width: 700px) {
+  #research .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #research .content-card {
+    padding: 21px;
+  }
+
+  #research .subheading {
+    font-size: 1.4rem;
+  }
+}
