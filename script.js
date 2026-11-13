@@ -1,137 +1,112 @@
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   // MOBILE NAVIGATION
   const menuToggle = document.getElementById("menuToggle");
   const mainNav = document.getElementById("mainNav");
 
   if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", function () {
+    menuToggle.addEventListener("click", () => {
       mainNav.classList.toggle("open");
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        mainNav.classList.contains("open")
+      );
     });
 
-    mainNav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
+    mainNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
         mainNav.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
       });
     });
   }
 
-  // NAVIGATION ACTIVE LINK
-  const sections = document.querySelectorAll("section[id]");
+  // SMOOTH SCROLLING
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", event => {
+      const targetId = link.getAttribute("href");
+      const target = document.querySelector(targetId);
+
+      if (target) {
+        event.preventDefault();
+
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+        history.replaceState(null, "", targetId);
+      }
+    });
+  });
+
+  // ACTIVE NAVIGATION LINKS
+  const sections = document.querySelectorAll("main section[id]");
   const navLinks = document.querySelectorAll("#mainNav a");
 
-  window.addEventListener("scroll", function () {
+  function updateNavigation() {
     let currentSection = "";
 
-    sections.forEach(function (section) {
-      const sectionTop = section.offsetTop - 150;
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 160;
 
       if (window.scrollY >= sectionTop) {
-        currentSection = section.getAttribute("id");
+        currentSection = section.id;
       }
     });
 
-    navLinks.forEach(function (link) {
+    navLinks.forEach(link => {
       link.classList.remove("active");
 
       if (link.getAttribute("href") === "#" + currentSection) {
         link.classList.add("active");
       }
     });
-  });
+  }
 
-  // ANIMATED CHART BARS
-  const chartBars = document.querySelectorAll(".bar-fill");
+  window.addEventListener("scroll", updateNavigation);
+  updateNavigation();
 
-  const chartObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        const bar = entry.target;
-        const finalWidth = bar.getAttribute("data-width");
+  // REVEAL ANIMATIONS
+  const cards = document.querySelectorAll(".content-card");
 
-        if (finalWidth) {
-          bar.style.width = finalWidth;
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
         }
-
-        chartObserver.unobserve(bar);
-      }
-    });
-  }, { threshold: 0.3 });
-
-  chartBars.forEach(function (bar) {
-    chartObserver.observe(bar);
-  });
-
-  // CLICKABLE WORLD MAP REGIONS
-  const regionButtons = document.querySelectorAll(".region-button");
-  const regionInfo = document.getElementById("regionInfo");
-
-  const regionDetails = {
-    global: {
-      title: "Global picture",
-      text: "Gender inequality exists in different forms around the world. Access to education, employment, healthcare and leadership can vary depending on location and social conditions."
-    },
-    asia: {
-      title: "Asia",
-      text: "Across parts of Asia, women and girls continue to face barriers linked to unequal opportunities, social expectations and access to decision-making."
-    },
-    africa: {
-      title: "Africa",
-      text: "In some African countries, girls face challenges such as limited access to education, early marriage and unequal economic opportunities. Experiences differ between communities."
-    },
-    europe: {
-      title: "Europe",
-      text: "Many European countries have introduced policies supporting gender equality. However, pay differences, unequal representation and stereotypes remain challenges."
-    },
-    americas: {
-      title: "The Americas",
-      text: "Across North, Central and South America, progress has been made in education and political participation, but inequality and discrimination have not disappeared."
-    },
-    oceania: {
-      title: "Oceania",
-      text: "Gender equality efforts in Oceania include improving women's leadership, employment opportunities and access to services, including in remote communities."
-    }
-  };
-
-  regionButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      const region = button.getAttribute("data-region");
-      const details = regionDetails[region];
-
-      if (!details || !regionInfo) return;
-
-      regionButtons.forEach(function (item) {
-        item.classList.remove("active");
       });
-
-      button.classList.add("active");
-
-      regionInfo.innerHTML =
-        "<h3>" + details.title + "</h3><p>" + details.text + "</p>";
+    }, {
+      threshold: 0.12
     });
-  });
 
-  // SCROLL REVEAL ANIMATIONS
-  const revealElements = document.querySelectorAll(
-    ".section-heading, .learning-grid article, .issue-grid article, .solution-grid article, .criteria-grid article, .stat-card, .chart-panel, .experience-grid article"
-  );
-
-  revealElements.forEach(function (element) {
-    element.classList.add("reveal");
-  });
-
-  const revealObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        revealObserver.unobserve(entry.target);
-      }
+    cards.forEach(card => {
+      card.classList.add("reveal");
+      observer.observe(card);
     });
-  }, { threshold: 0.12 });
+  } else {
+    cards.forEach(card => card.classList.add("visible"));
+  }
 
-  revealElements.forEach(function (element) {
-    revealObserver.observe(element);
-  });
+  // BACK TO TOP SUPPORT
+  const backToTop = document.getElementById("backToTop");
+
+  if (backToTop) {
+    window.addEventListener("scroll", () => {
+      backToTop.style.display =
+        window.scrollY > 500 ? "block" : "none";
+    });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
 
 });
