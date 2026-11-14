@@ -1,373 +1,209 @@
-/* =====================================
-   THE EQUALITY PROJECT
-   Website interactions and visualisations
-===================================== */
-
-
-/* MOBILE NAVIGATION */
-
+// Navigation for smaller screens
 const menuToggle = document.getElementById("menuToggle");
-const navigation = document.getElementById("navigation");
+const mainNav = document.getElementById("mainNav");
 
-if (menuToggle && navigation) {
-  menuToggle.addEventListener("click", () => {
-    navigation.classList.toggle("open");
-  });
-
-  navigation.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      navigation.classList.remove("open");
-    });
-  });
-}
-
-
-/* ACTIVE NAVIGATION LINK */
-
-const pageSections = document.querySelectorAll("main section[id]");
-const navLinks = document.querySelectorAll(".navigation a");
-
-const sectionObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.remove("active");
-
-          if (link.getAttribute("href") === "#" + entry.target.id) {
-            link.classList.add("active");
-          }
-        });
-      }
-    });
-  },
-  {
-    rootMargin: "-30% 0px -60% 0px"
-  }
-);
-
-pageSections.forEach(section => {
-  sectionObserver.observe(section);
+menuToggle?.addEventListener("click", () => {
+  const isOpen = mainNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
 });
 
+mainNav?.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    mainNav.classList.remove("open");
+    menuToggle?.setAttribute("aria-expanded", "false");
+  });
+});
 
-/* CHART DEFAULT SETTINGS */
+// Shared chart styling
+const gold = "#b99a61";
+const navy = "#243a54";
+const muted = "#7d8790";
+const grid = "rgba(36,58,84,.10)";
 
-Chart.defaults.font.family = "'DM Sans', sans-serif";
-Chart.defaults.color = "#263b53";
+Chart.defaults.font.family = '"DM Sans", Arial, sans-serif';
+Chart.defaults.color = muted;
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.plugins.tooltip.backgroundColor = "#17283f";
+Chart.defaults.plugins.tooltip.padding = 12;
+Chart.defaults.plugins.tooltip.titleFont = { weight: "600" };
+Chart.defaults.plugins.tooltip.bodyFont = { size: 11 };
 
-const gold = "#c6a66a";
-const navy = "#17283f";
-const muted = "#77766f";
-const ivory = "#f7f4ed";
-
-
-/* CHART 1: WOMEN IN PARLIAMENT
-   Vertical bar chart
-*/
-
-const parliamentCanvas = document.getElementById("parliamentChart");
-
-if (parliamentCanvas) {
-  new Chart(parliamentCanvas, {
-    type: "bar",
-
-    data: {
-      labels: ["2015", "2026"],
-
-      datasets: [{
-        label: "Women's share of parliamentary seats",
-        data: [22.3, 27.5],
-
-        backgroundColor: [
-          "rgba(198, 166, 106, 0.65)",
-          navy
-        ],
-
-        borderColor: [
-          gold,
-          navy
-        ],
-
-        borderWidth: 1,
-        borderRadius: 5,
-        maxBarThickness: 100
-      }]
+// Chart 1: Women in national parliaments
+new Chart(document.getElementById("parliamentChart"), {
+  type: "bar",
+  data: {
+    labels: ["2015", "2026"],
+    datasets: [{
+      data: [22.3, 27.4],
+      backgroundColor: [
+        "rgba(185,154,97,.55)",
+        gold
+      ],
+      borderRadius: 5,
+      maxBarThickness: 70
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: c => `${c.raw}% of seats`
+        }
+      }
     },
-
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-
-      plugins: {
-        legend: {
-          display: false
-        },
-
-        tooltip: {
-          callbacks: {
-            label: context => context.parsed.y + "%"
-          }
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 40,
+        grid: { color: grid },
+        ticks: {
+          callback: v => `${v}%`,
+          stepSize: 10
         }
       },
-
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 35,
-
-          title: {
-            display: true,
-            text: "Percentage of seats"
-          },
-
-          grid: {
-            color: "#e8e2d7"
-          },
-
-          ticks: {
-            callback: value => value + "%"
-          }
-        },
-
-        x: {
-          grid: {
-            display: false
-          },
-
-          title: {
-            display: true,
-            text: "Year"
-          }
-        }
+      x: {
+        grid: { display: false }
       }
     }
-  });
-}
+  }
+});
 
-
-/* CHART 2: UNPAID CARE WORK
-   Horizontal bar chart
-*/
-
-const careCanvas = document.getElementById("careChart");
-
-if (careCanvas) {
-  new Chart(careCanvas, {
-    type: "bar",
-
-    data: {
-      labels: ["Women", "Men"],
-
-      datasets: [{
-        label: "Average hours per day",
-
-        data: [4.2, 1.7],
-
-        backgroundColor: [
-          gold,
-          navy
-        ],
-
-        borderRadius: 5,
-        maxBarThickness: 65
-      }]
+// Chart 2: Women in management
+new Chart(document.getElementById("managementChart"), {
+  type: "bar",
+  data: {
+    labels: ["2015", "2025"],
+    datasets: [{
+      data: [26.9, 30.5],
+      backgroundColor: [
+        "rgba(36,58,84,.55)",
+        navy
+      ],
+      borderRadius: 5,
+      barThickness: 34
+    }]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: c => `${c.raw}% of managerial positions`
+        }
+      }
     },
-
-    options: {
-      indexAxis: "y",
-      responsive: true,
-      maintainAspectRatio: true,
-
-      plugins: {
-        legend: {
-          display: false
-        },
-
-        tooltip: {
-          callbacks: {
-            label: context => context.parsed.x + " hours per day"
-          }
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 40,
+        grid: { color: grid },
+        ticks: {
+          callback: v => `${v}%`,
+          stepSize: 10
         }
       },
-
-      scales: {
-        x: {
-          beginAtZero: true,
-          max: 5,
-
-          title: {
-            display: true,
-            text: "Average hours per day"
-          },
-
-          grid: {
-            color: "#e8e2d7"
-          }
-        },
-
-        y: {
-          grid: {
-            display: false
-          }
-        }
+      y: {
+        grid: { display: false }
       }
     }
-  });
-}
+  }
+});
 
-
-/* CHART 3: PARLIAMENTARY REPRESENTATION
-   Doughnut chart
-*/
-
-const representationCanvas =
-  document.getElementById("representationChart");
-
-if (representationCanvas) {
-  new Chart(representationCanvas, {
-    type: "doughnut",
-
-    data: {
-      labels: ["Women", "Men"],
-
-      datasets: [{
-        data: [27.5, 72.5],
-
-        backgroundColor: [
-          gold,
-          navy
-        ],
-
-        borderColor: ivory,
-        borderWidth: 5,
-        hoverOffset: 8
-      }]
+// Chart 3: Unpaid care work
+new Chart(document.getElementById("careChart"), {
+  type: "bar",
+  data: {
+    labels: ["Women", "Men"],
+    datasets: [{
+      data: [4.2, 1.7],
+      backgroundColor: [gold, navy],
+      borderRadius: 5,
+      maxBarThickness: 115
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: c => `${c.raw} hours per day`
+        }
+      }
     },
-
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      cutout: "65%",
-
-      plugins: {
-        legend: {
-          position: "bottom",
-
-          labels: {
-            padding: 22,
-            usePointStyle: true
-          }
-        },
-
-        tooltip: {
-          callbacks: {
-            label: context =>
-              context.label + ": " + context.parsed + "%"
-          }
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 5,
+        grid: { color: grid },
+        ticks: {
+          callback: v => `${v} hrs`,
+          stepSize: 1
         }
+      },
+      x: {
+        grid: { display: false }
       }
     }
-  });
-}
+  }
+});
 
-
-/* INTERACTIVE WORLD MAP */
-
-const mapElement = document.getElementById("equalityMap");
-
-if (mapElement && typeof L !== "undefined") {
-
+// Interactive context map
+// Markers show places discussed in the website,
+// not statistical rankings.
+if (
+  document.getElementById("equalityMap") &&
+  window.L
+) {
   const map = L.map("equalityMap", {
     scrollWheelZoom: false
-  }).setView([20, 15], 2);
+  }).setView([19, 43], 2);
 
   L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      subdomains: "abcd",
-      maxZoom: 19
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 6
     }
   ).addTo(map);
 
-  const locations = [
+  const points = [
     {
-      name: "United Nations Headquarters",
-      city: "New York, USA",
-      coordinates: [40.7484, -73.9680],
-      description:
-        "The United Nations works with countries on international cooperation and the Sustainable Development Goals."
+      name: "India",
+      coords: [22.5, 79],
+      text: "India focus: education, work, representation and implementation of equality protections.",
+      color: gold
     },
-
     {
-      name: "UN Women Headquarters",
-      city: "New York, USA",
-      coordinates: [40.7505, -73.9934],
-      description:
-        "UN Women works to advance women's rights, leadership and gender equality."
+      name: "Ethiopia",
+      coords: [9.1, 40.5],
+      text: "Education example: UNICEF has documented efforts to support female teachers and girls' learning.",
+      color: navy
     },
-
     {
-      name: "African Union Headquarters",
-      city: "Addis Ababa, Ethiopia",
-      coordinates: [8.9806, 38.7578],
-      description:
-        "The African Union is a continental organisation that works with African countries on shared development goals."
-    },
-
-    {
-      name: "UNESCO Headquarters",
-      city: "Paris, France",
-      coordinates: [48.8492, 2.3066],
-      description:
-        "UNESCO works internationally on education, science, culture and cooperation."
+      name: "Global reporting",
+      coords: [0, 0],
+      text: "UN global reporting brings together indicators from countries around the world.",
+      color: navy
     }
   ];
 
-  const goldMarker = L.divIcon({
-    className: "custom-map-marker",
+  points.forEach(point => {
+    const marker = L.circleMarker(point.coords, {
+      radius: 8,
+      color: point.color,
+      fillColor: point.color,
+      fillOpacity: 0.9,
+      weight: 2
+    }).addTo(map);
 
-    html: `
-      <div style="
-        width: 17px;
-        height: 17px;
-        background: #c6a66a;
-        border: 3px solid #17283f;
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      "></div>
-    `,
-
-    iconSize: [17, 17],
-    iconAnchor: [8, 8]
+    marker.bindPopup(
+      `<strong>${point.name}</strong><br>${point.text}`
+    );
   });
-
-  locations.forEach(location => {
-
-    L.marker(location.coordinates, {
-      icon: goldMarker
-    })
-      .addTo(map)
-      .bindPopup(`
-        <div style="font-family: Arial, sans-serif; max-width: 220px;">
-          <strong style="color: #17283f;">
-            ${location.name}
-          </strong>
-
-          <p style="margin: 5px 0; color: #77766f;">
-            ${location.city}
-          </p>
-
-          <p style="font-size: 12px; line-height: 1.5;">
-            ${location.description}
-          </p>
-        </div>
-      `);
-  });
-
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 300);
-}'
+}
