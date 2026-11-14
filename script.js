@@ -1,74 +1,63 @@
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
   // MOBILE NAVIGATION
   const menuToggle = document.getElementById("menuToggle");
   const mainNav = document.getElementById("mainNav");
 
   if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", () => {
+    menuToggle.addEventListener("click", function () {
       const isOpen = mainNav.classList.toggle("open");
       menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.textContent = isOpen ? "×" : "☰";
     });
 
-    mainNav.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
+    mainNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
         mainNav.classList.remove("open");
         menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.textContent = "☰";
       });
     });
   }
 
-  // SMOOTH NAVIGATION
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", event => {
-      const target = document.querySelector(link.getAttribute("href"));
-
-      if (target) {
-        event.preventDefault();
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    });
-  });
-
   // ACTIVE NAVIGATION LINK
   const sections = document.querySelectorAll("main section[id]");
-  const navLinks = document.querySelectorAll("#mainNav a");
+  const navLinks = document.querySelectorAll(".main-nav a");
 
   function updateActiveLink() {
-    let current = "";
+    let currentSection = "";
 
-    sections.forEach(section => {
-      if (window.scrollY >= section.offsetTop - 150) {
-        current = section.id;
+    sections.forEach(function (section) {
+      const sectionTop = section.offsetTop - 140;
+
+      if (window.scrollY >= sectionTop) {
+        currentSection = section.getAttribute("id");
       }
     });
 
-    navLinks.forEach(link => {
-      link.classList.toggle(
-        "active",
-        link.getAttribute("href") === "#" + current
-      );
+    navLinks.forEach(function (link) {
+      link.classList.remove("active");
+
+      if (link.getAttribute("href") === "#" + currentSection) {
+        link.classList.add("active");
+      }
     });
   }
 
   window.addEventListener("scroll", updateActiveLink);
   updateActiveLink();
 
-  // BACK TO TOP
+  // BACK TO TOP BUTTON
   const backToTop = document.getElementById("backToTop");
 
   if (backToTop) {
-    window.addEventListener("scroll", () => {
-      backToTop.classList.toggle("show", window.scrollY > 500);
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 450) {
+        backToTop.classList.add("visible");
+      } else {
+        backToTop.classList.remove("visible");
+      }
     });
 
-    backToTop.addEventListener("click", () => {
+    backToTop.addEventListener("click", function () {
       window.scrollTo({
         top: 0,
         behavior: "smooth"
@@ -76,75 +65,64 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // CHART DEFAULT SETTINGS
-  const chartText = "#263344";
-  const gold = "#b58b4c";
-  const navy = "#263b53";
-  const paleGold = "#e4d2ad";
+  // CHART DEFAULTS
+  Chart.defaults.font.family = "'DM Sans', Arial, sans-serif";
+  Chart.defaults.color = "#777b80";
 
-  Chart.defaults.font.family = "'DM Sans', sans-serif";
-  Chart.defaults.color = chartText;
+  // CHART 1: WOMEN IN NATIONAL PARLIAMENTS
+  const parliamentCanvas = document.getElementById("parliamentChart");
 
-  const commonOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "bottom",
-        labels: {
-          usePointStyle: true,
-          padding: 20
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: "#ebe5da"
-        },
-        ticks: {
-          callback: value => value + "%"
-        }
-      },
-      x: {
-        grid: {
-          display: false
-        }
-      }
-    }
-  };
-
-  // GLOBAL WOMEN'S PARLIAMENTARY REPRESENTATION
-  const globalCanvas = document.getElementById("globalChart");
-
-  if (globalCanvas) {
-    new Chart(globalCanvas, {
+  if (parliamentCanvas && typeof Chart !== "undefined") {
+    new Chart(parliamentCanvas, {
       type: "line",
       data: {
-        labels: ["2015", "2020", "2023", "2025", "2026"],
+        labels: ["2015", "2026"],
         datasets: [{
-          label: "Seats held by women",
-          data: [22.3, 25.5, 26.9, 27.2, 27.4],
-          borderColor: gold,
-          backgroundColor: "rgba(181,139,76,0.15)",
-          pointBackgroundColor: navy,
-          pointRadius: 5,
-          pointHoverRadius: 7,
+          label: "Women holding parliamentary seats",
+          data: [22.3, 27.4],
+          borderColor: "#c6a66a",
+          backgroundColor: "rgba(198, 166, 106, 0.16)",
+          pointBackgroundColor: "#17283f",
+          pointBorderColor: "#c6a66a",
+          pointBorderWidth: 3,
+          pointRadius: 6,
+          pointHoverRadius: 8,
           borderWidth: 3,
-          tension: 0.3,
-          fill: true
+          fill: true,
+          tension: 0.25
         }]
       },
       options: {
-        ...commonOptions,
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: false
           },
           tooltip: {
             callbacks: {
-              label: context => context.parsed.y + "% of seats"
+              label: function (context) {
+                return context.parsed.y + "% of parliamentary seats";
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 40,
+            ticks: {
+              callback: function (value) {
+                return value + "%";
+              }
+            },
+            grid: {
+              color: "rgba(23, 40, 63, 0.08)"
+            }
+          },
+          x: {
+            grid: {
+              display: false
             }
           }
         }
@@ -152,63 +130,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // INDIA LABOUR-FORCE PARTICIPATION
-  const workCanvas = document.getElementById("indiaWorkChart");
+  // CHART 2: UNPAID WORK
+  const careCanvas = document.getElementById("careChart");
 
-  if (workCanvas) {
-    new Chart(workCanvas, {
+  if (careCanvas && typeof Chart !== "undefined") {
+    new Chart(careCanvas, {
       type: "bar",
       data: {
         labels: ["Women", "Men"],
         datasets: [{
-          label: "Labour-force participation",
-          data: [35.1, 76.4],
-          backgroundColor: [gold, navy],
-          borderRadius: 5,
+          label: "Average hours per day",
+          data: [4.2, 1.7],
+          backgroundColor: ["#c6a66a", "#263b53"],
+          borderRadius: 4,
           maxBarThickness: 85
         }]
       },
       options: {
-        ...commonOptions,
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: false
           },
           tooltip: {
             callbacks: {
-              label: context => context.parsed.y + "%"
+              label: function (context) {
+                return context.parsed.y + " hours per day";
+              }
             }
           }
-        }
-      }
-    });
-  }
-
-  // INDIA SECONDARY EDUCATION ATTAINMENT
-  const educationCanvas = document.getElementById("educationChart");
-
-  if (educationCanvas) {
-    new Chart(educationCanvas, {
-      type: "bar",
-      data: {
-        labels: ["Women", "Men"],
-        datasets: [{
-          label: "At least some secondary education",
-          data: [43.5, 61.1],
-          backgroundColor: [gold, navy],
-          borderRadius: 5,
-          maxBarThickness: 65
-        }]
-      },
-      options: {
-        ...commonOptions,
-        plugins: {
-          legend: {
-            display: false
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5,
+            ticks: {
+              stepSize: 1,
+              callback: function (value) {
+                return value + " hrs";
+              }
+            },
+            grid: {
+              color: "rgba(23, 40, 63, 0.08)"
+            }
           },
-          tooltip: {
-            callbacks: {
-              label: context => context.parsed.y + "%"
+          x: {
+            grid: {
+              display: false
             }
           }
         }
@@ -217,12 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // INTERACTIVE WORLD MAP
-  const mapElement = document.getElementById("worldMap");
+  const mapElement = document.getElementById("equalityMap");
 
   if (mapElement && typeof L !== "undefined") {
-    const map = L.map("worldMap", {
+    const map = L.map("equalityMap", {
       scrollWheelZoom: false
-    }).setView([20, 15], 2);
+    }).setView([22, 15], 2);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -231,36 +200,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const locations = [
       {
-        name: "New York, USA",
-        coordinates: [40.7128, -74.0060],
-        description: "The United Nations headquarters. The UN works with countries to advance gender equality and the Sustainable Development Goals."
+        name: "United Nations Headquarters",
+        city: "New York, United States",
+        coordinates: [40.7489, -73.9680],
+        description: "The United Nations works with countries to promote human rights, development and gender equality."
       },
       {
-        name: "Geneva, Switzerland",
-        coordinates: [46.2044, 6.1432],
-        description: "Home to international organisations and human-rights institutions that work on equality and non-discrimination."
+        name: "UN Women Headquarters",
+        city: "New York, United States",
+        coordinates: [40.7505, -73.9690],
+        description: "UN Women supports the rights and empowerment of women and girls around the world."
       },
       {
-        name: "New Delhi, India",
-        coordinates: [28.6139, 77.2090],
-        description: "A reference point for exploring gender equality research, policy and women's opportunities in India."
+        name: "United Nations Office at Geneva",
+        city: "Geneva, Switzerland",
+        coordinates: [46.2267, 6.1403],
+        description: "The Geneva office hosts international work and discussions on human rights and global cooperation."
       },
       {
-        name: "Nairobi, Kenya",
-        coordinates: [-1.2921, 36.8219],
-        description: "Home to UN Environment Programme and UN-Habitat headquarters, and a centre for international development work."
+        name: "African Union Headquarters",
+        city: "Addis Ababa, Ethiopia",
+        coordinates: [8.9806, 38.7578],
+        description: "The African Union is a continental organisation that works with member states on development, cooperation and equality."
       }
     ];
 
-    locations.forEach(place => {
-      L.marker(place.coordinates)
+    locations.forEach(function (location) {
+      L.marker(location.coordinates)
         .addTo(map)
         .bindPopup(
-          `<strong>${place.name}</strong><br>${place.description}`
+          "<strong>" + location.name + "</strong><br>" +
+          location.city + "<br><br>" +
+          location.description
         );
     });
 
-    setTimeout(() => map.invalidateSize(), 300);
+    setTimeout(function () {
+      map.invalidateSize();
+    }, 300);
   }
 
 });
