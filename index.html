@@ -6,20 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="The Equality Project explores global gender inequality, its causes, effects and possible solutions.">
   <title>The Equality Project | Beyond the Divide</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="topline"></div>
+
   <header class="site-header">
     <a class="brand" href="#home" aria-label="The Equality Project home">
       <span class="brand-mark">E</span>
-      <span><strong>THE EQUALITY PROJECT</strong><small>BEYOND THE DIVIDE</small></span>
+      <span>
+        <strong>THE EQUALITY PROJECT</strong>
+        <small>BEYOND THE DIVIDE</small>
+      </span>
     </a>
+
     <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+
     <nav id="mainNav">
       <a href="#introduction">The issue</a>
       <a href="#research">Research</a>
@@ -31,138 +40,340 @@
   </header>
 
   <main>
+
+    <!-- HERO -->
     <section class="hero" id="home">
       <div class="hero-image" role="img" aria-label="A diverse group standing together with arms around each other, photographed from behind"></div>
       <div class="hero-shade"></div>
+
       <div class="hero-content">
         <p class="eyebrow light">A GLOBAL ISSUE • A SHARED RESPONSIBILITY</p>
         <h1>Beyond<br><em>the Divide.</em></h1>
         <p class="hero-subtitle">Understanding gender inequality and the systems that shape opportunity.</p>
         <a class="gold-button" href="#introduction">Explore the issue <span>↗</span></a>
       </div>
+
       <div class="hero-caption">EQUALITY IS NOT A PRIVILEGE. IT IS A RIGHT.</div>
     </section>
 
+    <!-- INTRODUCTION -->
     <section class="intro-band" id="introduction">
       <div class="section-kicker">01 / UNDERSTANDING THE ISSUE</div>
+
       <div class="intro-grid">
         <h2>Equal rights.<br><em>Unequal realities.</em></h2>
+
         <div class="intro-copy">
           <p>Gender inequality happens when people are treated differently or have unequal access to rights, resources and opportunities because of their gender. It can affect education, employment, leadership, safety, healthcare and decision-making.</p>
+
           <p>Although progress has been made, women and girls in many parts of the world still face barriers that limit the choices available to them. These barriers are not caused by one factor alone. They are connected to social expectations, institutions, laws and the way opportunities are distributed.</p>
+
           <p class="pull-quote">“Equality means that a person's opportunities should not be limited by gender.”</p>
         </div>
       </div>
     </section>
 
+    <!-- MYP FRAMEWORK -->
     <section class="framework-strip" id="framework">
       <div class="framework-heading">
         <p class="section-kicker">PROJECT FRAMEWORK</p>
         <h2>Looking at the issue<br><em>through an MYP lens.</em></h2>
       </div>
+
       <div class="framework-cards">
-        <article><span>KEY CONCEPT</span><h3>Systems</h3><p>How social structures and institutions influence people's opportunities.</p></article>
-        <article><span>RELATED CONCEPTS</span><h3>Equality · Power · Opportunity</h3><p>Ideas that help explain how inequality is created and experienced.</p></article>
-        <article><span>GLOBAL CONTEXT</span><h3>Fairness and Development</h3><p>How fair access to rights and resources affects people's development.</p></article>
-        <article class="soi-card"><span>STATEMENT OF INQUIRY</span><h3>Social structures and unequal access to opportunities influence people's roles, choices and development within societies.</h3></article>
+        <article>
+          <span>KEY CONCEPT</span>
+          <h3>Systems</h3>
+          <p>How social structures and institutions influence people's opportunities.</p>
+        </article>
+
+        <article>
+          <span>RELATED CONCEPTS</span>
+          <h3>Equality · Power · Opportunity</h3>
+          <p>Ideas that help explain how inequality is created and experienced.</p>
+        </article>
+
+        <article>
+          <span>GLOBAL CONTEXT</span>
+          <h3>Fairness and Development</h3>
+          <p>How fair access to rights and resources affects people's development.</p>
+        </article>
+
+        <article class="soi-card">
+          <span>STATEMENT OF INQUIRY</span>
+          <h3>Social structures and unequal access to opportunities influence people's roles, choices and development within societies.</h3>
+        </article>
       </div>
+
       <div class="inquiry-row">
-        <div><span>FACTUAL</span><p>What is gender inequality, and where can it be seen around the world?</p></div>
-        <div><span>CONCEPTUAL</span><p>How do social structures and expectations influence people's opportunities?</p></div>
-        <div><span>DEBATABLE</span><p>Can laws and policies alone create gender equality, or must social attitudes change too?</p></div>
+        <div>
+          <span>FACTUAL</span>
+          <p>What is gender inequality, and where can it be seen around the world?</p>
+        </div>
+
+        <div>
+          <span>CONCEPTUAL</span>
+          <p>How do social structures and expectations influence people's opportunities?</p>
+        </div>
+
+        <div>
+          <span>DEBATABLE</span>
+          <p>Can laws and policies alone create gender equality, or must social attitudes change too?</p>
+        </div>
       </div>
     </section>
 
+    <!-- CAUSES -->
     <section class="content-section causes-section">
       <div class="section-kicker">02 / WHY DOES IT HAPPEN?</div>
+
       <div class="section-heading">
         <h2>Inequality is shaped<br><em>by connected systems.</em></h2>
         <p>Gender inequality is rarely the result of one rule or one person's decision. It develops through patterns that can reinforce one another over time.</p>
       </div>
+
       <div class="cause-grid">
         <article class="cause-card">
-          <div class="cause-number">01</div><h3>Social expectations</h3>
+          <div class="cause-number">01</div>
+          <h3>Social expectations</h3>
           <p>Stereotypes about what women and men should study, do for work or be responsible for can influence choices from an early age.</p>
         </article>
+
         <article class="cause-card">
-          <div class="cause-number">02</div><h3>Unequal access</h3>
+          <div class="cause-number">02</div>
+          <h3>Unequal access</h3>
           <p>Barriers to education, technology, transport, finance and healthcare can make it harder for some women and girls to participate fully.</p>
         </article>
+
         <article class="cause-card">
-          <div class="cause-number">03</div><h3>Economic barriers</h3>
+          <div class="cause-number">03</div>
+          <h3>Economic barriers</h3>
           <p>Unpaid care responsibilities, unequal pay, insecure work and fewer leadership opportunities can affect financial independence.</p>
         </article>
+
         <article class="cause-card">
-          <div class="cause-number">04</div><h3>Institutions and laws</h3>
+          <div class="cause-number">04</div>
+          <h3>Institutions and laws</h3>
           <p>Rules may protect equality, but weak implementation or discriminatory practices can prevent people from receiving equal treatment.</p>
         </article>
       </div>
+
+      <!-- NEW THREE-PHOTO ARCH GALLERY -->
+      <div class="factor-gallery">
+
+        <div class="factor-gallery-heading">
+          <p class="section-kicker">THE ISSUE IN EVERYDAY LIFE</p>
+          <h3>Where inequality appears</h3>
+          <p>Gender inequality can affect different areas of life, from classrooms to workplaces and leadership spaces.</p>
+        </div>
+
+        <div class="factor-photo-grid">
+
+          <article class="factor-photo-card">
+            <div class="factor-photo-frame">
+              <img
+                src="https://images.unsplash.com/photo-1427504494785-3a9ca704f45c?auto=format&fit=crop&w=800&q=85"
+                alt="Students learning together in a classroom"
+                loading="lazy">
+            </div>
+
+            <h4>Education</h4>
+            <p>Unequal access to education can limit the knowledge, skills and future opportunities available to girls.</p>
+          </article>
+
+          <article class="factor-photo-card">
+            <div class="factor-photo-frame">
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=85"
+                alt="Woman in a professional workplace"
+                loading="lazy">
+            </div>
+
+            <h4>Employment</h4>
+            <p>Pay gaps, workplace discrimination and unequal career opportunities can affect women's financial independence.</p>
+          </article>
+
+          <article class="factor-photo-card">
+            <div class="factor-photo-frame">
+              <img
+                src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=800&q=85"
+                alt="Women participating in a professional discussion"
+                loading="lazy">
+            </div>
+
+            <h4>Leadership</h4>
+            <p>Women can face barriers to leadership positions and may be underrepresented in important decisions.</p>
+          </article>
+
+        </div>
+
+        <!-- KEY FACTORS UNDER THE PHOTOGRAPHS -->
+        <div class="key-factors">
+          <p class="section-kicker">THE BIGGER PICTURE</p>
+          <h3>Key Factors of Gender Inequality</h3>
+
+          <div class="key-factor-grid">
+
+            <article>
+              <h4>01. Social expectations</h4>
+              <p>Traditional beliefs and stereotypes can influence what girls and women are expected to do.</p>
+            </article>
+
+            <article>
+              <h4>02. Unequal education</h4>
+              <p>Limited access to quality education can reduce future choices and opportunities.</p>
+            </article>
+
+            <article>
+              <h4>03. Economic barriers</h4>
+              <p>Unequal pay and fewer employment opportunities can affect financial independence.</p>
+            </article>
+
+            <article>
+              <h4>04. Unpaid care work</h4>
+              <p>Women often carry a greater share of household responsibilities and caregiving.</p>
+            </article>
+
+            <article>
+              <h4>05. Limited representation</h4>
+              <p>Fewer women in leadership can mean less representation in important decisions.</p>
+            </article>
+
+            <article>
+              <h4>06. Discrimination</h4>
+              <p>Unfair treatment based on gender can restrict people's choices and opportunities.</p>
+            </article>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- EXISTING EDUCATION IMAGE STORY -->
       <div class="image-story">
-        <img src="https://www.unicef.org/ethiopia/sites/unicef.org.ethiopia/files/styles/media_large_image/public/DU3A4448.webp?itok=KiKqLGB4" alt="A female teacher supporting girls in a learning circle" loading="lazy">
-        <div><span class="image-label">EDUCATION & OPPORTUNITY</span><h3>Access to education can widen the choices available to girls.</h3><p>When girls can learn in safe, supportive environments, they can build skills, confidence and pathways into different careers. Access also depends on factors such as affordability, distance, safety and social expectations.</p><small>Photo: UNICEF Ethiopia — female teachers empowering female students.</small></div>
+        <img
+          src="https://www.unicef.org/ethiopia/sites/unicef.org.ethiopia/files/styles/media_large_image/public/DU3A4448.webp?itok=KiKqLGB4"
+          alt="A female teacher supporting girls in a learning circle"
+          loading="lazy">
+
+        <div>
+          <span class="image-label">EDUCATION & OPPORTUNITY</span>
+          <h3>Access to education can widen the choices available to girls.</h3>
+          <p>When girls can learn in safe, supportive environments, they can build skills, confidence and pathways into different careers. Access also depends on factors such as affordability, distance, safety and social expectations.</p>
+          <small>Photo: UNICEF Ethiopia — female teachers empowering female students.</small>
+        </div>
       </div>
     </section>
 
+    <!-- GLOBAL RESEARCH -->
     <section class="research-section" id="research">
       <div class="section-kicker">03 / GLOBAL RESEARCH</div>
+
       <div class="section-heading light-heading">
         <h2>The numbers reveal<br><em>the uneven picture.</em></h2>
         <p>Statistics help show patterns that may not be visible from individual experiences. Each chart below uses a named international source and explains what the figures measure.</p>
       </div>
+
       <div class="stat-ribbon">
-        <div><strong>27.4%</strong><span>of national parliamentary seats were held by women in 2026</span></div>
-        <div><strong>30.5%</strong><span>of managerial positions worldwide were held by women in 2025</span></div>
-        <div><strong>2.5×</strong><span>as many hours of unpaid care work are done by women, on average</span></div>
+        <div>
+          <strong>27.4%</strong>
+          <span>of national parliamentary seats were held by women in 2026</span>
+        </div>
+
+        <div>
+          <strong>30.5%</strong>
+          <span>of managerial positions worldwide were held by women in 2025</span>
+        </div>
+
+        <div>
+          <strong>2.5×</strong>
+          <span>as many hours of unpaid care work are done by women, on average</span>
+        </div>
       </div>
+
       <div class="charts-grid">
+
         <article class="chart-card">
-          <div class="chart-top"><span>CHART 01 / REPRESENTATION</span><span class="chart-tag">VERTICAL BAR</span></div>
+          <div class="chart-top">
+            <span>CHART 01 / REPRESENTATION</span>
+            <span class="chart-tag">VERTICAL BAR</span>
+          </div>
+
           <h3>Women in national parliaments</h3>
           <p class="chart-description">Share of seats held by women, worldwide.</p>
-          <div class="chart-wrap"><canvas id="parliamentChart" aria-label="Bar chart: women held 22.3 percent of parliamentary seats in 2015 and 27.4 percent in 2026"></canvas></div>
+
+          <div class="chart-wrap">
+            <canvas id="parliamentChart" aria-label="Bar chart: women held 22.3 percent of parliamentary seats in 2015 and 27.4 percent in 2026"></canvas>
+          </div>
+
           <p class="chart-insight">The share increased over the decade, but women still held fewer than three in every ten parliamentary seats in 2026.</p>
           <small>Source: UN Sustainable Development Goals Report 2026, Goal 5. Figures refer to lower or single houses of national parliaments.</small>
         </article>
+
         <article class="chart-card">
-          <div class="chart-top"><span>CHART 02 / LEADERSHIP</span><span class="chart-tag">HORIZONTAL BAR</span></div>
+          <div class="chart-top">
+            <span>CHART 02 / LEADERSHIP</span>
+            <span class="chart-tag">HORIZONTAL BAR</span>
+          </div>
+
           <h3>Women in management</h3>
           <p class="chart-description">Share of managerial positions held by women, worldwide.</p>
-          <div class="chart-wrap"><canvas id="managementChart" aria-label="Horizontal bar chart: women held 26.9 percent of managerial positions in 2015 and 30.5 percent in 2025"></canvas></div>
+
+          <div class="chart-wrap">
+            <canvas id="managementChart" aria-label="Horizontal bar chart: women held 26.9 percent of managerial positions in 2015 and 30.5 percent in 2025"></canvas>
+          </div>
+
           <p class="chart-insight">The increase is gradual. Women's representation in management remains lower than their share of total employment.</p>
           <small>Source: UN Sustainable Development Goals Report 2026, Goal 5. Global estimates.</small>
         </article>
+
         <article class="chart-card wide-chart">
-          <div class="chart-top"><span>CHART 03 / UNPAID CARE</span><span class="chart-tag">COMPARISON</span></div>
+          <div class="chart-top">
+            <span>CHART 03 / UNPAID CARE</span>
+            <span class="chart-tag">COMPARISON</span>
+          </div>
+
           <h3>Who spends more time on unpaid care work?</h3>
           <p class="chart-description">Average hours per day spent on unpaid domestic and care work.</p>
-          <div class="chart-wrap care-chart"><canvas id="careChart" aria-label="Bar chart comparing 4.2 hours for women and 1.7 hours for men"></canvas></div>
+
+          <div class="chart-wrap care-chart">
+            <canvas id="careChart" aria-label="Bar chart comparing 4.2 hours for women and 1.7 hours for men"></canvas>
+          </div>
+
           <p class="chart-insight">Unpaid care work includes activities such as cooking, cleaning and caring for family members. When this work is not shared, it can reduce the time available for paid work, study and rest.</p>
           <small>Source: United Nations World Social Report 2025, Employment and Decent Work technical paper. Average global estimates reported in the paper.</small>
         </article>
+
       </div>
+
       <p class="data-note">How to read these charts: the years and measures are shown separately because they do not all describe the same indicator. Percentages should not be compared across different categories as if they measured the same thing.</p>
 
-      <!-- ADDED: MORE DETAILED GRAPH ANALYSIS -->
+      <!-- GRAPH ANALYSIS -->
       <div class="chart-analysis">
         <div class="section-kicker light">UNDERSTANDING THE FINDINGS</div>
         <h2>What do the graphs<br><em>actually tell us?</em></h2>
+
         <div class="analysis-grid">
+
           <article>
             <span>ANALYSIS 01 / REPRESENTATION</span>
             <h3>Women in national parliaments</h3>
             <p>The graph shows an increase from 22.3% in 2015 to 27.4% in 2026. This is an improvement of 5.1 percentage points. However, the figures also show that women still do not hold an equal share of parliamentary seats. This matters because representation can influence whose experiences and concerns are considered when laws and policies are discussed.</p>
           </article>
+
           <article>
             <span>ANALYSIS 02 / LEADERSHIP</span>
             <h3>Women in management</h3>
             <p>The percentage increased from 26.9% in 2015 to 30.5% in 2025, a rise of 3.6 percentage points. Although this suggests progress, women still hold less than one-third of the managerial positions represented by this statistic. This highlights that having access to employment does not automatically mean having equal access to leadership opportunities.</p>
           </article>
+
           <article>
             <span>ANALYSIS 03 / UNPAID CARE</span>
             <h3>Time spent on unpaid care work</h3>
             <p>The comparison shows women spending an average of 4.2 hours per day on unpaid care work, compared with 1.7 hours for men. This is a difference of 2.5 hours. Unequal responsibility for household and care activities can affect how much time women have for education, paid employment, personal development and rest.</p>
           </article>
+
         </div>
+
         <div class="analysis-conclusion">
           <span>OVERALL FINDING</span>
           <p>Together, the graphs show that gender inequality is connected to representation, leadership and the distribution of unpaid responsibilities. There has been progress in some areas, but progress does not mean that equality has been achieved. The findings suggest that improving equality requires more than giving people the same rights on paper; it also requires removing barriers that affect their everyday opportunities.</p>
@@ -170,108 +381,338 @@
       </div>
     </section>
 
+    <!-- INDIA -->
     <section class="content-section" id="india">
       <div class="section-kicker">04 / INDIA IN FOCUS</div>
+
       <div class="section-heading">
         <h2>Gender equality<br><em>in the Indian context.</em></h2>
         <p>India has made progress through education, legal protections and women's participation in public life. However, experiences differ across states, communities, income groups and rural and urban areas.</p>
       </div>
+
       <div class="india-layout">
         <div class="india-photo">
-          <img src="https://dam-cdn.wi0.orangelogic.com/AssetLink/yed3if7u8b27ix5rtqal0wn44rt5ndsd-1200x800%2CCentreCrop.jpg" alt="Schoolgirls learning together with a teacher in Pakistan" loading="lazy">
+          <img
+            src="https://dam-cdn.wi0.orangelogic.com/AssetLink/yed3if7u8b27ix5rtqal0wn44rt5ndsd-1200x800%2CCentreCrop.jpg"
+            alt="Schoolgirls learning together with a teacher in Pakistan"
+            loading="lazy">
           <small>Photo: WaterAid — classroom learning in Lodhran, Pakistan. Used here as a regional education example, not as an India statistic.</small>
         </div>
+
         <div class="india-points">
-          <article><span>01</span><div><h3>Education</h3><p>Access to schooling has expanded, but barriers such as household income, distance, safety, infrastructure and early responsibilities can affect whether girls continue their education.</p></div></article>
-          <article><span>02</span><div><h3>Work and financial independence</h3><p>Women contribute to paid work, agriculture, family businesses and unpaid care. Recognising unpaid work and improving access to secure employment are important parts of equality.</p></div></article>
-          <article><span>03</span><div><h3>Representation and decision-making</h3><p>Women's participation in local government and public leadership matters because decisions are stronger when different experiences and perspectives are represented.</p></div></article>
-          <article><span>04</span><div><h3>Law and implementation</h3><p>Constitutional equality and laws protecting women are important. Their impact depends on awareness, access to support, fair enforcement and changing discriminatory practices.</p></div></article>
+          <article>
+            <span>01</span>
+            <div>
+              <h3>Education</h3>
+              <p>Access to schooling has expanded, but barriers such as household income, distance, safety, infrastructure and early responsibilities can affect whether girls continue their education.</p>
+            </div>
+          </article>
+
+          <article>
+            <span>02</span>
+            <div>
+              <h3>Work and financial independence</h3>
+              <p>Women contribute to paid work, agriculture, family businesses and unpaid care. Recognising unpaid work and improving access to secure employment are important parts of equality.</p>
+            </div>
+          </article>
+
+          <article>
+            <span>03</span>
+            <div>
+              <h3>Representation and decision-making</h3>
+              <p>Women's participation in local government and public leadership matters because decisions are stronger when different experiences and perspectives are represented.</p>
+            </div>
+          </article>
+
+          <article>
+            <span>04</span>
+            <div>
+              <h3>Law and implementation</h3>
+              <p>Constitutional equality and laws protecting women are important. Their impact depends on awareness, access to support, fair enforcement and changing discriminatory practices.</p>
+            </div>
+          </article>
         </div>
       </div>
+
       <div class="map-panel">
-        <div class="map-heading"><div><span class="section-kicker">GEOGRAPHICAL PERSPECTIVE</span><h3>One issue, different experiences.</h3><p>The map highlights places referenced in international gender-equality reporting. It is a context map, not a ranking or a map of risk.</p></div><span class="map-note">INTERACTIVE MAP</span></div>
+        <div class="map-heading">
+          <div>
+            <span class="section-kicker">GEOGRAPHICAL PERSPECTIVE</span>
+            <h3>One issue, different experiences.</h3>
+            <p>The map highlights places referenced in international gender-equality reporting. It is a context map, not a ranking or a map of risk.</p>
+          </div>
+          <span class="map-note">INTERACTIVE MAP</span>
+        </div>
+
         <div id="equalityMap" aria-label="Map showing India and selected world regions"></div>
-        <div class="map-legend"><span><i class="dot india-dot"></i> India focus</span><span><i class="dot global-dot"></i> Global reporting context</span></div>
+
+        <div class="map-legend">
+          <span><i class="dot india-dot"></i> India focus</span>
+          <span><i class="dot global-dot"></i> Global reporting context</span>
+        </div>
       </div>
     </section>
 
+    <!-- EFFECTS -->
     <section class="content-section effects-section">
       <div class="section-kicker">05 / WHAT ARE THE EFFECTS?</div>
+
       <div class="section-heading">
         <h2>The impact reaches<br><em>beyond one person.</em></h2>
         <p>When opportunities are unequal, the effects can spread through families, workplaces, communities and the wider economy.</p>
       </div>
+
       <div class="effects-grid">
-        <article><span>01</span><h3>Individual choices</h3><p>People may have fewer opportunities to choose the education, career or future they want.</p></article>
-        <article><span>02</span><h3>Families and communities</h3><p>Unequal access to resources can affect household income, wellbeing and participation in community decisions.</p></article>
-        <article><span>03</span><h3>Economies</h3><p>When people cannot use their skills and talents fully, communities and economies lose valuable contributions.</p></article>
-        <article><span>04</span><h3>Future generations</h3><p>Social expectations can be passed on, allowing unequal patterns to continue unless they are challenged.</p></article>
+        <article>
+          <span>01</span>
+          <h3>Individual choices</h3>
+          <p>People may have fewer opportunities to choose the education, career or future they want.</p>
+        </article>
+
+        <article>
+          <span>02</span>
+          <h3>Families and communities</h3>
+          <p>Unequal access to resources can affect household income, wellbeing and participation in community decisions.</p>
+        </article>
+
+        <article>
+          <span>03</span>
+          <h3>Economies</h3>
+          <p>When people cannot use their skills and talents fully, communities and economies lose valuable contributions.</p>
+        </article>
+
+        <article>
+          <span>04</span>
+          <h3>Future generations</h3>
+          <p>Social expectations can be passed on, allowing unequal patterns to continue unless they are challenged.</p>
+        </article>
       </div>
     </section>
 
+    <!-- SOLUTIONS -->
     <section class="solutions-section" id="solutions">
       <div class="section-kicker light">06 / MOVING TOWARDS EQUALITY</div>
-      <div class="solutions-head"><h2>Change requires<br><em>more than awareness.</em></h2><p>Progress needs action from governments, schools, workplaces, communities and individuals. Solutions are most effective when they address both formal rules and everyday attitudes.</p></div>
-      <div class="solution-list">
-        <article><span>01</span><div><h3>Make education accessible</h3><p>Support safe schools, equal learning opportunities, digital access and pathways into subjects and careers without gender stereotypes.</p></div></article>
-        <article><span>02</span><div><h3>Share care responsibilities</h3><p>Recognise unpaid care work and encourage fairer sharing of household responsibilities, alongside accessible care services.</p></div></article>
-        <article><span>03</span><div><h3>Strengthen laws and implementation</h3><p>Protect equal rights, improve access to justice and make sure policies are properly funded, monitored and enforced.</p></div></article>
-        <article><span>04</span><div><h3>Increase representation</h3><p>Remove barriers that prevent women from participating in leadership, decision-making, science, business and public life.</p></div></article>
-        <article><span>05</span><div><h3>Challenge stereotypes</h3><p>Promote respect and equal expectations at home, in schools, in media and in workplaces.</p></div></article>
+
+      <div class="solutions-head">
+        <h2>Change requires<br><em>more than awareness.</em></h2>
+        <p>Progress needs action from governments, schools, workplaces, communities and individuals. Solutions are most effective when they address both formal rules and everyday attitudes.</p>
       </div>
+
+      <div class="solution-list">
+        <article>
+          <span>01</span>
+          <div>
+            <h3>Make education accessible</h3>
+            <p>Support safe schools, equal learning opportunities, digital access and pathways into subjects and careers without gender stereotypes.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>02</span>
+          <div>
+            <h3>Share care responsibilities</h3>
+            <p>Recognise unpaid care work and encourage fairer sharing of household responsibilities, alongside accessible care services.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>03</span>
+          <div>
+            <h3>Strengthen laws and implementation</h3>
+            <p>Protect equal rights, improve access to justice and make sure policies are properly funded, monitored and enforced.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>04</span>
+          <div>
+            <h3>Increase representation</h3>
+            <p>Remove barriers that prevent women from participating in leadership, decision-making, science, business and public life.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>05</span>
+          <div>
+            <h3>Challenge stereotypes</h3>
+            <p>Promote respect and equal expectations at home, in schools, in media and in workplaces.</p>
+          </div>
+        </article>
+      </div>
+
       <div class="sdg-callout">
         <div class="sdg-number">5</div>
-        <div><span>UNITED NATIONS SUSTAINABLE DEVELOPMENT GOALS</span><h3>Gender Equality</h3><p>SDG 5 aims to achieve gender equality and empower all women and girls. It includes ending discrimination, violence and harmful practices, valuing unpaid care work, ensuring equal participation and strengthening policies for equality.</p><a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">Explore SDG 5 ↗</a></div>
+        <div>
+          <span>UNITED NATIONS SUSTAINABLE DEVELOPMENT GOALS</span>
+          <h3>Gender Equality</h3>
+          <p>SDG 5 aims to achieve gender equality and empower all women and girls. It includes ending discrimination, violence and harmful practices, valuing unpaid care work, ensuring equal participation and strengthening policies for equality.</p>
+          <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">Explore SDG 5 ↗</a>
+        </div>
       </div>
     </section>
 
+    <!-- MYP CRITERIA -->
     <section class="content-section criteria-section" id="criteria">
       <div class="section-kicker">07 / MYP ASSESSMENT CONNECTION</div>
-      <div class="section-heading"><h2>From research<br><em>to critical thinking.</em></h2><p>This project connects to the four MYP Individuals and Societies criteria.</p></div>
+
+      <div class="section-heading">
+        <h2>From research<br><em>to critical thinking.</em></h2>
+        <p>This project connects to the four MYP Individuals and Societies criteria.</p>
+      </div>
+
       <div class="criteria-grid">
-        <article><span>CRITERION A</span><h3>Knowing and understanding</h3><p>Explain gender inequality using accurate subject vocabulary, relevant examples and evidence from reliable sources.</p></article>
-        <article><span>CRITERION B</span><h3>Investigating</h3><p>Develop a focused research question, create and follow a research plan, collect relevant information and evaluate sources.</p></article>
-        <article><span>CRITERION C</span><h3>Communicating</h3><p>Organise information clearly for an audience, use an appropriate website format and acknowledge sources.</p></article>
-        <article><span>CRITERION D</span><h3>Thinking critically</h3><p>Interpret data, compare perspectives, explain connections and evaluate possible solutions using evidence.</p></article>
+        <article>
+          <span>CRITERION A</span>
+          <h3>Knowing and understanding</h3>
+          <p>Explain gender inequality using accurate subject vocabulary, relevant examples and evidence from reliable sources.</p>
+        </article>
+
+        <article>
+          <span>CRITERION B</span>
+          <h3>Investigating</h3>
+          <p>Develop a focused research question, create and follow a research plan, collect relevant information and evaluate sources.</p>
+        </article>
+
+        <article>
+          <span>CRITERION C</span>
+          <h3>Communicating</h3>
+          <p>Organise information clearly for an audience, use an appropriate website format and acknowledge sources.</p>
+        </article>
+
+        <article>
+          <span>CRITERION D</span>
+          <h3>Thinking critically</h3>
+          <p>Interpret data, compare perspectives, explain connections and evaluate possible solutions using evidence.</p>
+        </article>
       </div>
     </section>
 
+    <!-- REFLECTION -->
     <section class="reflection-section">
       <div class="section-kicker">08 / REFLECTION</div>
-      <div class="reflection-grid"><h2>What does<br><em>equality ask of us?</em></h2><div><p>Researching gender inequality shows that equal rights on paper do not always lead to equal opportunities in everyday life. Social expectations, access to resources and the way institutions work can influence people's choices.</p><p>It is also important to recognise that women and girls do not all experience inequality in the same way. Factors such as location, income, disability and access to education can shape individual experiences.</p><p>My main takeaway is that progress needs both structural change and changes in attitudes. Governments and institutions have responsibilities, but schools, families and communities also influence whether equality becomes part of everyday life.</p></div></div>
+
+      <div class="reflection-grid">
+        <h2>What does<br><em>equality ask of us?</em></h2>
+
+        <div>
+          <p>Researching gender inequality shows that equal rights on paper do not always lead to equal opportunities in everyday life. Social expectations, access to resources and the way institutions work can influence people's choices.</p>
+
+          <p>It is also important to recognise that women and girls do not all experience inequality in the same way. Factors such as location, income, disability and access to education can shape individual experiences.</p>
+
+          <p>My main takeaway is that progress needs both structural change and changes in attitudes. Governments and institutions have responsibilities, but schools, families and communities also influence whether equality becomes part of everyday life.</p>
+        </div>
+      </div>
     </section>
 
+    <!-- ABOUT ME -->
     <section class="about-section" id="about">
-      <div class="about-photo-wrap"><img src="IMG_4687.jpeg" alt="Portrait of the student researcher" onerror="this.style.display='none';document.getElementById('photoFallback').style.display='grid'"><div id="photoFallback" class="photo-fallback">ADD YOUR PHOTO<br><small>Keep IMG_4687.jpeg beside index.html</small></div><span class="photo-caption">THE STUDENT BEHIND THE PROJECT</span></div>
-      <div class="about-copy"><div class="section-kicker">09 / ABOUT THE RESEARCHER</div><h2>A little about<br><em>the person behind it.</em></h2><p>Hi, I'm Nakshatra, a Grade 8 student. I created this website to explore global gender inequality and understand how social structures can influence people's opportunities and development.</p><p>Through this project, I wanted to look beyond definitions and investigate real-world patterns, research findings and possible solutions. I also wanted to communicate the issue in a way that is informative, clear and accessible to other students.</p><p class="about-signature">Nakshatra Veernala <span> / Grade 8</span></p></div>
+      <div class="about-photo-wrap">
+        <img
+          src="IMG_4687.jpeg"
+          alt="Portrait of the student researcher"
+          onerror="this.style.display='none';document.getElementById('photoFallback').style.display='grid'">
+
+        <div id="photoFallback" class="photo-fallback">
+          ADD YOUR PHOTO<br>
+          <small>Keep IMG_4687.jpeg beside index.html</small>
+        </div>
+
+        <span class="photo-caption">THE STUDENT BEHIND THE PROJECT</span>
+      </div>
+
+      <div class="about-copy">
+        <div class="section-kicker">09 / ABOUT THE RESEARCHER</div>
+        <h2>A little about<br><em>the person behind it.</em></h2>
+
+        <p>Hi, I'm Nakshatra, a Grade 8 student. I created this website to explore global gender inequality and understand how social structures can influence people's opportunities and development.</p>
+
+        <p>Through this project, I wanted to look beyond definitions and investigate real-world patterns, research findings and possible solutions. I also wanted to communicate the issue in a way that is informative, clear and accessible to other students.</p>
+
+        <p class="about-signature">Nakshatra Veernala <span> / Grade 8</span></p>
+      </div>
     </section>
 
+    <!-- SOURCES -->
     <section class="sources-section" id="sources">
       <div class="section-kicker">10 / REFERENCES & ACKNOWLEDGEMENTS</div>
-      <div class="section-heading"><h2>Research should be<br><em>traceable and trusted.</em></h2><p>The information and figures on this website are based on the sources below. Check the original publications for definitions, methodology and updates.</p></div>
+
+      <div class="section-heading">
+        <h2>Research should be<br><em>traceable and trusted.</em></h2>
+        <p>The information and figures on this website are based on the sources below. Check the original publications for definitions, methodology and updates.</p>
+      </div>
+
       <ol class="source-list">
-        <li><div><strong>United Nations Statistics Division.</strong> <em>The Sustainable Development Goals Report 2026 — Goal 5: Gender Equality.</em> Used for parliamentary representation, management and global gender-equality context.</div><a href="https://unstats.un.org/sdgs/report/2026/goal-05" target="_blank" rel="noopener">Open source ↗</a></li>
-        <li><div><strong>United Nations Department of Economic and Social Affairs.</strong> <em>World Social Report 2025: Employment and Decent Work.</em> Used for average daily hours spent on unpaid work by women and men.</div><a href="https://social.desa.un.org/sites/default/files/2025-06/Employment%20and%20Decent%20Work%20TP%20V1.pdf" target="_blank" rel="noopener">Open report ↗</a></li>
-        <li><div><strong>United Nations Sustainable Development Goals.</strong> <em>Goal 5: Achieve gender equality and empower all women and girls.</em> Used for SDG 5 targets and context.</div><a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">Open source ↗</a></li>
-        <li><div><strong>UNICEF Ethiopia.</strong> <em>Empowered female teachers are empowering female students in Ethiopia.</em> Photograph used in the education section.</div><a href="https://www.unicef.org/ethiopia/" target="_blank" rel="noopener">UNICEF Ethiopia ↗</a></li>
-        <li><div><strong>WaterAid.</strong> Photograph of a classroom learning activity in Lodhran, Pakistan. Used as a regional education example only.</div><a href="https://www.wateraid.org/" target="_blank" rel="noopener">WaterAid ↗</a></li>
-        <li><div><strong>Camacol.</strong> Photograph of a diverse group standing together, viewed from behind. Used as the homepage hero image; please retain source credit if reusing it.</div><a href="https://camacol.co/productividad-sectorial/equidad-de-genero" target="_blank" rel="noopener">Image source ↗</a></li>
+        <li>
+          <div>
+            <strong>United Nations Statistics Division.</strong>
+            <em>The Sustainable Development Goals Report 2026 — Goal 5: Gender Equality.</em>
+            Used for parliamentary representation, management and global gender-equality context.
+          </div>
+          <a href="https://unstats.un.org/sdgs/report/2026/goal-05" target="_blank" rel="noopener">Open source ↗</a>
+        </li>
+
+        <li>
+          <div>
+            <strong>United Nations Department of Economic and Social Affairs.</strong>
+            <em>World Social Report 2025: Employment and Decent Work.</em>
+            Used for average daily hours spent on unpaid work by women and men.
+          </div>
+          <a href="https://social.desa.un.org/sites/default/files/2025-06/Employment%20and%20Decent%20Work%20TP%20V1.pdf" target="_blank" rel="noopener">Open report ↗</a>
+        </li>
+
+        <li>
+          <div>
+            <strong>United Nations Sustainable Development Goals.</strong>
+            <em>Goal 5: Achieve gender equality and empower all women and girls.</em>
+            Used for SDG 5 targets and context.
+          </div>
+          <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">Open source ↗</a>
+        </li>
+
+        <li>
+          <div>
+            <strong>UNICEF Ethiopia.</strong>
+            <em>Empowered female teachers are empowering female students in Ethiopia.</em>
+            Photograph used in the education section.
+          </div>
+          <a href="https://www.unicef.org/ethiopia/" target="_blank" rel="noopener">UNICEF Ethiopia ↗</a>
+        </li>
+
+        <li>
+          <div>
+            <strong>WaterAid.</strong>
+            Photograph of a classroom learning activity in Lodhran, Pakistan. Used as a regional education example only.
+          </div>
+          <a href="https://www.wateraid.org/" target="_blank" rel="noopener">WaterAid ↗</a>
+        </li>
+
+        <li>
+          <div>
+            <strong>Camacol.</strong>
+            Photograph of a diverse group standing together, viewed from behind. Used as the homepage hero image; please retain source credit if reusing it.
+          </div>
+          <a href="https://camacol.co/productividad-sectorial/equidad-de-genero" target="_blank" rel="noopener">Image source ↗</a>
+        </li>
       </ol>
 
-      <!-- ADDED: CLEARER IMAGE AND DATA ACKNOWLEDGEMENTS -->
       <div class="method-note">
         <strong>Data and image acknowledgements:</strong>
         The charts are intended to communicate the figures and years stated beside them. The original reports should be consulted to confirm the exact indicator definitions, reporting periods and methodology before using the statistics in formal work. The photographs are credited to their respective organisations or image sources above. Images are used to support the educational discussion and are not presented as statistical evidence.
       </div>
 
-      <p class="method-note"><strong>Research note:</strong> Global statistics are not automatically representative of every country or community. The indicators shown use different years and definitions, so they are presented separately. No school-survey results are included unless they have been collected and verified.</p>
+      <p class="method-note">
+        <strong>Research note:</strong>
+        Global statistics are not automatically representative of every country or community. The indicators shown use different years and definitions, so they are presented separately. No school-survey results are included unless they have been collected and verified.
+      </p>
     </section>
 
-    <!-- ADDED: PERSONAL MESSAGE FROM NAKSHATRA -->
+    <!-- PERSONAL MESSAGE -->
     <section class="reflection-section personal-message" id="my-message">
       <div class="section-kicker">11 / A MESSAGE FROM ME</div>
+
       <div class="reflection-grid">
         <h2>Every woman<br><em>deserves a choice.</em></h2>
+
         <div>
           <p>I believe gender inequality is an issue that deserves much more awareness and attention. It is not something we should ignore or treat as normal. Behind every statistic are real women and girls whose opportunities, choices and futures can be affected by inequality.</p>
 
@@ -285,9 +726,14 @@
         </div>
       </div>
     </section>
+
   </main>
 
-  <footer><a class="footer-brand" href="#home">THE EQUALITY PROJECT</a><span>BEYOND THE DIVIDE · GRADE 8 MYP PROJECT</span><a href="#home">BACK TO TOP ↑</a></footer>
+  <footer>
+    <a class="footer-brand" href="#home">THE EQUALITY PROJECT</a>
+    <span>BEYOND THE DIVIDE · GRADE 8 MYP PROJECT</span>
+    <a href="#home">BACK TO TOP ↑</a>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
