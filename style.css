@@ -189,3 +189,77 @@ footer a{color:var(--gold-light);text-decoration:none}
  footer{padding:25px 7%;gap:12px;flex-wrap:wrap}footer span{order:3;width:100%}
 }
 @media(max-width:420px){.framework-cards,.cause-grid,.effects-grid,.criteria-grid{grid-template-columns:1fr}.hero h1{font-size:58px}.intro-grid h2,.section-heading h2{font-size:39px}.chart-top{font-size:8px}}
+/* PERSONAL MESSAGE SECTION */
+
+.message-section {
+  background: var(--ivory);
+  padding-top: 100px;
+  padding-bottom: 110px;
+}
+
+.message-content {
+  max-width: 850px;
+  margin: 55px auto 0;
+}
+
+.message-label {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.message-content > p:not(.message-label) {
+  color: var(--navy);
+  font-size: 16px;
+  line-height: 1.95;
+  margin-bottom: 22px;
+}
+
+.message-quote {
+  border-left: 3px solid var(--gold);
+  margin: 42px 0;
+  padding: 12px 0 12px 28px;
+  color: var(--navy);
+  font-family: Georgia, serif;
+  font-size: 25px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.message-signature {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 35px;
+  color: var(--navy);
+}
+
+.message-signature span {
+  font-family: Georgia, serif;
+  font-size: 21px;
+}
+
+.message-signature small {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .message-section {
+    padding-top: 65px;
+    padding-bottom: 70px;
+  }
+
+  .message-content {
+    margin-top: 35px;
+  }
+
+  .message-quote {
+    font-size: 21px;
+    padding-left: 18px;
+  }
+}
