@@ -28,11 +28,14 @@ Chart.defaults.plugins.tooltip.padding = 12;
 Chart.defaults.plugins.tooltip.titleFont = { weight: "600" };
 Chart.defaults.plugins.tooltip.bodyFont = { size: 11 };
 
-// Chart 1: Women in national parliaments
+
+// GRAPH 1: WOMEN IN NATIONAL PARLIAMENTS
 new Chart(document.getElementById("parliamentChart"), {
   type: "bar",
+
   data: {
     labels: ["2015", "2026"],
+
     datasets: [{
       data: [22.3, 27.4],
       backgroundColor: [
@@ -43,9 +46,11 @@ new Chart(document.getElementById("parliamentChart"), {
       maxBarThickness: 70
     }]
   },
+
   options: {
     responsive: true,
     maintainAspectRatio: false,
+
     plugins: {
       tooltip: {
         callbacks: {
@@ -53,6 +58,7 @@ new Chart(document.getElementById("parliamentChart"), {
         }
       }
     },
+
     scales: {
       y: {
         beginAtZero: true,
@@ -63,6 +69,7 @@ new Chart(document.getElementById("parliamentChart"), {
           stepSize: 10
         }
       },
+
       x: {
         grid: { display: false }
       }
@@ -70,11 +77,14 @@ new Chart(document.getElementById("parliamentChart"), {
   }
 });
 
-// Chart 2: Women in management
+
+// GRAPH 2: WOMEN IN MANAGEMENT
 new Chart(document.getElementById("managementChart"), {
   type: "bar",
+
   data: {
     labels: ["2015", "2025"],
+
     datasets: [{
       data: [26.9, 30.5],
       backgroundColor: [
@@ -85,10 +95,12 @@ new Chart(document.getElementById("managementChart"), {
       barThickness: 34
     }]
   },
+
   options: {
     indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
+
     plugins: {
       tooltip: {
         callbacks: {
@@ -96,6 +108,7 @@ new Chart(document.getElementById("managementChart"), {
         }
       }
     },
+
     scales: {
       x: {
         beginAtZero: true,
@@ -106,6 +119,7 @@ new Chart(document.getElementById("managementChart"), {
           stepSize: 10
         }
       },
+
       y: {
         grid: { display: false }
       }
@@ -113,11 +127,14 @@ new Chart(document.getElementById("managementChart"), {
   }
 });
 
-// Chart 3: Unpaid care work
+
+// GRAPH 3: UNPAID CARE WORK
 new Chart(document.getElementById("careChart"), {
   type: "bar",
+
   data: {
     labels: ["Women", "Men"],
+
     datasets: [{
       data: [4.2, 1.7],
       backgroundColor: [gold, navy],
@@ -125,9 +142,11 @@ new Chart(document.getElementById("careChart"), {
       maxBarThickness: 115
     }]
   },
+
   options: {
     responsive: true,
     maintainAspectRatio: false,
+
     plugins: {
       tooltip: {
         callbacks: {
@@ -135,6 +154,7 @@ new Chart(document.getElementById("careChart"), {
         }
       }
     },
+
     scales: {
       y: {
         beginAtZero: true,
@@ -145,6 +165,7 @@ new Chart(document.getElementById("careChart"), {
           stepSize: 1
         }
       },
+
       x: {
         grid: { display: false }
       }
@@ -152,58 +173,64 @@ new Chart(document.getElementById("careChart"), {
   }
 });
 
-// Interactive context map
+
+// INTERACTIVE GLOBAL MAP
 // Markers show places discussed in the website,
 // not statistical rankings.
-if (
-  document.getElementById("equalityMap") &&
-  window.L
-) {
+
+if (document.getElementById("equalityMap") && window.L) {
+
   const map = L.map("equalityMap", {
     scrollWheelZoom: false
   }).setView([19, 43], 2);
 
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 6
-    }
-  ).addTo(map);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 6
+  }).addTo(map);
+
 
   const points = [
+
     {
       name: "India",
       coords: [22.5, 79],
       text: "India focus: education, work, representation and implementation of equality protections.",
       color: gold
     },
+
     {
       name: "Ethiopia",
       coords: [9.1, 40.5],
       text: "Education example: UNICEF has documented efforts to support female teachers and girls' learning.",
       color: navy
     },
+
     {
       name: "Global reporting",
       coords: [0, 0],
       text: "UN global reporting brings together indicators from countries around the world.",
       color: navy
     }
+
   ];
 
-  points.forEach(point => {
-    const marker = L.circleMarker(point.coords, {
+
+  points.forEach(p => {
+
+    const marker = L.circleMarker(p.coords, {
       radius: 8,
-      color: point.color,
-      fillColor: point.color,
-      fillOpacity: 0.9,
+      color: p.color,
+      fillColor: p.color,
+      fillOpacity: .9,
       weight: 2
     }).addTo(map);
 
     marker.bindPopup(
-      `<strong>${point.name}</strong><br>${point.text}`
+      `<strong>${p.name}</strong><br>${p.text}`
     );
+
   });
+
 }
