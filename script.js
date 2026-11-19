@@ -1,164 +1,255 @@
-// Responsive navigation
+
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 
 menuToggle?.addEventListener("click", () => {
-  const opened = mainNav.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(opened));
+  const isOpen = mainNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.textContent = isOpen ? "✕" : "☰";
 });
 
 mainNav?.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     mainNav.classList.remove("open");
     menuToggle?.setAttribute("aria-expanded", "false");
+    if (menuToggle) menuToggle.textContent = "☰";
   });
 });
 
-// Charts using sourced global data
-const gold = "#b99a61";
-const navy = "#243a54";
-const muted = "#7d8790";
-const grid = "rgba(36,58,84,.10)";
+if (typeof Chart !== "undefined") {
+  Chart.defaults.font.family = "'DM Sans', sans-serif";
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = "#6c706a";
+  Chart.defaults.animation.duration = 1000;
 
-if (window.Chart) {
-  Chart.defaults.font.family = '"DM Sans", Arial, sans-serif';
-  Chart.defaults.color = muted;
-  Chart.defaults.plugins.legend.display = false;
-  Chart.defaults.plugins.tooltip.backgroundColor = "#17283f";
-  Chart.defaults.plugins.tooltip.padding = 12;
+  const gridColor = "rgba(32,42,38,.10)";
+  const green = "#405c4c";
+  const terracotta = "#b56c50";
+  const gold = "#b99b69";
+  const paleGreen = "#93aa97";
 
-  const makeChart = (id, labels, values, options = {}) => {
-    const canvas = document.getElementById(id);
-    if (!canvas) return;
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      intersect: false,
+      mode: "index"
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        labels: {
+          padding: 20,
+          usePointStyle: true,
+          pointStyle: "circle"
+        }
+      },
+      tooltip: {
+        backgroundColor: "#202a26",
+        padding: 12,
+        titleFont: {
+          family: "'Playfair Display', serif",
+          size: 15
+        },
+        bodyFont: {
+          family: "'DM Sans', sans-serif"
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {display: false},
+        border: {display: false}
+      },
+      y: {
+        beginAtZero: true,
+        grid: {color: gridColor},
+        border: {display: false},
+        ticks: {padding: 8}
+      }
+    }
+  };
 
-    new Chart(canvas, {
+  const parliamentCanvas = document.getElementById("parliamentChart");
+  if (parliamentCanvas) {
+    new Chart(parliamentCanvas, {
+      type: "line",
+      data: {
+        labels: ["2015", "2017", "2019", "2021", "2023", "2025"],
+        datasets: [{
+          label: "Women in parliament (%)",
+          data: [22.8, 23.4, 24.3, 25.5, 26.5, 27.2],
+          borderColor: green,
+          backgroundColor: "rgba(64,92,76,.13)",
+          fill: true,
+          tension: .35,
+          borderWidth: 3,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          pointBackgroundColor: terracotta
+        }]
+      },
+      options: {
+        ...commonOptions,
+        scales: {
+          x: {
+            grid: {display: false},
+            border: {display: false}
+          },
+          y: {
+            min: 20,
+            max: 30,
+            grid: {color: gridColor},
+            border: {display: false},
+            ticks: {
+              callback: value => value + "%"
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const managementCanvas = document.getElementById("managementChart");
+  if (managementCanvas) {
+    new Chart(managementCanvas, {
       type: "bar",
       data: {
-        labels,
+        labels: ["2015", "2017", "2019", "2021", "2023"],
         datasets: [{
-          data: values,
-          backgroundColor: options.colors || [gold, navy],
-          borderRadius: 5,
-          maxBarThickness: options.maxBarThickness || 70
+          label: "Women in management (%)",
+          data: [27.7, 28.1, 28.3, 29.2, 30.0],
+          backgroundColor: [
+            "#93aa97",
+            "#77917e",
+            "#66836d",
+            "#52705b",
+            "#405c4c"
+          ],
+          borderRadius: 7,
+          borderSkipped: false,
+          barPercentage: .62
+        }]
+      },
+      options: {
+        ...commonOptions,
+        plugins: {
+          ...commonOptions.plugins,
+          legend: {display: false}
+        },
+        scales: {
+          x: {
+            grid: {display: false},
+            border: {display: false}
+          },
+          y: {
+            min: 20,
+            max: 35,
+            grid: {color: gridColor},
+            border: {display: false},
+            ticks: {
+              callback: value => value + "%"
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const careCanvas = document.getElementById("careChart");
+  if (careCanvas) {
+    new Chart(careCanvas, {
+      type: "doughnut",
+      data: {
+        labels: ["Women", "Remaining share"],
+        datasets: [{
+          data: [76, 24],
+          backgroundColor: [terracotta, "#ded7c9"],
+          borderWidth: 0,
+          hoverOffset: 12
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "72%",
         plugins: {
-          tooltip: {
-            callbacks: {
-              label: context => options.format(context.raw)
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: options.max,
-            grid: { color: grid },
-            ticks: {
-              stepSize: options.step,
-              callback: value => value + "%"
+          legend: {
+            position: "bottom",
+            labels: {
+              padding: 25,
+              usePointStyle: true,
+              pointStyle: "circle"
             }
           },
-          x: {
-            grid: { display: false }
+          tooltip: {
+            backgroundColor: "#202a26",
+            padding: 12,
+            callbacks: {
+              label: context => context.label + ": " + context.raw + "%"
+            }
           }
         }
       }
     });
-  };
+  }
 
-  // Indicator 1: Parliamentary representation
-  // World Bank Gender Data Portal / IPU
-  makeChart(
-    "parliamentChart",
-    ["2015", "2025"],
-    [22.8, 27.2],
-    {
-      max: 40,
-      step: 10,
-      format: value => value + "% of parliamentary seats held by women"
-    }
-  );
-
-  // Indicator 2: Women in managerial positions
-  // UN SDG Statistical Annex 2025
-  makeChart(
-    "managementChart",
-    ["2015", "2023"],
-    [27.7, 30.0],
-    {
-      max: 40,
-      step: 10,
-      format: value => value + "% of managerial positions held by women",
-      colors: ["rgba(36,58,84,.55)", navy]
-    }
-  );
-
-  // Indicator 3: Global unpaid-care estimate
-  // UN report E/CN.5/2026/4
-  makeChart(
-    "careChart",
-    ["Women", "Remaining share"],
-    [76, 24],
-    {
-      max: 100,
-      step: 25,
-      format: value => value + "% of the estimated global share of unpaid care work",
-      colors: [gold, navy],
-      maxBarThickness: 115
-    }
-  );
-}
-
-// Interactive context map
-// These markers are examples, not rankings.
-if (document.getElementById("equalityMap") && window.L) {
-  const map = L.map("equalityMap", {
-    scrollWheelZoom: false
-  }).setView([19, 43], 2);
-
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 6
-    }
-  ).addTo(map);
-
-  const points = [
-    {
-      name: "India",
-      coords: [22.5, 79],
-      text: "Country focus: education, work, representation and policy implementation.",
-      color: gold
-    },
-    {
-      name: "Ethiopia",
-      coords: [9.1, 40.5],
-      text: "Example referenced in international education and gender initiatives.",
-      color: navy
-    },
-    {
-      name: "Global reporting",
-      coords: [0, 0],
-      text: "International institutions compile indicators and comparative reports.",
-      color: navy
-    }
-  ];
-
-  points.forEach(point => {
-    L.circleMarker(point.coords, {
-      radius: 8,
-      color: point.color,
-      fillColor: point.color,
-      fillOpacity: .9,
-      weight: 2
-    })
-      .addTo(map)
-      .bindPopup(`<strong>${point.name}</strong><br>${point.text}`);
-  });
+  const indiaPoliticsCanvas = document.getElementById("indiaPoliticsChart");
+  if (indiaPoliticsCanvas) {
+    new Chart(indiaPoliticsCanvas, {
+      type: "bar",
+      data: {
+        labels: [
+          "1952",
+          "1962",
+          "1977",
+          "1984",
+          "1991",
+          "2004",
+          "2014",
+          "2019",
+          "2024"
+        ],
+        datasets: [{
+          label: "Women elected to Lok Sabha",
+          data: [22, 31, 19, 41, 36, 45, 62, 78, 75],
+          backgroundColor: [
+            "#ded7c9",
+            "#ded7c9",
+            "#ded7c9",
+            "#ded7c9",
+            "#ded7c9",
+            "#93aa97",
+            "#66836d",
+            "#52705b",
+            terracotta
+          ],
+          borderRadius: 6,
+          borderSkipped: false,
+          barPercentage: .65
+        }]
+      },
+      options: {
+        ...commonOptions,
+        plugins: {
+          ...commonOptions.plugins,
+          legend: {display: false}
+        },
+        scales: {
+          x: {
+            grid: {display: false},
+            border: {display: false}
+          },
+          y: {
+            beginAtZero: true,
+            max: 100,
+            grid: {color: gridColor},
+            border: {display: false},
+            ticks: {stepSize: 20}
+          }
+        }
+      }
+    });
+  }
 }
