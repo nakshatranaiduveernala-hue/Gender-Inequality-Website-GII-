@@ -1,255 +1,237 @@
-
+// MOBILE NAVIGATION
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 
-menuToggle?.addEventListener("click", () => {
-  const isOpen = mainNav.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
-  menuToggle.textContent = isOpen ? "✕" : "☰";
+menuToggle.addEventListener("click", () => {
+  const open = mainNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(open));
 });
 
-mainNav?.querySelectorAll("a").forEach(link => {
+mainNav.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     mainNav.classList.remove("open");
-    menuToggle?.setAttribute("aria-expanded", "false");
-    if (menuToggle) menuToggle.textContent = "☰";
+    menuToggle.setAttribute("aria-expanded", "false");
   });
 });
 
-if (typeof Chart !== "undefined") {
-  Chart.defaults.font.family = "'DM Sans', sans-serif";
-  Chart.defaults.font.size = 12;
-  Chart.defaults.color = "#6c706a";
-  Chart.defaults.animation.duration = 1000;
 
-  const gridColor = "rgba(32,42,38,.10)";
-  const green = "#405c4c";
-  const terracotta = "#b56c50";
-  const gold = "#b99b69";
-  const paleGreen = "#93aa97";
+// GRAPH DEFAULTS
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = "#68746d";
 
-  const commonOptions = {
+const gridColor = "rgba(104,116,109,0.15)";
+
+
+// GRAPH 1 — GLOBAL PARLIAMENT
+new Chart(document.getElementById("parliamentChart"), {
+  type: "line",
+  data: {
+    labels: ["2015", "2025"],
+    datasets: [{
+      label: "Women in national parliaments",
+      data: [22.8, 27.2],
+      borderColor: "#b86b50",
+      backgroundColor: "#b86b50",
+      borderWidth: 3,
+      pointRadius: 7,
+      pointHoverRadius: 9,
+      tension: 0.35
+    }]
+  },
+  options: {
     responsive: true,
     maintainAspectRatio: false,
-    interaction: {
-      intersect: false,
-      mode: "index"
-    },
     plugins: {
       legend: {
-        display: true,
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: context => context.parsed.y + "%"
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 40,
+        ticks: {
+          callback: value => value + "%"
+        },
+        grid: {
+          color: gridColor
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  }
+});
+
+
+// GRAPH 2 — GLOBAL MANAGEMENT
+new Chart(document.getElementById("managementChart"), {
+  type: "line",
+  data: {
+    labels: ["2015", "2023"],
+    datasets: [{
+      label: "Women in management",
+      data: [27.7, 30.0],
+      borderColor: "#526b5b",
+      backgroundColor: "#526b5b",
+      borderWidth: 3,
+      pointRadius: 7,
+      pointHoverRadius: 9,
+      tension: 0.35
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: context => context.parsed.y + "%"
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 50,
+        ticks: {
+          callback: value => value + "%"
+        },
+        grid: {
+          color: gridColor
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  }
+});
+
+
+// GRAPH 3 — UNPAID CARE SHARE
+new Chart(document.getElementById("careChart"), {
+  type: "doughnut",
+  data: {
+    labels: ["Women", "Remaining share"],
+    datasets: [{
+      data: [76, 24],
+      backgroundColor: ["#b86b50", "#dce5db"],
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "70%",
+    plugins: {
+      legend: {
         position: "bottom",
         labels: {
-          padding: 20,
+          padding: 25,
           usePointStyle: true,
           pointStyle: "circle"
         }
       },
       tooltip: {
-        backgroundColor: "#202a26",
-        padding: 12,
-        titleFont: {
-          family: "'Playfair Display', serif",
-          size: 15
-        },
-        bodyFont: {
-          family: "'DM Sans', sans-serif"
+        callbacks: {
+          label: context =>
+            context.label + ": " + context.parsed + "%"
+        }
+      }
+    }
+  }
+});
+
+
+// GRAPH 4 — INDIA LOK SABHA
+new Chart(document.getElementById("indiaChart"), {
+  type: "line",
+  data: {
+    labels: [
+      "1951",
+      "1957",
+      "1967",
+      "1977",
+      "1984",
+      "1989",
+      "1991",
+      "1996",
+      "2004",
+      "2009",
+      "2014",
+      "2019",
+      "2024"
+    ],
+    datasets: [{
+      label: "Women in Lok Sabha",
+      data: [
+        3.8,
+        5.5,
+        5.9,
+        3.3,
+        7.8,
+        5.0,
+        7.2,
+        7.2,
+        8.3,
+        10.8,
+        11.4,
+        14.4,
+        13.7
+      ],
+      borderColor: "#b86b50",
+      backgroundColor: "#b86b50",
+      borderWidth: 3,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: context => context.parsed.y + "%"
         }
       }
     },
     scales: {
-      x: {
-        grid: {display: false},
-        border: {display: false}
-      },
       y: {
-        beginAtZero: true,
-        grid: {color: gridColor},
-        border: {display: false},
-        ticks: {padding: 8}
+        min: 0,
+        max: 20,
+        ticks: {
+          callback: value => value + "%"
+        },
+        grid: {
+          color: gridColor
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
       }
     }
-  };
-
-  const parliamentCanvas = document.getElementById("parliamentChart");
-  if (parliamentCanvas) {
-    new Chart(parliamentCanvas, {
-      type: "line",
-      data: {
-        labels: ["2015", "2017", "2019", "2021", "2023", "2025"],
-        datasets: [{
-          label: "Women in parliament (%)",
-          data: [22.8, 23.4, 24.3, 25.5, 26.5, 27.2],
-          borderColor: green,
-          backgroundColor: "rgba(64,92,76,.13)",
-          fill: true,
-          tension: .35,
-          borderWidth: 3,
-          pointRadius: 5,
-          pointHoverRadius: 8,
-          pointBackgroundColor: terracotta
-        }]
-      },
-      options: {
-        ...commonOptions,
-        scales: {
-          x: {
-            grid: {display: false},
-            border: {display: false}
-          },
-          y: {
-            min: 20,
-            max: 30,
-            grid: {color: gridColor},
-            border: {display: false},
-            ticks: {
-              callback: value => value + "%"
-            }
-          }
-        }
-      }
-    });
   }
-
-  const managementCanvas = document.getElementById("managementChart");
-  if (managementCanvas) {
-    new Chart(managementCanvas, {
-      type: "bar",
-      data: {
-        labels: ["2015", "2017", "2019", "2021", "2023"],
-        datasets: [{
-          label: "Women in management (%)",
-          data: [27.7, 28.1, 28.3, 29.2, 30.0],
-          backgroundColor: [
-            "#93aa97",
-            "#77917e",
-            "#66836d",
-            "#52705b",
-            "#405c4c"
-          ],
-          borderRadius: 7,
-          borderSkipped: false,
-          barPercentage: .62
-        }]
-      },
-      options: {
-        ...commonOptions,
-        plugins: {
-          ...commonOptions.plugins,
-          legend: {display: false}
-        },
-        scales: {
-          x: {
-            grid: {display: false},
-            border: {display: false}
-          },
-          y: {
-            min: 20,
-            max: 35,
-            grid: {color: gridColor},
-            border: {display: false},
-            ticks: {
-              callback: value => value + "%"
-            }
-          }
-        }
-      }
-    });
-  }
-
-  const careCanvas = document.getElementById("careChart");
-  if (careCanvas) {
-    new Chart(careCanvas, {
-      type: "doughnut",
-      data: {
-        labels: ["Women", "Remaining share"],
-        datasets: [{
-          data: [76, 24],
-          backgroundColor: [terracotta, "#ded7c9"],
-          borderWidth: 0,
-          hoverOffset: 12
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "72%",
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              padding: 25,
-              usePointStyle: true,
-              pointStyle: "circle"
-            }
-          },
-          tooltip: {
-            backgroundColor: "#202a26",
-            padding: 12,
-            callbacks: {
-              label: context => context.label + ": " + context.raw + "%"
-            }
-          }
-        }
-      }
-    });
-  }
-
-  const indiaPoliticsCanvas = document.getElementById("indiaPoliticsChart");
-  if (indiaPoliticsCanvas) {
-    new Chart(indiaPoliticsCanvas, {
-      type: "bar",
-      data: {
-        labels: [
-          "1952",
-          "1962",
-          "1977",
-          "1984",
-          "1991",
-          "2004",
-          "2014",
-          "2019",
-          "2024"
-        ],
-        datasets: [{
-          label: "Women elected to Lok Sabha",
-          data: [22, 31, 19, 41, 36, 45, 62, 78, 75],
-          backgroundColor: [
-            "#ded7c9",
-            "#ded7c9",
-            "#ded7c9",
-            "#ded7c9",
-            "#ded7c9",
-            "#93aa97",
-            "#66836d",
-            "#52705b",
-            terracotta
-          ],
-          borderRadius: 6,
-          borderSkipped: false,
-          barPercentage: .65
-        }]
-      },
-      options: {
-        ...commonOptions,
-        plugins: {
-          ...commonOptions.plugins,
-          legend: {display: false}
-        },
-        scales: {
-          x: {
-            grid: {display: false},
-            border: {display: false}
-          },
-          y: {
-            beginAtZero: true,
-            max: 100,
-            grid: {color: gridColor},
-            border: {display: false},
-            ticks: {stepSize: 20}
-          }
-        }
-      }
-    });
-  }
-}
+});
