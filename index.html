@@ -1,423 +1,850 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Equality Project | Gender Inequality</title>
-<meta name="description" content="An investigation into global gender inequality, its causes, consequences, trends and solutions.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond the Divide | Gender Inequality</title>
+  <meta name="description" content="An investigative website exploring gender inequality, its causes, trends, impact and solutions in India and around the world.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
-<header class="site-header">
-  <a class="brand" href="#home"><span class="brand-mark">E.</span><span>THE EQUALITY PROJECT</span></a>
+
+<header class="navbar">
+  <a class="brand" href="#home">BEYOND <span>THE DIVIDE</span></a>
+
   <button class="menu-toggle" id="menuToggle" aria-expanded="false">☰</button>
+
   <nav id="mainNav">
-    <a href="#issue">The issue</a>
+    <a href="#issue">The Issue</a>
     <a href="#research">Research</a>
     <a href="#india">India</a>
     <a href="#trends">Trends</a>
-    <a href="#solutions">Solutions</a>
+    <a href="#voices">Voices</a>
+    <a href="#action">Action</a>
     <a href="#criteria">MYP</a>
     <a href="#sources">Sources</a>
   </nav>
 </header>
 
 <main>
+
+<!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-image">
-    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1800&q=85" alt="Portrait of a woman">
+    <img src="https://images.unsplash.com/photo-1594708767771-a750b4f0d2e4?auto=format&fit=crop&w=1800&q=85"
+         alt="Documentary-style photograph of a woman in a rural setting"
+         onerror="this.style.display='none'">
   </div>
-  <div class="hero-shade"></div>
+
+  <div class="hero-overlay"></div>
+
   <div class="hero-content">
-    <span class="eyebrow light">A research project · Gender equality</span>
-    <h1>Equality is not<br><em>just a possibility.</em><br>It is a right.</h1>
-    <p>Behind the statistics are lives, choices, ambitions and opportunities. This project explores the systems that shape gender inequality and the people challenging them.</p>
-    <a href="#issue" class="hero-link">Explore the issue <span>↗</span></a>
+    <p class="eyebrow light">A GLOBAL ISSUE • AN INDIAN PERSPECTIVE</p>
+    <h1>Beyond the<br><em>divide.</em></h1>
+    <p class="hero-sub">
+      Equality should not depend on where you are born,
+      who you are, or what society expects of you.
+    </p>
+    <a href="#issue" class="hero-button">Explore the issue ↓</a>
   </div>
-  <div class="hero-caption">THE EQUALITY PROJECT · 2026</div>
+
+  <div class="hero-caption">Understanding the systems that shape women's lives</div>
 </section>
 
+<!-- INTRO -->
 <section class="intro-section" id="issue">
-  <div class="section-kicker">01 / Understanding the issue</div>
+  <div class="intro-label">01 / THE ISSUE</div>
+
   <div class="intro-grid">
-    <h2>What does it mean to live in a world that is <em>not equally built?</em></h2>
-    <div class="intro-copy">
-      <p>Gender inequality is the unequal treatment, opportunities, rights or access experienced by people because of their gender. It can influence education, employment, safety, healthcare, political representation and everyday decisions.</p>
-      <p>It is not always visible. Some inequalities are written into laws or institutions, while others are reinforced by expectations, traditions and the distribution of responsibilities.</p>
-      <p class="pull-quote">"Equality is not about making everyone the same. It is about ensuring that gender does not limit someone's rights, choices or potential."</p>
+    <h2>Equality isn't just a right.<br><em>It shapes a life.</em></h2>
+
+    <div class="intro-text">
+      <p>
+        Gender inequality is the unequal distribution of opportunities,
+        rights, resources, responsibilities and power based on gender.
+        It influences education, employment, healthcare, safety,
+        representation and the freedom to make decisions.
+      </p>
+      <p>
+        Although progress has been made, gender inequality remains
+        embedded in institutions, cultural expectations, economic
+        systems and everyday life.
+      </p>
     </div>
   </div>
 </section>
 
-<section class="visual-story">
-  <div class="story-image">
-    <img src="https://images.unsplash.com/photo-1594708767771-a750d3a7eaa3?auto=format&fit=crop&w=1100&q=85" alt="Women at work">
+<!-- PHOTO STORY -->
+<section class="story-section">
+  <div class="section-heading">
+    <p class="eyebrow">THE REALITY BEHIND THE STATISTICS</p>
+    <h2>Lives that statistics<br><em>cannot fully capture.</em></h2>
   </div>
-  <div class="story-text">
-    <span class="eyebrow">The reality behind the numbers</span>
-    <h2>Work that is seen.<br>Work that is <em>invisible.</em></h2>
-    <p>Millions of women contribute to their families, communities and economies through paid work and unpaid care. Cooking, caring, cleaning, collecting water and supporting families are essential activities, yet they are frequently undervalued or unequally distributed.</p>
-    <p>Understanding inequality requires looking beyond income and asking whose time, labour and responsibilities are recognised.</p>
+
+  <div class="story-grid">
+
+    <article class="story-card story-large">
+      <div class="story-image">
+        <img src="https://images.unsplash.com/photo-1594708767771-a750b4f0d2e4?auto=format&fit=crop&w=1000&q=85"
+             alt="Woman in a rural landscape"
+             loading="lazy">
+      </div>
+      <div class="story-copy">
+        <span class="story-number">01</span>
+        <h3>Invisible labour</h3>
+        <p>
+          Women perform a disproportionate share of unpaid care
+          and domestic work. Cooking, cleaning, caregiving and
+          collecting essential resources can consume hours that
+          could otherwise be spent on education, paid employment
+          or rest.
+        </p>
+      </div>
+    </article>
+
+    <article class="story-card story-small">
+      <div class="story-image">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=85"
+             alt="Children learning in a classroom"
+             loading="lazy">
+      </div>
+      <div class="story-copy">
+        <span class="story-number">02</span>
+        <h3>The unequal path to education</h3>
+        <p>
+          Poverty, distance, safety concerns, household duties
+          and social expectations can prevent girls from accessing
+          or completing education.
+        </p>
+      </div>
+    </article>
+
+    <article class="story-card story-small">
+      <div class="story-image">
+        <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=800&q=85"
+             alt="Women working together"
+             loading="lazy">
+      </div>
+      <div class="story-copy">
+        <span class="story-number">03</span>
+        <h3>Economic barriers</h3>
+        <p>
+          Women may face unequal pay, informal employment,
+          limited access to credit, insecure work and barriers
+          to advancement.
+        </p>
+      </div>
+    </article>
+
   </div>
+
+  <p class="photo-note">
+    Photographs are illustrative. They are not presented as
+    documented evidence of the specific situations described.
+  </p>
 </section>
 
-<section class="dimensions section-pad">
-  <div class="section-kicker">The dimensions of inequality</div>
-  <h2 class="section-heading">Inequality is <em>connected.</em></h2>
-  <div class="dimension-grid">
-    <article class="dimension"><span>01</span><h3>Education</h3><p>Barriers to learning can include poverty, safety, infrastructure, discrimination and social expectations.</p></article>
-    <article class="dimension"><span>02</span><h3>Economic opportunity</h3><p>Unequal pay, informal work, limited access to resources and employment barriers can affect economic independence.</p></article>
-    <article class="dimension"><span>03</span><h3>Representation</h3><p>Women may be underrepresented in political institutions, leadership positions and decision-making.</p></article>
-    <article class="dimension"><span>04</span><h3>Unpaid care</h3><p>Unequal responsibility for care and household tasks can limit time for education, work and rest.</p></article>
-    <article class="dimension"><span>05</span><h3>Safety & rights</h3><p>Discrimination, violence and unequal access to justice can affect autonomy and participation.</p></article>
-    <article class="dimension"><span>06</span><h3>Health</h3><p>Differences in access to healthcare, information, services and resources influence wellbeing.</p></article>
-  </div>
-</section>
-
+<!-- GLOBAL DATA -->
 <section class="research-section" id="research">
-  <div class="section-kicker">02 / Global research</div>
-  <div class="research-heading">
-    <h2>The numbers<br>tell a <em>story.</em></h2>
-    <p>Statistics reveal patterns that individual experiences alone cannot always show. But they also require context, careful interpretation and reliable sources.</p>
+  <div class="section-heading">
+    <p class="eyebrow">02 / DATA & EVIDENCE</p>
+    <h2>The numbers behind<br><em>the divide.</em></h2>
+    <p class="section-intro">
+      Data reveal patterns that individual experiences alone
+      cannot always show. These indicators help examine how
+      inequality operates across different systems.
+    </p>
   </div>
 
-  <div class="stat-strip">
+  <div class="stat-row">
     <div class="stat-block">
-      <span class="stat-number">27.2%</span>
-      <span class="stat-label">Women in national parliaments worldwide, 2025</span>
+      <p class="stat-label">GLOBAL • PARLIAMENT</p>
+      <div class="stat-number">27.2%</div>
+      <p>Women in national parliaments globally in 2025, according
+         to the World Bank data used in this project.</p>
     </div>
+
     <div class="stat-block">
-      <span class="stat-number">76%</span>
-      <span class="stat-label">Estimated share of unpaid care work performed by women globally</span>
+      <p class="stat-label">GLOBAL • UNPAID CARE</p>
+      <div class="stat-number">76%</div>
+      <p>Approximate share of unpaid care work performed by
+         women globally, as reported in UN material.</p>
     </div>
+
     <div class="stat-block">
-      <span class="stat-number">30%</span>
-      <span class="stat-label">Women in management globally, approximate reported share</span>
+      <p class="stat-label">GLOBAL • MANAGEMENT</p>
+      <div class="stat-number">30%</div>
+      <p>Women represented approximately 30% of management
+         positions in the selected 2023 global indicator.</p>
     </div>
   </div>
 
-  <div class="chart-section">
-    <div class="chart-card">
+  <div class="chart-grid">
+    <article class="chart-panel">
       <div class="chart-top">
-        <div><span class="chart-label">01 / Political representation</span><h3>Women in national parliaments</h3></div>
-        <span class="chart-unit">Global · %</span>
+        <div>
+          <span class="chart-kicker">POLITICAL REPRESENTATION</span>
+          <h3>Women in national parliaments</h3>
+        </div>
+        <span class="chart-tag">GLOBAL</span>
       </div>
-      <div class="chart-wrap"><canvas id="parliamentChart"></canvas></div>
-      <p class="chart-note">Women held approximately 22.8% of parliamentary seats in 2015 and 27.2% in 2025. Progress has occurred, but representation remains below half.</p>
-      <p class="source-note">Source: World Bank Gender Data / IPU. Verify the underlying indicator and year when using this graph for formal submission.</p>
-    </div>
 
-    <div class="chart-card">
-      <div class="chart-top">
-        <div><span class="chart-label">02 / Economic leadership</span><h3>Women in management</h3></div>
-        <span class="chart-unit">Global · %</span>
+      <div class="chart-wrap">
+        <canvas id="parliamentChart"></canvas>
       </div>
-      <div class="chart-wrap"><canvas id="managementChart"></canvas></div>
-      <p class="chart-note">The reported share of women in management has increased gradually. Representation alone does not reveal differences in sector, seniority or working conditions.</p>
-      <p class="source-note">Source: UN Sustainable Development Goals statistical reporting. Values shown as approximate reported estimates.</p>
-    </div>
 
-    <div class="chart-card wide-chart">
+      <p class="chart-description">
+        Women's representation has increased, but progress
+        remains gradual. Representation alone does not
+        guarantee equal influence over decisions.
+      </p>
+
+      <p class="source-note">
+        Source: World Bank Gender Data / IPU indicator.
+        Values shown: 2015 and 2025.
+      </p>
+    </article>
+
+    <article class="chart-panel">
       <div class="chart-top">
-        <div><span class="chart-label">03 / Time and labour</span><h3>Who carries the care workload?</h3></div>
-        <span class="chart-unit">Global estimate · %</span>
+        <div>
+          <span class="chart-kicker">ECONOMIC OPPORTUNITY</span>
+          <h3>Women in management</h3>
+        </div>
+        <span class="chart-tag">GLOBAL</span>
       </div>
-      <div class="chart-wrap short-wrap"><canvas id="careChart"></canvas></div>
-      <p class="chart-note">Women perform roughly three-quarters of unpaid care work globally. This proportion refers to the distribution of unpaid care work, not the percentage of women who do care work.</p>
-      <p class="source-note">Source: UN gender and care-work reporting. Global estimates vary by dataset and definition.</p>
-    </div>
+
+      <div class="chart-wrap">
+        <canvas id="managementChart"></canvas>
+      </div>
+
+      <p class="chart-description">
+        A modest change over time can still indicate persistent
+        structural barriers. Progress should be evaluated
+        alongside access, pay and workplace conditions.
+      </p>
+
+      <p class="source-note">
+        Source: UN SDG Statistical reporting.
+        Selected years: 2015 and 2023.
+      </p>
+    </article>
+
+    <article class="chart-panel chart-wide">
+      <div class="chart-top">
+        <div>
+          <span class="chart-kicker">UNPAID CARE</span>
+          <h3>Who carries the unpaid care burden?</h3>
+        </div>
+        <span class="chart-tag">GLOBAL</span>
+      </div>
+
+      <div class="chart-wrap care-wrap">
+        <canvas id="careChart"></canvas>
+      </div>
+
+      <p class="chart-description">
+        Women account for the majority of unpaid care and
+        domestic work globally. This unequal distribution
+        can restrict time, income, education and participation
+        in public life.
+      </p>
+
+      <p class="source-note">
+        Source: UN gender equality reporting. The percentages
+        are a share of the total estimated unpaid care burden,
+        not hours worked by individual women or men.
+      </p>
+    </article>
   </div>
 </section>
 
+<!-- INDIA -->
 <section class="india-section" id="india">
   <div class="india-heading">
-    <div class="section-kicker">03 / India</div>
-    <h2>Equality in the<br><em>Indian context.</em></h2>
-    <p>Gender inequality in India is shaped by region, caste, class, disability, education, income, rural and urban conditions, and social expectations. There is no single experience shared by all women.</p>
+    <p class="eyebrow">03 / INDIA</p>
+    <h2>Gender inequality<br><em>in the Indian context.</em></h2>
+  </div>
+
+  <div class="india-intro">
+    <p>
+      India's experiences of gender inequality vary across
+      regions, communities, income groups and generations.
+      Education, caste, disability, economic status, rural
+      access and social expectations can intersect to shape
+      women's opportunities.
+    </p>
   </div>
 
   <div class="india-feature">
     <div class="india-feature-image">
-      <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1000&q=85" alt="Woman portrait">
+      <img src="https://images.unsplash.com/photo-1594708767771-a750b4f0d2e4?auto=format&fit=crop&w=1100&q=85"
+           alt="Rural woman in India illustrative photograph"
+           loading="lazy">
     </div>
+
     <div class="india-feature-copy">
-      <span class="eyebrow">A closer look</span>
-      <h3>Opportunity is shaped by more than ambition.</h3>
-      <p>Access to education, employment, transport, healthcare, digital resources, safe public spaces and social support can influence the choices available to women.</p>
-      <p>Some women face multiple barriers simultaneously. Gender inequality can overlap with caste discrimination, economic disadvantage, disability or geographic isolation.</p>
+      <p class="eyebrow">THE EVERYDAY REALITY</p>
+      <h3>Progress exists.<br>So do barriers.</h3>
+
+      <ul class="india-list">
+        <li>
+          <strong>Education:</strong> Access, retention, facilities,
+          safety and household responsibilities can influence
+          girls' educational opportunities.
+        </li>
+        <li>
+          <strong>Work:</strong> Informal work, unequal care
+          responsibilities and barriers to financial independence
+          can affect women's economic participation.
+        </li>
+        <li>
+          <strong>Safety:</strong> Harassment, violence and fear
+          of unsafe public spaces can restrict mobility.
+        </li>
+        <li>
+          <strong>Representation:</strong> Women are active voters
+          and leaders, yet remain underrepresented in many
+          formal decision-making bodies.
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="india-stat-grid">
-    <article><span class="big-stat">75</span><h3>Women elected to the Lok Sabha in 2024</h3><p>About 14% of the elected House.</p></article>
-    <article><span class="big-stat">~46%</span><h3>Women's representation in Panchayati Raj Institutions</h3><p>Approximately 14.5 lakh elected women representatives.</p></article>
-    <article><span class="big-stat">~10%</span><h3>Women among candidates in the 2024 general elections</h3><p>A representation gap begins before election results.</p></article>
-  </div>
+  <!-- INDIA POLITICAL DATA -->
+  <div class="politics-block">
+    <p class="eyebrow">INDIAN POLITICS</p>
+    <h3>Voting is not the same<br>as representation.</h3>
 
-  <p class="source-note india-source">Sources: Ministry of Women and Child Development / Press Information Bureau, 2025. Figures refer to the stated election or government reporting.</p>
-</section>
-
-<section class="politics-section">
-  <div class="section-kicker">Women in Indian politics</div>
-  <div class="politics-intro">
-    <h2>Who gets to<br><em>make decisions?</em></h2>
-    <p>Women participate as voters, candidates, elected representatives, campaigners, organisers and policymakers. Their political participation is significant, yet representation in national and state legislatures remains comparatively low.</p>
-  </div>
-
-  <div class="politics-image">
-    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=1600&q=85" alt="People participating in public life">
-  </div>
-
-  <div class="politics-analysis">
-    <div>
-      <h3>Representation is not the same as influence.</h3>
-      <p>Being elected is one part of political empowerment. Influence also depends on access to decision-making, resources, party structures, committees, political networks and the freedom to act.</p>
-    </div>
-    <div>
-      <h3>Local leadership matters.</h3>
-      <p>Reservation policies in Panchayati Raj Institutions have expanded women's presence in local government. Elected representatives may influence local priorities, including water, sanitation, schools and community services.</p>
-    </div>
-    <div>
-      <h3>Participation faces barriers.</h3>
-      <p>Financial limitations, political violence, discrimination, unequal care responsibilities and party nomination patterns can affect who enters politics and whose voices are heard.</p>
-    </div>
-  </div>
-
-  <div class="chart-card politics-chart">
-    <div class="chart-top">
-      <div><span class="chart-label">India · Lok Sabha</span><h3>Women elected across selected elections</h3></div>
-      <span class="chart-unit">Number of women</span>
-    </div>
-    <div class="chart-wrap"><canvas id="indiaPoliticsChart"></canvas></div>
-    <p class="chart-note">The number of women elected has increased over decades, but the total membership of the House also matters when interpreting representation.</p>
-    <p class="source-note">Source: IPU historical data / Government of India reports. Selected election years.</p>
-  </div>
-</section>
-
-<section class="profiles-section">
-  <div class="section-kicker">Women who challenged systems</div>
-  <h2 class="section-heading">Three voices.<br><em>Three different struggles.</em></h2>
-  <p class="profiles-intro">These women worked in different periods and fields. Their contributions demonstrate how challenging inequality can take many forms: education, democratic accountability and community rights.</p>
-
-  <div class="profile-grid">
-    <article class="profile-card">
-      <div class="profile-image">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg" alt="Portrait of Savitribai Phule" loading="lazy">
+    <div class="politics-grid">
+      <div class="politics-stat">
+        <span class="politics-big">75</span>
+        <p>Women in the 18th Lok Sabha according to the
+           government-reported figure.</p>
       </div>
-      <div class="profile-content">
-        <span class="profile-number">01 / EDUCATION</span>
+
+      <div class="politics-stat">
+        <span class="politics-big">~14%</span>
+        <p>Approximate share of women in the Lok Sabha
+           following the 2024 general election.</p>
+      </div>
+
+      <div class="politics-stat">
+        <span class="politics-big">14.5L+</span>
+        <p>Women elected representatives in Panchayati Raj
+           Institutions reported by the government.</p>
+      </div>
+    </div>
+
+    <div class="chart-panel india-chart">
+      <div class="chart-top">
+        <div>
+          <span class="chart-kicker">INDIA • LOK SABHA</span>
+          <h3>Women in the Lok Sabha over time</h3>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="indiaChart"></canvas>
+      </div>
+
+      <p class="chart-description">
+        The representation of women has increased over
+        decades, but the change has been gradual and
+        has remained below one-fifth of the House.
+      </p>
+
+      <p class="source-note">
+        Source: Inter-Parliamentary Union historical
+        parliamentary data.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- WOMEN LEADERS -->
+<section class="leaders-section" id="voices">
+  <div class="section-heading">
+    <p class="eyebrow">04 / WOMEN CHANGING SYSTEMS</p>
+    <h2>Voices that challenged<br><em>the status quo.</em></h2>
+    <p class="section-intro">
+      These women have influenced social reform, political
+      participation and conversations around rights and justice
+      in India. Feminism is not a single political identity:
+      their approaches, histories and work are different.
+    </p>
+  </div>
+
+  <div class="leader-grid">
+
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai_Phule.jpg"
+             alt="Portrait of Savitribai Phule"
+             loading="lazy">
+      </div>
+      <div class="leader-copy">
+        <span class="leader-category">EDUCATION • SOCIAL REFORM</span>
         <h3>Savitribai Phule</h3>
-        <p class="profile-years">1831 — 1897</p>
-        <p>A pioneering educator, poet and social reformer. In 1848, Savitribai and Jyotirao Phule established a school for girls in Pune. She challenged restrictions on girls' education and worked against caste-based oppression and social discrimination.</p>
-        <p class="profile-idea">Her work connects equality with the right to learn, social dignity and access to education.</p>
-        <a href="https://www.ncert.nic.in/pdf/publication/otherpublications/Memorial-Lectures-Series/FINAL%20COVER%20OF%20SAVIRTIBAI%20PHULE.pdf" target="_blank" rel="noopener">Read her history ↗</a>
+        <p>
+          A pioneering educator and social reformer, Savitribai
+          Phule helped establish schools for girls in the
+          nineteenth century. Her work challenged caste
+          discrimination and restrictions on women's education.
+        </p>
+        <p class="leader-legacy">
+          <strong>Her impact:</strong> Education as a tool
+          for equality and social transformation.
+        </p>
       </div>
     </article>
 
-    <article class="profile-card">
-      <div class="profile-image">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg" alt="Portrait of Aruna Roy" loading="lazy">
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna_Roy.jpg"
+             alt="Portrait of Aruna Roy"
+             loading="lazy">
       </div>
-      <div class="profile-content">
-        <span class="profile-number">02 / DEMOCRATIC RIGHTS</span>
+      <div class="leader-copy">
+        <span class="leader-category">CIVIL RIGHTS • GOVERNANCE</span>
         <h3>Aruna Roy</h3>
-        <p class="profile-years">Activist · India</p>
-        <p>Aruna Roy left the civil service and worked with rural communities in Rajasthan. She helped build MKSS, a people's organisation that played a major role in campaigning for the Right to Information Act, helping citizens demand accountability.</p>
-        <p class="profile-idea">Her work connects equality with transparency, collective action and the ability to claim rights.</p>
-        <a href="https://saxena.watson.brown.edu/people/aruna-roy" target="_blank" rel="noopener">Read her history ↗</a>
+        <p>
+          Aruna Roy is associated with grassroots organising
+          and the Mazdoor Kisan Shakti Sangathan (MKSS).
+          Her activism helped strengthen the movement for
+          transparency and the Right to Information in India.
+        </p>
+        <p class="leader-legacy">
+          <strong>Her impact:</strong> Public accountability,
+          workers' rights and citizen participation.
+        </p>
       </div>
     </article>
 
-    <article class="profile-card">
-      <div class="profile-image">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg" alt="Portrait of Medha Patkar" loading="lazy">
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha_Patkar.jpg"
+             alt="Portrait of Medha Patkar"
+             loading="lazy">
       </div>
-      <div class="profile-content">
-        <span class="profile-number">03 / COMMUNITY RIGHTS</span>
+      <div class="leader-copy">
+        <span class="leader-category">SOCIAL MOVEMENTS • RIGHTS</span>
         <h3>Medha Patkar</h3>
-        <p class="profile-years">Social activist · India</p>
-        <p>Medha Patkar is associated with the Narmada Bachao Andolan and movements concerning displacement, livelihoods, environmental justice and the rights of communities affected by development projects.</p>
-        <p class="profile-idea">Her work raises questions about whose voices are heard, how development is evaluated and who bears its costs.</p>
-        <a href="https://www.goldmanprize.org/recipient/medha-patkar/" target="_blank" rel="noopener">Read her history ↗</a>
+        <p>
+          Medha Patkar is known for her work with the Narmada
+          Bachao Andolan, a movement that raised questions
+          about displacement, development, environmental
+          impact and the rights of affected communities.
+        </p>
+        <p class="leader-legacy">
+          <strong>Her impact:</strong> Bringing marginalised
+          communities into debates about development and justice.
+        </p>
       </div>
     </article>
+
   </div>
-  <p class="source-note">The term "feminist" describes a broad range of perspectives. These profiles highlight work connected to equality, rights and social reform; they do not imply that every person holds identical views on all feminist issues.</p>
+
+  <p class="photo-note">
+    Portraits are linked to Wikimedia Commons file searches.
+    If a file does not load, use the linked Commons page
+    to select a verified image.
+  </p>
 </section>
 
+<!-- TRENDS -->
 <section class="trends-section" id="trends">
-  <div class="section-kicker">04 / Trends & interpretation</div>
   <div class="trends-hero">
-    <h2>Progress is real.<br><em>But is it enough?</em></h2>
-    <p>Gender equality is not a single trend. Some indicators improve, others move slowly, and progress can differ between countries, communities and areas of life.</p>
+    <p class="eyebrow light">05 / TREND ANALYSIS</p>
+    <h2>Progress is real.<br><em>But is it fast enough?</em></h2>
+    <p>
+      Looking at change over time helps distinguish
+      progress from persistent inequality.
+    </p>
   </div>
 
-  <div class="trend-grid">
-    <article class="trend-card trend-large">
-      <span class="trend-index">01 — THE DIRECTION</span>
-      <h3>Representation has increased.</h3>
-      <p>Women's parliamentary representation has grown globally over time. However, growth does not automatically mean equal access to power or influence.</p>
-      <div class="trend-highlight">More seats ≠ equal power</div>
-    </article>
-    <article class="trend-card">
-      <span class="trend-index">02 — THE PACE</span>
-      <h3>Progress is gradual.</h3>
-      <p>Changes in representation, economic opportunity and social norms may take years. Policies and institutions can influence the pace.</p>
-    </article>
-    <article class="trend-card">
-      <span class="trend-index">03 — THE DIFFERENCE</span>
-      <h3>Progress is uneven.</h3>
-      <p>National averages may conceal differences between rural and urban areas, income groups, communities and regions.</p>
-    </article>
-    <article class="trend-card">
-      <span class="trend-index">04 — THE SYSTEM</span>
-      <h3>One change affects another.</h3>
-      <p>Education, economic independence, healthcare, infrastructure, safety and representation are connected. Improvements in one area may support others.</p>
-    </article>
-    <article class="trend-card trend-large">
-      <span class="trend-index">05 — THE QUESTION</span>
-      <h3>What would meaningful progress look like?</h3>
-      <p>Progress should not only be measured by percentages. It also includes the freedom to make decisions, access to resources, safety, recognition and the ability to participate in society.</p>
-      <div class="trend-highlight">Measure change. Examine causes. Question assumptions.</div>
-    </article>
-  </div>
+  <div class="trend-content">
 
-  <div class="trend-visual">
-    <div class="trend-visual-image">
-      <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1200&q=85" alt="Children learning" loading="lazy">
+    <div class="trend-intro">
+      <h3>Reading the direction<br>of change.</h3>
+      <p>
+        Gender equality is not measured by one statistic.
+        Representation, education, employment, safety
+        and unpaid care can move at different speeds.
+        A positive trend in one area does not mean
+        inequality has disappeared elsewhere.
+      </p>
     </div>
-    <div class="trend-visual-text">
-      <span class="eyebrow">Looking forward</span>
-      <h3>What happens if progress continues?</h3>
-      <p>Future outcomes depend on policy, investment, institutions, social norms and many other factors. Historical trends cannot predict the future with certainty.</p>
-      <p>Instead of inventing a projection, this investigation considers what needs to change for progress to accelerate.</p>
+
+    <div class="trend-grid">
+
+      <article class="trend-card">
+        <span class="trend-index">TREND 01</span>
+        <h3>Representation is improving slowly</h3>
+        <p>
+          The global proportion of women in national
+          parliaments has increased over the last decade.
+          However, women still represent less than
+          one-third of members worldwide.
+        </p>
+        <div class="trend-highlight">
+          <span>22.8%</span>
+          <span class="trend-arrow">→</span>
+          <span>27.2%</span>
+        </div>
+        <p class="trend-foot">2015 to 2025 • Global indicator used in this project</p>
+      </article>
+
+      <article class="trend-card">
+        <span class="trend-index">TREND 02</span>
+        <h3>Leadership gaps remain</h3>
+        <p>
+          Women remain underrepresented in management.
+          A slow increase in representation suggests that
+          access to leadership has not become equal.
+        </p>
+        <div class="trend-highlight">
+          <span>27.7%</span>
+          <span class="trend-arrow">→</span>
+          <span>30.0%</span>
+        </div>
+        <p class="trend-foot">2015 to 2023 • Global indicator used in this project</p>
+      </article>
+
+      <article class="trend-card">
+        <span class="trend-index">TREND 03</span>
+        <h3>Care work remains unequal</h3>
+        <p>
+          The unequal distribution of unpaid care work
+          continues to shape women's available time,
+          opportunities and economic participation.
+        </p>
+        <div class="trend-highlight">
+          <span>76%</span>
+        </div>
+        <p class="trend-foot">Global estimate of women's share of unpaid care work</p>
+      </article>
+
     </div>
+
+    <div class="trend-analysis">
+      <div class="trend-analysis-heading">
+        <p class="eyebrow">WHAT THE PATTERNS TELL US</p>
+        <h3>Progress and inequality<br>can coexist.</h3>
+      </div>
+
+      <div class="trend-analysis-text">
+        <p>
+          The data suggest that progress is occurring in
+          selected areas, but it is not necessarily rapid
+          enough to eliminate structural inequalities.
+          Representation and management indicators
+          show gradual increases, while the unpaid care
+          burden highlights how traditional responsibilities
+          can continue to influence opportunities.
+        </p>
+
+        <p>
+          These indicators should not be interpreted as
+          proof that every woman's experience is identical.
+          Gender intersects with poverty, caste, disability,
+          geography, age and other factors.
+        </p>
+
+        <p>
+          <strong>Critical question:</strong> If progress
+          continues at a similar pace, will changes in
+          representation and opportunity be sufficient
+          to transform the systems that create inequality?
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<section class="solutions-section" id="solutions">
-  <div class="section-kicker">05 / Moving forward</div>
-  <h2 class="section-heading">Solutions must<br><em>change systems.</em></h2>
+<!-- SOLUTIONS -->
+<section class="solutions-section" id="action">
+  <div class="section-heading">
+    <p class="eyebrow">06 / MOVING FORWARD</p>
+    <h2>Change requires more<br><em>than awareness.</em></h2>
+  </div>
+
   <div class="solutions-grid">
-    <article><span>01</span><h3>Education</h3><p>Improve access to quality education, safe transport, sanitation, digital access and support for students.</p></article>
-    <article><span>02</span><h3>Economic opportunity</h3><p>Support equal access to employment, fair wages, financial services and career development.</p></article>
-    <article><span>03</span><h3>Care infrastructure</h3><p>Expand childcare, public services and support systems while promoting shared responsibility for care.</p></article>
-    <article><span>04</span><h3>Political participation</h3><p>Support women's participation, leadership, representation, training and protection from political harassment.</p></article>
-    <article><span>05</span><h3>Safety & justice</h3><p>Strengthen prevention, reporting, support services, justice systems and awareness.</p></article>
-    <article><span>06</span><h3>Social change</h3><p>Challenge discriminatory stereotypes and encourage equal participation in families, communities and institutions.</p></article>
+
+    <article class="solution-item">
+      <span class="solution-number">01</span>
+      <h3>Education</h3>
+      <p>
+        Support accessible education, safe transport,
+        inclusive facilities, financial support and
+        policies that help girls remain in school.
+      </p>
+    </article>
+
+    <article class="solution-item">
+      <span class="solution-number">02</span>
+      <h3>Economic opportunity</h3>
+      <p>
+        Strengthen access to fair employment, financial
+        services, professional training and safe workplaces.
+      </p>
+    </article>
+
+    <article class="solution-item">
+      <span class="solution-number">03</span>
+      <h3>Shared care</h3>
+      <p>
+        Recognise unpaid work, expand support services
+        and encourage the shared responsibility of care
+        across households and society.
+      </p>
+    </article>
+
+    <article class="solution-item">
+      <span class="solution-number">04</span>
+      <h3>Representation</h3>
+      <p>
+        Encourage women's participation in political,
+        community, economic and institutional leadership.
+      </p>
+    </article>
+
+    <article class="solution-item">
+      <span class="solution-number">05</span>
+      <h3>Safety and justice</h3>
+      <p>
+        Strengthen prevention, accessible reporting,
+        support services, accountability and justice systems.
+      </p>
+    </article>
+
+    <article class="solution-item">
+      <span class="solution-number">06</span>
+      <h3>Challenge stereotypes</h3>
+      <p>
+        Question assumptions about what women and men
+        should do, and recognise the value of individual
+        choices and capabilities.
+      </p>
+    </article>
+
   </div>
 </section>
 
+<!-- MYP -->
 <section class="myp-section" id="criteria">
-  <div class="section-kicker">06 / MYP project framework</div>
-  <div class="framework-top">
-    <h2>Research.<br><em>Reflect. Act.</em></h2>
-    <div class="framework-text">
-      <p><strong>Key concept:</strong> Systems</p>
-      <p><strong>Related concepts:</strong> Equality · Power · Opportunity</p>
-      <p><strong>Global context:</strong> Fairness and Development</p>
-      <p><strong>Statement of inquiry:</strong> Social structures and unequal access to opportunities influence people's roles, choices and development within societies.</p>
-    </div>
+  <div class="section-heading">
+    <p class="eyebrow">07 / MYP DESIGN & RESEARCH</p>
+    <h2>From research<br><em>to action.</em></h2>
+  </div>
+
+  <div class="myp-framework">
+    <p><strong>Key concept:</strong> Systems</p>
+    <p><strong>Related concepts:</strong> Equality, power and opportunity</p>
+    <p><strong>Global context:</strong> Fairness and Development</p>
+    <p>
+      <strong>Statement of Inquiry:</strong>
+      Social structures and unequal access to opportunities
+      influence people's roles, choices and development
+      within societies.
+    </p>
   </div>
 
   <div class="criteria-grid">
-    <article class="criterion">
-      <span class="criterion-label">CRITERION A</span>
-      <h3>Knowing & understanding</h3>
-      <p>Gender inequality is a systemic issue involving unequal opportunities, treatment, access and representation. It can be shaped by laws, institutions, social norms, economic structures and historical circumstances.</p>
-      <p><strong>Factual question:</strong> What forms of gender inequality exist?</p>
-      <p><strong>Conceptual question:</strong> How do systems influence access to opportunity?</p>
-      <p><strong>Debatable question:</strong> Can equality be achieved without changing social structures?</p>
+
+    <article class="criteria-card">
+      <span>CRITERION A</span>
+      <h3>Knowing and understanding</h3>
+      <p>
+        Gender inequality involves differences in access
+        to rights, opportunities, resources, responsibilities
+        and decision-making. It is influenced by social,
+        economic, cultural and institutional systems.
+      </p>
     </article>
 
-    <article class="criterion">
-      <span class="criterion-label">CRITERION B</span>
-      <h3>Investigating & planning</h3>
-      <p><strong>Research question:</strong> How do social, economic and political systems contribute to gender inequality, and what approaches could improve equality?</p>
-      <p><strong>Research objectives:</strong></p>
-      <ul>
-        <li>Identify major forms and causes of inequality.</li>
-        <li>Explore global and Indian evidence.</li>
-        <li>Analyse political representation and trends.</li>
-        <li>Evaluate possible solutions.</li>
-      </ul>
-      <p><strong>Method:</strong> Secondary research using reports, datasets, research publications and documentary sources.</p>
+    <article class="criteria-card">
+      <span>CRITERION B</span>
+      <h3>Investigating and planning</h3>
+      <p>
+        The research explores global gender inequality
+        and its effects on opportunities, with a focus
+        on India. Secondary data, reports, research
+        and visual evidence help investigate the issue.
+      </p>
     </article>
 
-    <article class="criterion">
-      <span class="criterion-label">CRITERION C</span>
+    <article class="criteria-card">
+      <span>CRITERION C</span>
       <h3>Taking action</h3>
-      <p>This website acts as a digital awareness platform. It presents research, documentary imagery, data visualisations and perspectives to help readers understand gender inequality.</p>
-      <p><strong>Target audience:</strong> Students, educators and readers interested in social equality.</p>
-      <p><strong>Action:</strong> Communicate evidence and encourage thoughtful discussion.</p>
-      <p><strong>Success indicators:</strong> Accuracy, accessibility, clear navigation, meaningful content and audience engagement.</p>
+      <p>
+        This awareness website communicates findings
+        through data, stories, research and solutions
+        to encourage understanding and reflection.
+      </p>
+
+      <div class="video-placeholder">
+        <p>YOUR VIDEO</p>
+        <video controls preload="metadata">
+          <source src="speech-video.mp4" type="video/mp4">
+          Your video can be added here.
+        </video>
+      </div>
     </article>
 
-    <article class="criterion">
-      <span class="criterion-label">CRITERION D</span>
+    <article class="criteria-card">
+      <span>CRITERION D</span>
       <h3>Thinking critically</h3>
-      <p>Solutions may have different effects on different stakeholders. Governments, communities, employers, students, families and activists may prioritise different needs.</p>
-      <p><strong>Evaluation:</strong> Consider whether a solution is accessible, affordable, sustainable, culturally responsive and supported by evidence.</p>
-      <p><strong>Limitations:</strong> Secondary data may be incomplete, outdated or difficult to compare across contexts.</p>
+      <p>
+        The project evaluates the reliability of data,
+        perspectives of stakeholders, limitations of
+        evidence, effectiveness of solutions and
+        the complexity of gender inequality.
+      </p>
     </article>
+
   </div>
 </section>
 
+<!-- REFLECTION -->
 <section class="reflection-section">
-  <div class="section-kicker">07 / Reflection</div>
-  <div class="reflection-grid">
-    <h2>What did<br>this investigation<br><em>make visible?</em></h2>
-    <div>
-      <p>Gender inequality is not simply an individual problem. It can be shaped by the structures that determine access to opportunities, resources, rights and decision-making.</p>
-      <p>Researching this topic requires examining statistics, listening to different perspectives, recognising limitations and questioning assumptions.</p>
-      <p>Awareness is a starting point. Meaningful change requires sustained action, accountability and the willingness to reconsider systems that produce unequal outcomes.</p>
+  <div class="reflection-inner">
+    <p class="eyebrow light">08 / REFLECTION</p>
+    <h2>What does equality<br><em>actually require?</em></h2>
+
+    <p>
+      Gender inequality cannot be understood only through
+      statistics or individual stories. It is shaped by
+      systems, institutions, decisions and cultural
+      expectations that influence people's lives.
+    </p>
+
+    <p>
+      Understanding these patterns is a starting point.
+      Meaningful change requires evidence, accountability,
+      participation and action.
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-photo">
+      <img src="IMG_4687.jpeg" alt="Project author">
+    </div>
+
+    <div class="about-copy">
+      <p class="eyebrow">ABOUT THE AUTHOR</p>
+      <h2>Why I chose<br><em>this issue.</em></h2>
+
+      <p>
+        I chose gender inequality because it affects
+        opportunities, rights, freedom and the way
+        societies function. I wanted to explore how
+        inequality appears in everyday life, how it
+        is reflected in data and what can be done
+        to challenge it.
+      </p>
+
+      <p>
+        Through this project, I hope to encourage
+        people to look beyond statistics and recognise
+        the real experiences behind them.
+      </p>
     </div>
   </div>
 </section>
 
-<section class="about-section">
-  <div class="about-image">
-    <img src="IMG_4687.jpeg" alt="Project author">
+<!-- SOURCES -->
+<section class="sources-section" id="sources">
+  <div class="section-heading">
+    <p class="eyebrow">09 / REFERENCE & EVIDENCE</p>
+    <h2>Sources behind<br><em>the research.</em></h2>
   </div>
-  <div class="about-text">
-    <span class="eyebrow">About the author</span>
-    <h2>A project built<br>on <em>questions.</em></h2>
-    <p>This website was created as an MYP project exploring global gender inequality, its causes, consequences, trends and possible solutions.</p>
-    <p>The aim is to make research accessible, present evidence thoughtfully and encourage readers to question how social systems shape opportunities.</p>
+
+  <div class="source-list">
+
+    <a href="https://data.ipu.org/parliament/IN/IN-LC01/" target="_blank" rel="noopener">
+      <span>01</span>
+      <div>
+        <h3>Inter-Parliamentary Union</h3>
+        <p>Historical data on women's representation in India's Parliament.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2150216&lang=2&reg=3" target="_blank" rel="noopener">
+      <span>02</span>
+      <div>
+        <h3>Press Information Bureau</h3>
+        <p>Government reporting on women's participation in governance.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://data.worldbank.org/" target="_blank" rel="noopener">
+      <span>03</span>
+      <div>
+        <h3>World Bank Data</h3>
+        <p>Global indicators for gender, development and representation.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://unstats.un.org/sdgs/" target="_blank" rel="noopener">
+      <span>04</span>
+      <div>
+        <h3>United Nations Statistics Division</h3>
+        <p>Global SDG indicators and gender-related reporting.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://news.nationalgeographic.org/explorer-deepti-asthana-photographs-lives-indian-women-and-girls/" target="_blank" rel="noopener">
+      <span>05</span>
+      <div>
+        <h3>National Geographic Society</h3>
+        <p>Photographic reporting on the lives of Indian women and girls.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://www.unwomen.org/" target="_blank" rel="noopener">
+      <span>06</span>
+      <div>
+        <h3>UN Women</h3>
+        <p>Research, policy and global information on gender equality.</p>
+      </div>
+      ↗
+    </a>
+
+    <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">
+      <span>07</span>
+      <div>
+        <h3>Wikimedia Commons</h3>
+        <p>Publicly available media files and image licensing information.</p>
+      </div>
+      ↗
+    </a>
+
   </div>
 </section>
 
-<section class="sources-section" id="sources">
-  <div class="section-kicker">08 / Research & sources</div>
-  <h2>Where the research<br><em>comes from.</em></h2>
-  <p>These sources support the research and data used throughout the website. Figures should be checked against their original datasets before final submission.</p>
-  <div class="sources-list">
-    <a href="https://data.worldbank.org/" target="_blank" rel="noopener">World Bank Data <span>↗</span></a>
-    <a href="https://data.ipu.org/" target="_blank" rel="noopener">Inter-Parliamentary Union (IPU) <span>↗</span></a>
-    <a href="https://data.unwomen.org/" target="_blank" rel="noopener">UN Women Data <span>↗</span></a>
-    <a href="https://unstats.un.org/sdgs/" target="_blank" rel="noopener">United Nations SDG Data <span>↗</span></a>
-    <a href="https://www.pib.gov.in/" target="_blank" rel="noopener">Press Information Bureau, Government of India <span>↗</span></a>
-    <a href="https://adrindia.org/" target="_blank" rel="noopener">Association for Democratic Reforms (ADR) <span>↗</span></a>
-    <a href="https://www.ncert.nic.in/" target="_blank" rel="noopener">NCERT — Savitribai Phule memorial lecture <span>↗</span></a>
-    <a href="https://saxena.watson.brown.edu/people/aruna-roy" target="_blank" rel="noopener">Brown University — Aruna Roy <span>↗</span></a>
-    <a href="https://www.goldmanprize.org/recipient/medha-patkar/" target="_blank" rel="noopener">Goldman Environmental Prize — Medha Patkar <span>↗</span></a>
-    <a href="https://news.nationalgeographic.org/explorer-deepti-asthana-photographs-lives-indian-women-and-girls/" target="_blank" rel="noopener">National Geographic — Indian women and girls, photography by Deepti Asthana <span>↗</span></a>
-  </div>
-  <p class="source-note">Photography links may depend on the hosting website and image availability. Some images in this draft are illustrative stock images rather than verified documentary photographs. Replace them with credited documentary images before final submission.</p>
-</section>
+<footer>
+  <p>BEYOND THE DIVIDE</p>
+  <p>Equality. Opportunity. Dignity.</p>
+  <p class="footer-small">A research and awareness project.</p>
+</footer>
 
 </main>
 
-<footer>
-  <div class="footer-brand">THE EQUALITY PROJECT</div>
-  <p>Understanding inequality. Questioning systems. Imagining change.</p>
-  <a href="#home">Back to top ↑</a>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
