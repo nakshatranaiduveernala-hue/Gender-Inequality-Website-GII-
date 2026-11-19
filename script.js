@@ -1,10 +1,10 @@
-// Navigation for smaller screens
+// Responsive navigation
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 
 menuToggle?.addEventListener("click", () => {
-  const isOpen = mainNav.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  const opened = mainNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(opened));
 });
 
 mainNav?.querySelectorAll("a").forEach(link => {
@@ -14,223 +14,151 @@ mainNav?.querySelectorAll("a").forEach(link => {
   });
 });
 
-// Shared chart styling
+// Charts using sourced global data
 const gold = "#b99a61";
 const navy = "#243a54";
 const muted = "#7d8790";
 const grid = "rgba(36,58,84,.10)";
 
-Chart.defaults.font.family = '"DM Sans", Arial, sans-serif';
-Chart.defaults.color = muted;
-Chart.defaults.plugins.legend.display = false;
-Chart.defaults.plugins.tooltip.backgroundColor = "#17283f";
-Chart.defaults.plugins.tooltip.padding = 12;
-Chart.defaults.plugins.tooltip.titleFont = { weight: "600" };
-Chart.defaults.plugins.tooltip.bodyFont = { size: 11 };
+if (window.Chart) {
+  Chart.defaults.font.family = '"DM Sans", Arial, sans-serif';
+  Chart.defaults.color = muted;
+  Chart.defaults.plugins.legend.display = false;
+  Chart.defaults.plugins.tooltip.backgroundColor = "#17283f";
+  Chart.defaults.plugins.tooltip.padding = 12;
 
+  const makeChart = (id, labels, values, options = {}) => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
 
-// GRAPH 1: WOMEN IN NATIONAL PARLIAMENTS
-new Chart(document.getElementById("parliamentChart"), {
-  type: "bar",
-
-  data: {
-    labels: ["2015", "2026"],
-
-    datasets: [{
-      data: [22.3, 27.4],
-      backgroundColor: [
-        "rgba(185,154,97,.55)",
-        gold
-      ],
-      borderRadius: 5,
-      maxBarThickness: 70
-    }]
-  },
-
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: c => `${c.raw}% of seats`
-        }
-      }
-    },
-
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 40,
-        grid: { color: grid },
-        ticks: {
-          callback: v => `${v}%`,
-          stepSize: 10
-        }
+    new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          data: values,
+          backgroundColor: options.colors || [gold, navy],
+          borderRadius: 5,
+          maxBarThickness: options.maxBarThickness || 70
+        }]
       },
-
-      x: {
-        grid: { display: false }
-      }
-    }
-  }
-});
-
-
-// GRAPH 2: WOMEN IN MANAGEMENT
-new Chart(document.getElementById("managementChart"), {
-  type: "bar",
-
-  data: {
-    labels: ["2015", "2025"],
-
-    datasets: [{
-      data: [26.9, 30.5],
-      backgroundColor: [
-        "rgba(36,58,84,.55)",
-        navy
-      ],
-      borderRadius: 5,
-      barThickness: 34
-    }]
-  },
-
-  options: {
-    indexAxis: "y",
-    responsive: true,
-    maintainAspectRatio: false,
-
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: c => `${c.raw}% of managerial positions`
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: context => options.format(context.raw)
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: options.max,
+            grid: { color: grid },
+            ticks: {
+              stepSize: options.step,
+              callback: value => value + "%"
+            }
+          },
+          x: {
+            grid: { display: false }
+          }
         }
       }
-    },
+    });
+  };
 
-    scales: {
-      x: {
-        beginAtZero: true,
-        max: 40,
-        grid: { color: grid },
-        ticks: {
-          callback: v => `${v}%`,
-          stepSize: 10
-        }
-      },
-
-      y: {
-        grid: { display: false }
-      }
+  // Indicator 1: Parliamentary representation
+  // World Bank Gender Data Portal / IPU
+  makeChart(
+    "parliamentChart",
+    ["2015", "2025"],
+    [22.8, 27.2],
+    {
+      max: 40,
+      step: 10,
+      format: value => value + "% of parliamentary seats held by women"
     }
-  }
-});
+  );
 
+  // Indicator 2: Women in managerial positions
+  // UN SDG Statistical Annex 2025
+  makeChart(
+    "managementChart",
+    ["2015", "2023"],
+    [27.7, 30.0],
+    {
+      max: 40,
+      step: 10,
+      format: value => value + "% of managerial positions held by women",
+      colors: ["rgba(36,58,84,.55)", navy]
+    }
+  );
 
-// GRAPH 3: UNPAID CARE WORK
-new Chart(document.getElementById("careChart"), {
-  type: "bar",
-
-  data: {
-    labels: ["Women", "Men"],
-
-    datasets: [{
-      data: [4.2, 1.7],
-      backgroundColor: [gold, navy],
-      borderRadius: 5,
+  // Indicator 3: Global unpaid-care estimate
+  // UN report E/CN.5/2026/4
+  makeChart(
+    "careChart",
+    ["Women", "Remaining share"],
+    [76, 24],
+    {
+      max: 100,
+      step: 25,
+      format: value => value + "% of the estimated global share of unpaid care work",
+      colors: [gold, navy],
       maxBarThickness: 115
-    }]
-  },
-
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: c => `${c.raw} hours per day`
-        }
-      }
-    },
-
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 5,
-        grid: { color: grid },
-        ticks: {
-          callback: v => `${v} hrs`,
-          stepSize: 1
-        }
-      },
-
-      x: {
-        grid: { display: false }
-      }
     }
-  }
-});
+  );
+}
 
-
-// INTERACTIVE GLOBAL MAP
-// Markers show places discussed in the website,
-// not statistical rankings.
-
+// Interactive context map
+// These markers are examples, not rankings.
 if (document.getElementById("equalityMap") && window.L) {
-
   const map = L.map("equalityMap", {
     scrollWheelZoom: false
   }).setView([19, 43], 2);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 6
-  }).addTo(map);
-
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 6
+    }
+  ).addTo(map);
 
   const points = [
-
     {
       name: "India",
       coords: [22.5, 79],
-      text: "India focus: education, work, representation and implementation of equality protections.",
+      text: "Country focus: education, work, representation and policy implementation.",
       color: gold
     },
-
     {
       name: "Ethiopia",
       coords: [9.1, 40.5],
-      text: "Education example: UNICEF has documented efforts to support female teachers and girls' learning.",
+      text: "Example referenced in international education and gender initiatives.",
       color: navy
     },
-
     {
       name: "Global reporting",
       coords: [0, 0],
-      text: "UN global reporting brings together indicators from countries around the world.",
+      text: "International institutions compile indicators and comparative reports.",
       color: navy
     }
-
   ];
 
-
-  points.forEach(p => {
-
-    const marker = L.circleMarker(p.coords, {
+  points.forEach(point => {
+    L.circleMarker(point.coords, {
       radius: 8,
-      color: p.color,
-      fillColor: p.color,
+      color: point.color,
+      fillColor: point.color,
       fillOpacity: .9,
       weight: 2
-    }).addTo(map);
-
-    marker.bindPopup(
-      `<strong>${p.name}</strong><br>${p.text}`
-    );
-
+    })
+      .addTo(map)
+      .bindPopup(`<strong>${point.name}</strong><br>${point.text}`);
   });
-
 }
