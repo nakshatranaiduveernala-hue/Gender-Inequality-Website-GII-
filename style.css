@@ -253,3 +253,19 @@ img.imageFailed{visibility:hidden;height:0!important;width:0!important}
   .nav nav{gap:3px}
   .aboutGrid img{max-width:240px}
 }
+
+.photoFallback{
+  height:230px;
+  background:linear-gradient(135deg,#DCE9EF,#BACDD8);
+  color:#29485B;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  font-size:12px;
+}
+.topic .photoFallback{height:155px}
+.compactPhoto .photoFallback{height:300px}
+.indiaPhoto .photoFallback{height:300px}
+.leader .photoFallback{height:230px}
