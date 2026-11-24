@@ -1,247 +1,399 @@
-/* =========================================
-   BEYOND THE DIVIDE — JAVASCRIPT
-========================================= */
-
+// ==========================================
 // MOBILE NAVIGATION
+// ==========================================
 
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 
 if (menuToggle && mainNav) {
+
   menuToggle.addEventListener("click", () => {
     const open = mainNav.classList.toggle("open");
+
     menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.textContent = open ? "✕" : "☰";
   });
 
   mainNav.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
       mainNav.classList.remove("open");
       menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.textContent = "☰";
     });
   });
+
 }
 
 
-// CHART DEFAULTS
+// ==========================================
+// IMAGE ERROR HANDLING
+// ==========================================
+
+document.querySelectorAll("img").forEach(img => {
+
+  img.addEventListener("error", () => {
+    img.dataset.failed = "true";
+  });
+
+});
+
+
+// ==========================================
+// CHARTS
+// ==========================================
 
 if (typeof Chart !== "undefined") {
-  Chart.defaults.font.family = "'DM Sans', sans-serif";
-  Chart.defaults.font.size = 12;
-  Chart.defaults.color = "#667d8b";
 
-  Chart.defaults.plugins.legend.labels.usePointStyle = true;
-  Chart.defaults.plugins.legend.labels.padding = 18;
+  Chart.defaults.font.family = "DM Sans, Arial, sans-serif";
+  Chart.defaults.color = "#657783";
 
-  const blue = "#2e668b";
-  const navy = "#183f59";
+  const blue = "#2c6487";
+  const navy = "#183e5a";
   const lightBlue = "#9dbdd3";
 
-  // GLOBAL PARLIAMENT CHART
+  function createLineChart(id, labels, values, label, max) {
 
-  const parliamentCanvas = document.getElementById("parliamentChart");
+    const canvas = document.getElementById(id);
 
-  if (parliamentCanvas) {
-    new Chart(parliamentCanvas, {
+    if (!canvas) return;
+
+    new Chart(canvas, {
+
       type: "line",
+
       data: {
-        labels: ["2015", "2020", "2025"],
+
+        labels: labels,
+
         datasets: [{
-          label: "Women elected (%)",
-          data: [22.3, 25.5, 27.2],
+
+          label: label,
+
+          data: values,
+
           borderColor: blue,
-          backgroundColor: "rgba(46,102,139,0.12)",
+
+          backgroundColor: "rgba(44,100,135,0.12)",
+
           fill: true,
-          tension: 0.3,
-          pointRadius: 5,
+
+          tension: 0.25,
+
+          pointRadius: 4,
+
+          pointHoverRadius: 6,
+
           pointBackgroundColor: "#ffffff",
+
           pointBorderColor: blue,
-          pointBorderWidth: 2
+
+          pointBorderWidth: 2,
+
+          borderWidth: 3
+
         }]
+
       },
+
       options: {
+
         responsive: true,
+
         maintainAspectRatio: false,
-        plugins: {
-          legend: { display: true }
+
+        interaction: {
+
+          intersect: false,
+
+          mode: "index"
+
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 40,
-            title: {
-              display: true,
-              text: "Percentage"
+
+        plugins: {
+
+          legend: {
+
+            position: "bottom",
+
+            labels: {
+
+              boxWidth: 12,
+
+              padding: 15
+
             }
+
           }
+
+        },
+
+        scales: {
+
+          y: {
+
+            beginAtZero: true,
+
+            suggestedMax: max,
+
+            grid: {
+
+              color: "rgba(100,120,135,0.15)"
+
+            },
+
+            title: {
+
+              display: true,
+
+              text: "Percentage"
+
+            }
+
+          },
+
+          x: {
+
+            grid: {
+
+              display: false
+
+            }
+
+          }
+
         }
+
       }
+
     });
+
   }
 
 
-  // MANAGEMENT CHART
+// GLOBAL PARLIAMENT
 
-  const managementCanvas = document.getElementById("managementChart");
+  createLineChart(
 
-  if (managementCanvas) {
-    new Chart(managementCanvas, {
-      type: "line",
-      data: {
-        labels: ["2015", "2020", "2025"],
-        datasets: [{
-          label: "Women in managerial positions (%)",
-          data: [26.9, 28.2, 30.0],
-          borderColor: navy,
-          backgroundColor: "rgba(24,63,89,0.12)",
-          fill: true,
-          tension: 0.3,
-          pointRadius: 5,
-          pointBackgroundColor: "#ffffff",
-          pointBorderColor: navy,
-          pointBorderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: true }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 50,
-            title: {
-              display: true,
-              text: "Percentage"
-            }
-          }
-        }
-      }
-    });
-  }
+    "parliamentChart",
+
+    ["2015", "2020", "2025"],
+
+    [22.3, 25.5, 27.2],
+
+    "Women elected (%)",
+
+    40
+
+  );
 
 
-  // UNPAID CARE COMPARISON
+// WOMEN IN MANAGEMENT
+
+  createLineChart(
+
+    "managementChart",
+
+    ["2015", "2020", "2025"],
+
+    [26.9, 28.2, 30.0],
+
+    "Women in managerial positions (%)",
+
+    40
+
+  );
+
+
+// UNPAID CARE
 
   const careCanvas = document.getElementById("careChart");
 
   if (careCanvas) {
+
     new Chart(careCanvas, {
+
       type: "bar",
+
       data: {
+
         labels: ["Women", "Men"],
+
         datasets: [{
-          label: "Illustrative relative comparison",
+
+          label: "Illustrative relative units",
+
           data: [2.5, 1],
+
           backgroundColor: [navy, lightBlue],
-          borderRadius: 8,
-          borderWidth: 0
+
+          borderRadius: 6,
+
+          maxBarThickness: 130
+
         }]
+
       },
+
       options: {
+
         responsive: true,
+
         maintainAspectRatio: false,
+
         plugins: {
-          legend: { display: false }
+
+          legend: {
+
+            display: false
+
+          }
+
         },
+
         scales: {
+
           y: {
+
             beginAtZero: true,
+
             title: {
+
               display: true,
+
               text: "Illustrative relative units"
+
             }
+
           }
+
         }
+
       }
+
     });
+
   }
 
 
-  // INDIA — HISTORICAL LOK SABHA REPRESENTATION
+// INDIA LOK SABHA HISTORY
 
-  const indiaCanvas = document.getElementById("indiaChart");
+  createLineChart(
 
-  if (indiaCanvas) {
-    new Chart(indiaCanvas, {
-      type: "line",
-      data: {
-        labels: [
-          "1951",
-          "1957",
-          "1962",
-          "1967",
-          "1971",
-          "1977",
-          "1980",
-          "1984",
-          "1989",
-          "1991",
-          "1996",
-          "1998",
-          "1999",
-          "2004",
-          "2009",
-          "2014",
-          "2019",
-          "2024"
-        ],
-        datasets: [{
-          label: "Women elected (%)",
-          data: [
-            4.4,
-            4.5,
-            6.3,
-            5.9,
-            4.9,
-            3.5,
-            5.9,
-            8.1,
-            5.5,
-            7.0,
-            7.4,
-            8.1,
-            9.0,
-            8.3,
-            10.9,
-            11.4,
-            14.4,
-            13.6
-          ],
-          borderColor: blue,
-          backgroundColor: "rgba(46,102,139,0.12)",
-          fill: true,
-          tension: 0.25,
-          pointRadius: 4,
-          pointBackgroundColor: "#ffffff",
-          pointBorderColor: blue,
-          pointBorderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: true }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 20,
-            title: {
-              display: true,
-              text: "Percentage"
-            }
-          },
-          x: {
-            ticks: {
-              maxRotation: 45,
-              minRotation: 0
-            }
-          }
-        }
-      }
-    });
-  }
+    "indiaChart",
+
+    [
+
+      "1951",
+
+      "1957",
+
+      "1962",
+
+      "1967",
+
+      "1971",
+
+      "1977",
+
+      "1980",
+
+      "1984",
+
+      "1989",
+
+      "1991",
+
+      "1996",
+
+      "1998",
+
+      "1999",
+
+      "2004",
+
+      "2009",
+
+      "2014",
+
+      "2019",
+
+      "2024"
+
+    ],
+
+    [
+
+      4.4,
+
+      4.5,
+
+      6.3,
+
+      5.9,
+
+      4.9,
+
+      3.5,
+
+      5.9,
+
+      8.1,
+
+      5.5,
+
+      7.0,
+
+      7.4,
+
+      8.1,
+
+      9.0,
+
+      8.3,
+
+      10.9,
+
+      11.4,
+
+      14.4,
+
+      13.6
+
+    ],
+
+    "Women elected (%)",
+
+    20
+
+  );
+
 }
+
+
+// ==========================================
+// SCROLL LINK BEHAVIOUR
+// ==========================================
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+  link.addEventListener("click", function(event) {
+
+    const target = document.querySelector(this.getAttribute("href"));
+
+    if (target) {
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "start"
+
+      });
+
+    }
+
+  });
+
+});
