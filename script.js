@@ -1,71 +1,103 @@
 
-/* IMAGE FALLBACK */
-function imageFallback(img){
-  const box=document.createElement("div");
-  box.className="image-placeholder";
-  box.textContent=img.alt||"Image";
-  img.replaceWith(box);
-}
+/* IMAGE FALLBACK: prevents empty broken-image boxes */
+document.querySelectorAll("img").forEach(img=>{
+  img.addEventListener("error",()=>{
+    if(img.dataset.failed)return;
+    img.dataset.failed="true";
+    const placeholder=document.createElement("div");
+    placeholder.className="photoFallback";
+    placeholder.textContent=img.alt || "Photograph unavailable";
+    img.replaceWith(placeholder);
+  });
+});
 
-/* GLOBAL CHART SETTINGS */
+/* CHART STYLE */
 Chart.defaults.font.family="DM Sans, sans-serif";
-Chart.defaults.color="#627681";
+Chart.defaults.color="#607581";
 
-/* GLOBAL REPRESENTATION */
-const globalChart=document.getElementById("globalChart");
-if(globalChart){
-  new Chart(globalChart,{
+const palette={
+  blue:"#537A94",
+  gold:"#B69A65",
+  rust:"#BC7355",
+  green:"#536D5D"
+};
+
+/* GLOBAL PARLIAMENT */
+function lineChart(id,labels,data,label){
+  const el=document.getElementById(id);
+  if(!el)return;
+  new Chart(el,{
     type:"line",
     data:{
-      labels:["2015","2020","2025"],
+      labels,
       datasets:[{
-        label:"Women (%)",
-        data:[22.1,24.9,27.2],
-        borderColor:"#557D98",
-        backgroundColor:"rgba(85,125,152,.15)",
+        label,
+        data,
+        borderColor:palette.blue,
+        backgroundColor:"rgba(83,122,148,.15)",
         fill:true,
-        tension:.4,
-        pointRadius:5
+        tension:.35,
+        pointRadius:4,
+        pointBackgroundColor:palette.gold
       }]
     },
     options:{
       responsive:true,
       maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
+      plugins:{
+        legend:{display:false}
+      },
       scales:{
-        y:{beginAtZero:true,ticks:{callback:v=>v+"%"}}
+        y:{
+          beginAtZero:true,
+          grid:{color:"rgba(0,0,0,.07)"}
+        },
+        x:{
+          grid:{display:false}
+        }
       }
     }
   });
 }
 
-/* UNPAID CARE */
-const careChart=document.getElementById("careChart");
-if(careChart){
-  new Chart(careChart,{
+lineChart(
+  "globalChart",
+  ["2015","2018","2020","2022","2025"],
+  [22.1,23.4,24.9,26.1,27.2],
+  "Women"
+);
+
+/* UNPAID CARE: illustrative comparison */
+const care=document.getElementById("careChart");
+if(care){
+  new Chart(care,{
     type:"bar",
     data:{
       labels:["Women","Men"],
       datasets:[{
-        label:"Relative comparison",
         data:[2.5,1],
-        backgroundColor:["#557D98","#B69A65"],
-        borderRadius:6
+        backgroundColor:[palette.blue,palette.gold],
+        borderRadius:5
       }]
     },
     options:{
       responsive:true,
       maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{y:{beginAtZero:true}}
+      plugins:{
+        legend:{display:false}
+      },
+      scales:{
+        y:{beginAtZero:true},
+        x:{grid:{display:false}}
+      }
     }
   });
 }
 
-/* INDIA - LOK SABHA */
-const indiaChart=document.getElementById("indiaChart");
-if(indiaChart){
-  new Chart(indiaChart,{
+/* INDIA LOK SABHA */
+const india=document.getElementById("indiaChart");
+if(india){
+  new Chart(india,{
     type:"bar",
     data:{
       labels:[
@@ -79,25 +111,38 @@ if(indiaChart){
           22,27,31,29,22,19,28,44,29,
           39,40,43,49,45,59,62,78,74
         ],
-        backgroundColor:"#B69A65",
+        backgroundColor:palette.gold,
         borderRadius:4
       }]
     },
     options:{
       responsive:true,
       maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
+      plugins:{
+        legend:{display:false}
+      },
       scales:{
         y:{beginAtZero:true},
-        x:{ticks:{maxRotation:45,minRotation:45}}
+        x:{
+          grid:{display:false},
+          ticks:{maxRotation:45,minRotation:45}
+        }
       }
     }
   });
 }
 
-/* NAVIGATION - ACTIVE SECTION */
-const navLinks=document.querySelectorAll(".topbar nav a");
-const sections=document.querySelectorAll("section[id]");
+/* TRENDS GRAPH */
+lineChart(
+  "trendChart",
+  ["2015","2018","2020","2022","2025"],
+  [22.1,23.4,24.9,26.1,27.2],
+  "Women in parliament"
+);
+
+/* NAV ACTIVE STATE */
+const navLinks=document.querySelectorAll(".nav nav a");
+const pageSections=document.querySelectorAll("section[id]");
 
 if("IntersectionObserver" in window){
   const observer=new IntersectionObserver(entries=>{
@@ -111,7 +156,9 @@ if("IntersectionObserver" in window){
         });
       }
     });
-  },{rootMargin:"-30% 0px -60% 0px"});
+  },{
+    rootMargin:"-25% 0px -60% 0px"
+  });
 
-  sections.forEach(section=>observer.observe(section));
+  pageSections.forEach(section=>observer.observe(section));
 }
