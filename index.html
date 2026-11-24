@@ -3,430 +3,613 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Beyond the Divide — exploring gender inequality through geography and development indicators.">
-  <title>Beyond the Divide | Gender & Development</title>
+  <meta name="description" content="Beyond the Divide — exploring gender inequality through geography, development and data.">
+  <title>Beyond the Divide | Gender Equality</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
+
 <body>
+<header class="topbar">
+  <a class="brand" href="#home" data-page="home">
+    <span class="brand-mark">B.</span>
+    <span>BEYOND <i>THE</i> DIVIDE</span>
+  </a>
 
-<header class="site-header">
-  <a class="brand" href="#home">BEYOND <span>THE DIVIDE</span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
-  <nav class="navigation" aria-label="Main navigation">
-    <button class="nav-button active" data-page="home">Home</button>
-    <button class="nav-button" data-page="indicators">Indicators</button>
-    <button class="nav-button" data-page="research">Research</button>
-    <button class="nav-button" data-page="india">India</button>
-    <button class="nav-button" data-page="trends">Trends</button>
-    <button class="nav-button" data-page="action">Action</button>
-    <button class="nav-button" data-page="criteria">Perspectives</button>
-    <button class="nav-button" data-page="sources">Sources</button>
-    <button class="nav-button" data-page="about">About me</button>
+  <nav class="nav-links" id="navLinks">
+    <button class="nav-link active" data-page="home">Home</button>
+    <button class="nav-link" data-page="indicators">Indicators</button>
+    <button class="nav-link" data-page="research">Research</button>
+    <button class="nav-link" data-page="india">India</button>
+    <button class="nav-link" data-page="trends">Trends</button>
+    <button class="nav-link" data-page="action">Take Action</button>
+    <button class="nav-link" data-page="perspectives">Perspectives</button>
+    <button class="nav-link" data-page="sources">Sources</button>
+    <button class="nav-link" data-page="about">About Me</button>
   </nav>
 </header>
 
-<main class="container">
+<main>
 
 <!-- HOME -->
 <section class="page active" id="home">
   <div class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-shade"></div>
     <div class="hero-content">
-      <span class="eyebrow light">A GEOGRAPHY INQUIRY · 2026</span>
+      <p class="eyebrow light">A GEOGRAPHICAL EXPLORATION OF EQUALITY</p>
       <h1>Beyond<br><em>the Divide.</em></h1>
-      <p class="hero-description">
-        Gender inequality is not just a statistic. It is reflected in
-        healthcare, opportunity and representation. Explore the patterns
-        shaping women's lives across the world.
+      <p class="hero-copy">
+        Gender should never determine the opportunities, safety or future
+        a person can have.
       </p>
-      <button class="primary-button" data-go="indicators">Explore the indicators <span>↗</span></button>
-      <div class="hero-tags">
-        <span>SDG 5</span>
-        <span>Fairness & development</span>
-        <span>Geography</span>
-      </div>
+      <button class="button button-light" data-go="indicators">
+        Explore the evidence <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      <span class="hero-index">01 / 09 — THE BIG PICTURE</span>
     </div>
-    <div class="hero-visual">
-      <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1000&q=85" alt="Portrait representing women and equality">
-      <div class="image-label">EQUALITY IS A DEVELOPMENT ISSUE.</div>
-    </div>
+    <div class="hero-caption">EQUALITY IS NOT A PRIVILEGE. IT IS A RIGHT.</div>
   </div>
 
-  <div class="intro-grid">
-    <article class="intro-card">
-      <span class="number">01 / THE ISSUE</span>
-      <h3>Unequal opportunities</h3>
-      <p>Access to healthcare, education and political participation is not equally distributed across countries and communities.</p>
-    </article>
-    <article class="intro-card tinted">
-      <span class="number">02 / THE INQUIRY</span>
-      <h3>Systems shape outcomes</h3>
-      <p>Social, economic and political systems influence the opportunities available to women and girls.</p>
-    </article>
-    <article class="intro-card">
-      <span class="number">03 / THE PURPOSE</span>
-      <h3>Evidence into action</h3>
-      <p>Using development indicators helps us identify patterns, understand differences and consider meaningful responses.</p>
-    </article>
-  </div>
-
-  <div class="section-heading">
+  <div class="home-intro section-wrap">
     <div>
-      <span class="eyebrow">THE THREE INDICATORS</span>
-      <h2>Measuring inequality</h2>
+      <p class="eyebrow">THE ISSUE</p>
+      <h2>One world.<br><em>Unequal realities.</em></h2>
     </div>
-    <p>Three different measures. One wider development question.</p>
+    <div class="intro-text">
+      <p>
+        Gender inequality affects access to education, healthcare, political
+        representation and economic opportunities. These differences are not
+        distributed evenly. Where a person lives can strongly influence the
+        opportunities available to them.
+      </p>
+      <p>
+        This project investigates those geographical differences using three
+        development indicators and explores how individuals, communities and
+        institutions can contribute to change.
+      </p>
+    </div>
   </div>
 
-  <div class="indicator-preview">
-    <div><span>01</span><h3>Adolescent fertility rate</h3><p>Births per 1,000 girls aged 15–19.</p></div>
-    <div><span>02</span><h3>Maternal mortality ratio</h3><p>Maternal deaths per 100,000 live births.</p></div>
-    <div><span>03</span><h3>Women in parliament</h3><p>Percentage of parliamentary seats held by women.</p></div>
+  <div class="statement-band">
+    <p class="eyebrow light">STATEMENT OF INQUIRY</p>
+    <h2>Patterns of development reveal how unequal access to resources and
+      opportunities shapes people's lives.</h2>
+    <div class="statement-meta">
+      <span>KEY CONCEPT · CHANGE</span>
+      <span>GLOBAL CONTEXT · FAIRNESS AND DEVELOPMENT</span>
+      <span>GEOGRAPHY · DEVELOPMENT</span>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">THREE WAYS TO MEASURE THE DIVIDE</p>
+        <h2>The indicators.</h2>
+      </div>
+      <p class="muted">Select an indicator to explore its meaning and global distribution.</p>
+    </div>
+
+    <div class="indicator-cards">
+      <article class="indicator-card card-blue" data-go="indicators">
+        <span class="card-number">01</span>
+        <i class="fa-solid fa-person-pregnant card-icon"></i>
+        <h3>Adolescent<br>Fertility Rate</h3>
+        <p>Births per 1,000 girls aged 15–19.</p>
+        <span class="card-arrow">Explore <i class="fa-solid fa-arrow-right"></i></span>
+      </article>
+
+      <article class="indicator-card card-sand" data-go="indicators">
+        <span class="card-number">02</span>
+        <i class="fa-solid fa-heart-pulse card-icon"></i>
+        <h3>Maternal<br>Mortality Ratio</h3>
+        <p>Maternal deaths per 100,000 live births.</p>
+        <span class="card-arrow">Explore <i class="fa-solid fa-arrow-right"></i></span>
+      </article>
+
+      <article class="indicator-card card-green" data-go="indicators">
+        <span class="card-number">03</span>
+        <i class="fa-solid fa-landmark card-icon"></i>
+        <h3>Women in<br>Parliament</h3>
+        <p>Percentage of parliamentary seats held by women.</p>
+        <span class="card-arrow">Explore <i class="fa-solid fa-arrow-right"></i></span>
+      </article>
+    </div>
+  </div>
+
+  <div class="home-bottom section-wrap">
+    <div>
+      <p class="eyebrow">LOOK CLOSER</p>
+      <h2>Behind every statistic<br>is a human story.</h2>
+    </div>
+    <button class="button button-dark" data-go="india">
+      Discover the India perspective <i class="fa-solid fa-arrow-right"></i>
+    </button>
   </div>
 </section>
 
 <!-- INDICATORS -->
 <section class="page" id="indicators">
-  <div class="page-heading">
-    <span class="eyebrow">01 / UNDERSTANDING THE DATA</span>
-    <h2>Three indicators.<br><em>Different realities.</em></h2>
-    <p>Development indicators turn complex social conditions into measurable information. They are useful, but each has limitations.</p>
+  <div class="page-hero page-hero-blue">
+    <p class="eyebrow light">01 — UNDERSTANDING THE DATA</p>
+    <h1>Measuring<br><em>the divide.</em></h1>
+    <p>Three indicators. Different realities. One connected picture of development.</p>
   </div>
 
-  <div class="indicator-details">
-    <article class="detail-card">
-      <span class="detail-index">INDICATOR 01</span>
-      <h3>Adolescent fertility rate</h3>
-      <div class="unit">Births per 1,000 girls aged 15–19</div>
-      <p><b>Definition</b><br>The number of births per 1,000 girls aged 15–19 in a particular year.</p>
-      <p><b>Importance</b><br>It can reveal patterns linked to education, healthcare access, social expectations and economic opportunities.</p>
-      <p><b>Interpretation</b><br>A lower rate is generally associated with improved access to education and reproductive healthcare, although context matters.</p>
-    </article>
-
-    <article class="detail-card featured">
-      <span class="detail-index">INDICATOR 02</span>
-      <h3>Maternal mortality ratio</h3>
-      <div class="unit">Deaths per 100,000 live births</div>
-      <p><b>Definition</b><br>The number of maternal deaths per 100,000 live births during a specified period.</p>
-      <p><b>Importance</b><br>It reflects inequalities in healthcare access, quality of medical services and wider living conditions.</p>
-      <p><b>Interpretation</b><br>A lower ratio generally indicates better maternal health outcomes and healthcare provision.</p>
-    </article>
-
-    <article class="detail-card">
-      <span class="detail-index">INDICATOR 03</span>
-      <h3>Women in parliament</h3>
-      <div class="unit">Percentage of parliamentary seats</div>
-      <p><b>Definition</b><br>The percentage of seats in national parliament occupied by women.</p>
-      <p><b>Importance</b><br>It measures women's political representation and participation in formal decision-making.</p>
-      <p><b>Interpretation</b><br>A higher percentage indicates greater representation, but does not automatically mean equal political influence.</p>
-    </article>
-  </div>
-
-  <div class="section-heading">
-    <div>
-      <span class="eyebrow">GLOBAL DISTRIBUTION</span>
-      <h2>Where do inequalities appear?</h2>
-    </div>
-  </div>
-
-  <div class="map-layout">
-    <div class="map-card">
-      <div class="map-controls">
-        <label for="mapIndicator">Select indicator</label>
-        <select id="mapIndicator">
-          <option value="SP.ADO.TFRT">Adolescent fertility rate</option>
-          <option value="SH.STA.MMRT">Maternal mortality ratio</option>
-          <option value="SG.GEN.PARL.ZS">Women in parliament</option>
-        </select>
+  <div class="section-wrap">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">SELECT AN INDICATOR</p>
+        <h2>Explore the numbers.</h2>
       </div>
-      <div id="worldMap" class="world-map">
-        <p class="loading">Loading country data and map…</p>
-      </div>
-      <div class="map-legend">
-        <span>Lower values</span><div class="legend-gradient"></div><span>Higher values</span>
-      </div>
-      <p class="small-note">Map values are the latest available observations, which may differ by country and year. Select a country to inspect its value.</p>
+      <span class="live-label"><span></span> WORLD BANK DATA</span>
     </div>
 
-    <aside class="map-analysis">
-      <span class="eyebrow">GEOGRAPHICAL ANALYSIS</span>
-      <h3 id="mapCountryName">Explore a country</h3>
-      <div class="map-value" id="mapCountryValue">—</div>
-      <p id="mapCountryInfo">Select a country on the map to view its latest available data.</p>
-      <hr>
-      <h4>Factors influencing patterns</h4>
-      <ul>
-        <li>Access to healthcare and infrastructure</li>
-        <li>Education and economic opportunity</li>
-        <li>Political systems and legislation</li>
-        <li>Social norms and historical conditions</li>
-      </ul>
-    </aside>
-  </div>
+    <div class="selector-row" id="indicatorSelector">
+      <button class="selector active" data-indicator="fertility">01 · Adolescent fertility</button>
+      <button class="selector" data-indicator="mortality">02 · Maternal mortality</button>
+      <button class="selector" data-indicator="parliament">03 · Women in parliament</button>
+    </div>
 
-  <div class="insight-grid">
-    <article><span>01</span><h3>Spatial variation</h3><p>Indicators differ between countries and regions because development conditions are not the same everywhere.</p></article>
-    <article><span>02</span><h3>Multiple causes</h3><p>Economic resources, policies, infrastructure and social expectations can interact to shape outcomes.</p></article>
-    <article><span>03</span><h3>Data limitations</h3><p>Different reporting years and estimates mean comparisons should be interpreted carefully.</p></article>
+    <div class="indicator-detail">
+      <div class="indicator-explainer">
+        <p class="eyebrow" id="indicatorEyebrow">INDICATOR 01</p>
+        <h2 id="indicatorTitle">Adolescent Fertility Rate</h2>
+        <p id="indicatorDescription">
+          The annual number of births per 1,000 women aged 15–19.
+        </p>
+        <div class="definition-box">
+          <span>HOW IT IS MEASURED</span>
+          <strong id="indicatorUnit">Births per 1,000 girls aged 15–19</strong>
+        </div>
+        <p class="small-note" id="indicatorImportance">
+          This indicator can help reveal differences in access to education,
+          healthcare and reproductive health information.
+        </p>
+      </div>
+
+      <div class="indicator-stat">
+        <span class="stat-label">LATEST AVAILABLE WORLD AVERAGE</span>
+        <strong id="worldAverage">—</strong>
+        <span id="worldAverageUnit">Loading data…</span>
+        <span class="stat-source">Source: World Bank</span>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <div class="map-heading">
+        <div>
+          <p class="eyebrow">GLOBAL DISTRIBUTION</p>
+          <h2>Where does the divide appear?</h2>
+          <p class="muted">Hover over a country to see its latest available value.</p>
+        </div>
+        <div class="map-key">
+          <span><i class="key-dot low"></i> Lower</span>
+          <span><i class="key-dot mid"></i> Middle</span>
+          <span><i class="key-dot high"></i> Higher</span>
+        </div>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-frame">
+          <div id="worldMap" aria-label="Interactive world map"></div>
+          <div id="mapTooltip" class="map-tooltip"></div>
+          <p class="map-note">Map uses the latest available country data. Blank countries have no matched value.</p>
+        </div>
+        <aside class="map-analysis">
+          <span class="analysis-number">01</span>
+          <p class="eyebrow">GEOGRAPHICAL ANALYSIS</p>
+          <h3>Patterns are not random.</h3>
+          <p>
+            Differences between countries can reflect healthcare access,
+            education, income, public policy and social conditions.
+          </p>
+          <div class="analysis-mini">
+            <span>HIGHEST VALUE</span>
+            <strong id="highestCountry">Loading…</strong>
+          </div>
+          <div class="analysis-mini">
+            <span>LOWEST VALUE</span>
+            <strong id="lowestCountry">Loading…</strong>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">COUNTRY COMPARISON</p>
+          <h2>Compare the evidence.</h2>
+        </div>
+        <p class="muted">Selected countries, latest available data.</p>
+      </div>
+      <div class="chart-card">
+        <canvas id="countryChart"></canvas>
+      </div>
+      <p class="chart-caption" id="countryChartCaption">Country values are retrieved from the World Bank API.</p>
+    </div>
+
+    <div class="explain-grid">
+      <article>
+        <span>01 / SOCIAL</span>
+        <h3>Education and opportunity</h3>
+        <p>Access to education, social expectations and equality can influence the choices available to women and girls.</p>
+      </article>
+      <article>
+        <span>02 / ECONOMIC</span>
+        <h3>Resources and access</h3>
+        <p>Income, healthcare facilities and transport can affect whether people can access essential services.</p>
+      </article>
+      <article>
+        <span>03 / POLITICAL</span>
+        <h3>Policies and representation</h3>
+        <p>Government decisions and women's participation in decision-making can influence development outcomes.</p>
+      </article>
+    </div>
   </div>
 </section>
 
 <!-- RESEARCH -->
 <section class="page" id="research">
-  <div class="page-heading">
-    <span class="eyebrow">02 / CRITERION B</span>
-    <h2>Investigating<br><em>the issue.</em></h2>
-    <p>A structured investigation into how gender inequality affects development across different geographical contexts.</p>
+  <div class="page-hero page-hero-paper">
+    <p class="eyebrow">02 — CRITERION B</p>
+    <h1>Investigating<br><em>the issue.</em></h1>
+    <p>From a geographical question to a structured investigation.</p>
   </div>
 
-  <div class="research-question">
-    <span class="eyebrow light">FOCUSED RESEARCH QUESTION</span>
-    <h2>To what extent do social, economic and political systems influence gender inequality in health and political representation across countries?</h2>
-    <p>This question allows comparison of geographical patterns through three measurable indicators.</p>
-  </div>
+  <div class="section-wrap">
+    <div class="research-question">
+      <p class="eyebrow">FOCUSED RESEARCH QUESTION</p>
+      <h2>To what extent does gender inequality affect development opportunities for women and girls in different geographical regions?</h2>
+      <p class="muted">This question connects measurable development indicators with geographical differences and lived experiences.</p>
+    </div>
 
-  <div class="section-heading">
-    <div><span class="eyebrow">RESEARCH DESIGN</span><h2>Planning the investigation</h2></div>
-  </div>
+    <div class="two-column">
+      <div class="content-panel">
+        <p class="eyebrow">WHY THIS QUESTION?</p>
+        <h2>Purpose and significance.</h2>
+        <p>Gender inequality is a geographical issue because access to healthcare, education and political participation varies between places. Comparing indicators helps identify patterns, differences and possible reasons for unequal development.</p>
+        <p>The question is relevant because it explores how opportunities are shaped by location, institutions, resources and social conditions.</p>
+      </div>
+      <div class="content-panel dark-panel">
+        <p class="eyebrow light">STATEMENT OF INQUIRY</p>
+        <h2>Understanding patterns can reveal where development is unequal and where action is needed.</h2>
+      </div>
+    </div>
 
-  <div class="research-grid">
-    <article class="research-card">
-      <span class="number">A / JUSTIFICATION</span>
-      <h3>Why this matters</h3>
-      <p>Gender inequality affects health, education, participation and opportunity. Comparing countries helps reveal spatial differences and the influence of development systems.</p>
-    </article>
-    <article class="research-card">
-      <span class="number">B / SECONDARY DATA</span>
-      <h3>Sources and evidence</h3>
-      <p>World Bank indicators, United Nations statistics, UN Women reports and Inter-Parliamentary Union data provide statistical and contextual evidence.</p>
-    </article>
-    <article class="research-card">
-      <span class="number">C / PRIMARY DATA</span>
-      <h3>School awareness survey</h3>
-      <p>A short, voluntary and anonymous questionnaire can assess awareness of gender equality among classmates. It should avoid sensitive personal questions and be conducted with teacher approval.</p>
-    </article>
-    <article class="research-card">
-      <span class="number">D / METHOD</span>
-      <h3>Comparative analysis</h3>
-      <p>Compare selected countries using consistent indicator definitions, identify trends and anomalies, and explain patterns using geographic and social context.</p>
-    </article>
-  </div>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">RESEARCH METHODS</p>
+        <h2>How information is collected.</h2>
+      </div>
+    </div>
 
-  <div class="section-heading">
-    <div><span class="eyebrow">ACTION PLAN</span><h2>From research to website</h2></div>
-  </div>
+    <div class="method-grid">
+      <article class="method-card">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <h3>Primary research</h3>
+        <p>A short questionnaire or structured interview can gather views about awareness, equality and opportunities.</p>
+        <span>METHOD · SURVEY / INTERVIEW</span>
+      </article>
+      <article class="method-card">
+        <i class="fa-solid fa-database"></i>
+        <h3>Secondary research</h3>
+        <p>World Bank data, UN reports and government publications provide statistics and wider geographical context.</p>
+        <span>METHOD · DATA / DOCUMENTS</span>
+      </article>
+    </div>
 
-  <div class="plan-list">
-    <div><span>01</span><div><h3>Collect information</h3><p>Gather indicator definitions, statistics, reports and relevant geographical information.</p></div><small>RESEARCH</small></div>
-    <div><span>02</span><div><h3>Organise the evidence</h3><p>Compare countries, record data years and identify patterns and differences.</p></div><small>ANALYSIS</small></div>
-    <div><span>03</span><div><h3>Develop the website</h3><p>Use charts, maps, photographs and clear explanations to communicate the findings.</p></div><small>CREATION</small></div>
-    <div><span>04</span><div><h3>Evaluate the outcome</h3><p>Check accuracy, readability, accessibility and whether the website communicates the issue effectively.</p></div><small>REVIEW</small></div>
-  </div>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">ACTION PLAN</p>
+        <h2>From research to outcome.</h2>
+      </div>
+    </div>
 
-  <div class="evaluation-grid">
-    <article><h3>Strengths</h3><p>Multiple indicators provide different perspectives. International datasets support country comparisons and help identify broad patterns.</p></article>
-    <article><h3>Limitations</h3><p>Statistics may be estimated, delayed or incomplete. Three indicators cannot represent every dimension of gender inequality.</p></article>
-    <article><h3>Feasibility</h3><p>Secondary research and website creation are achievable with school resources. Primary research depends on permission and participation.</p></article>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span>01</span>
+        <div><h3>Define the investigation</h3><p>Confirm the research question, indicators and geographical focus.</p></div>
+        <small>OUTPUT · RESEARCH FRAMEWORK</small>
+      </div>
+      <div class="timeline-item">
+        <span>02</span>
+        <div><h3>Collect information</h3><p>Use reliable secondary sources and a suitable primary research method.</p></div>
+        <small>OUTPUT · EVIDENCE</small>
+      </div>
+      <div class="timeline-item">
+        <span>03</span>
+        <div><h3>Analyse patterns</h3><p>Compare countries and identify trends, differences and possible explanations.</p></div>
+        <small>OUTPUT · GEOGRAPHICAL ANALYSIS</small>
+      </div>
+      <div class="timeline-item">
+        <span>04</span>
+        <div><h3>Communicate findings</h3><p>Present conclusions and practical actions through the website.</p></div>
+        <small>OUTPUT · AWARENESS</small>
+      </div>
+    </div>
+
+    <div class="evaluation-grid">
+      <article><p class="eyebrow">STRENGTHS</p><h3>What works well?</h3><p>Using multiple indicators allows different dimensions of gender inequality to be explored. International datasets also support country comparisons.</p></article>
+      <article><p class="eyebrow">LIMITATIONS</p><h3>What needs care?</h3><p>Data may be from different years, may not capture every experience and may not explain the causes of inequality on its own.</p></article>
+      <article><p class="eyebrow">FEASIBILITY</p><h3>Can it be completed?</h3><p>Using accessible public datasets and a manageable questionnaire makes the investigation practical within a school project.</p></article>
+    </div>
   </div>
 </section>
 
 <!-- INDIA -->
 <section class="page" id="india">
-  <div class="page-heading">
-    <span class="eyebrow">03 / COUNTRY FOCUS</span>
-    <h2>India.<br><em>Progress and gaps.</em></h2>
-    <p>India's development story includes social reform, changing opportunities, policy initiatives and continuing inequalities.</p>
+  <div class="page-hero page-hero-india">
+    <p class="eyebrow light">03 — A NATIONAL PERSPECTIVE</p>
+    <h1>India.<br><em>Progress and possibility.</em></h1>
+    <p>Exploring gender inequality through India's development indicators and social reformers.</p>
   </div>
 
-  <div class="india-banner">
-    <div><span class="eyebrow light">COUNTRY PROFILE</span><h2>Understanding India through gender and development</h2><p>National averages can conceal major differences between states, districts and communities.</p></div>
-    <div class="india-mark">IN</div>
-  </div>
-
-  <div class="india-stat-grid">
-    <article><span>01 / HEALTH</span><h3>Maternal healthcare</h3><p>Access to skilled care, transport, medical facilities and emergency services influences maternal health outcomes.</p></article>
-    <article><span>02 / EDUCATION</span><h3>Opportunity</h3><p>Education and economic opportunity can influence choices, participation and long-term development.</p></article>
-    <article><span>03 / POLITICS</span><h3>Representation</h3><p>Women's participation in political institutions is an important dimension of inclusive development.</p></article>
-  </div>
-
-  <div class="section-heading">
-    <div><span class="eyebrow">INDIAN CHANGE-MAKERS</span><h2>Three influential women</h2></div>
-  </div>
-
-  <div class="leader-grid">
-    <article class="leader-card">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg" alt="Savitribai Phule" loading="lazy">
-      <div class="leader-content"><span>EDUCATION · SOCIAL REFORM</span><h3>Savitribai Phule</h3><p>A pioneering educator and social reformer who worked to expand education for girls and challenge caste and gender discrimination in nineteenth-century India.</p></div>
-    </article>
-    <article class="leader-card">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg" alt="Aruna Roy" loading="lazy">
-      <div class="leader-content"><span>TRANSPARENCY · RIGHTS</span><h3>Aruna Roy</h3><p>A social activist associated with the Right to Information movement and grassroots campaigns for transparency, accountability and rural rights.</p></div>
-    </article>
-    <article class="leader-card">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg" alt="Medha Patkar" loading="lazy">
-      <div class="leader-content"><span>ENVIRONMENT · SOCIAL JUSTICE</span><h3>Medha Patkar</h3><p>A social activist known for advocacy for displaced communities and campaigns addressing development projects and social and environmental justice.</p></div>
-    </article>
-  </div>
-
-  <div class="section-heading">
-    <div><span class="eyebrow">INDIA DATA</span><h2>Indicator trends</h2></div>
-  </div>
-
-  <div class="chart-card">
-    <div class="chart-controls">
-      <label for="indiaIndicator">Choose an indicator</label>
-      <select id="indiaIndicator">
-        <option value="SP.ADO.TFRT">Adolescent fertility rate</option>
-        <option value="SH.STA.MMRT">Maternal mortality ratio</option>
-        <option value="SG.GEN.PARL.ZS">Women in parliament</option>
-      </select>
+  <div class="section-wrap">
+    <div class="section-heading">
+      <div><p class="eyebrow">INDIA DATA SNAPSHOT</p><h2>Three indicators. One country.</h2></div>
+      <span class="live-label"><span></span> WORLD BANK DATA</span>
     </div>
-    <canvas id="indiaChart"></canvas>
-    <p class="small-note" id="indiaChartNote">Loading India's historical data…</p>
+
+    <div class="india-stats">
+      <article><span>ADOLESCENT FERTILITY</span><strong id="indiaFertility">—</strong><small>Births per 1,000 girls aged 15–19</small></article>
+      <article><span>MATERNAL MORTALITY</span><strong id="indiaMortality">—</strong><small>Deaths per 100,000 live births</small></article>
+      <article><span>WOMEN IN PARLIAMENT</span><strong id="indiaParliament">—</strong><small>Percentage of seats</small></article>
+    </div>
+
+    <div class="chart-card india-chart">
+      <div class="chart-title"><p class="eyebrow">INDIA OVER TIME</p><h2>How have the indicators changed?</h2><p class="muted">Select a measure to view its historical trend.</p></div>
+      <div class="selector-row">
+        <button class="selector active" data-india-chart="fertility">Adolescent fertility</button>
+        <button class="selector" data-india-chart="mortality">Maternal mortality</button>
+        <button class="selector" data-india-chart="parliament">Women in Parliament</button>
+      </div>
+      <canvas id="indiaChart"></canvas>
+    </div>
+
+    <div class="section-heading leader-heading">
+      <div><p class="eyebrow">WOMEN WHO SHAPED CHANGE</p><h2>Voices of influence.</h2></div>
+      <p class="muted">Three Indian women whose work challenged inequality and expanded opportunities.</p>
+    </div>
+
+    <div class="leader-grid">
+      <article class="leader-card">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule%20with%20Fatima%20Sheikh.jpg?width=700" alt="Archival image of Savitribai Phule with Fatima Sheikh" loading="lazy">
+        <div class="leader-info">
+          <span>EDUCATION · SOCIAL REFORM</span>
+          <h3>Savitribai Phule</h3>
+          <p>A pioneering educator and social reformer who worked to expand education for girls and challenge caste and gender discrimination in nineteenth-century India.</p>
+          <a href="https://commons.wikimedia.org/wiki/File:Savitribai_Phule_with_Fatima_Sheikh.jpg" target="_blank" rel="noopener">Image source ↗</a>
+        </div>
+      </article>
+
+      <article class="leader-card">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy%20at%20the%20Jaipur%20Literature%20Festival%2001.jpg?width=700" alt="Aruna Roy at the Jaipur Literature Festival" loading="lazy">
+        <div class="leader-info">
+          <span>TRANSPARENCY · RIGHTS</span>
+          <h3>Aruna Roy</h3>
+          <p>A social activist known for her work with the Mazdoor Kisan Shakti Sangathan and the movement for the Right to Information in India.</p>
+          <a href="https://commons.wikimedia.org/wiki/File:Aruna_Roy_at_the_Jaipur_Literature_Festival_01.jpg" target="_blank" rel="noopener">Image source ↗</a>
+        </div>
+      </article>
+
+      <article class="leader-card">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20p.jpg?width=700" alt="Medha Patkar" loading="lazy">
+        <div class="leader-info">
+          <span>COMMUNITY · DEVELOPMENT</span>
+          <h3>Medha Patkar</h3>
+          <p>A social activist associated with the Narmada Bachao Andolan, advocating for communities affected by large development projects and displacement.</p>
+          <a href="https://commons.wikimedia.org/wiki/File:Medha_p.jpg" target="_blank" rel="noopener">Image source ↗</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="india-note">
+      <p class="eyebrow">A GEOGRAPHICAL CONNECTION</p>
+      <h2>Development is not only about numbers.</h2>
+      <p>National averages can hide differences between states, rural and urban areas, income groups and communities. Understanding these differences is important when evaluating progress.</p>
+    </div>
   </div>
 </section>
 
 <!-- TRENDS -->
 <section class="page" id="trends">
-  <div class="page-heading">
-    <span class="eyebrow">04 / GLOBAL TRENDS</span>
-    <h2>Patterns across<br><em>time and place.</em></h2>
-    <p>Explore how gender-related development indicators change over time and differ between countries.</p>
+  <div class="page-hero page-hero-trends">
+    <p class="eyebrow light">04 — GLOBAL CHANGE OVER TIME</p>
+    <h1>Progress<br><em>in perspective.</em></h1>
+    <p>Looking beyond a single year to understand long-term patterns.</p>
   </div>
 
-  <div class="trend-controls">
-    <div><label for="trendIndicator">Indicator</label><select id="trendIndicator"><option value="SP.ADO.TFRT">Adolescent fertility rate</option><option value="SH.STA.MMRT">Maternal mortality ratio</option><option value="SG.GEN.PARL.ZS">Women in parliament</option></select></div>
-    <div><label for="trendCountry">Country</label><select id="trendCountry"><option value="WLD">World</option><option value="IND">India</option><option value="RWA">Rwanda</option><option value="SWE">Sweden</option><option value="BRA">Brazil</option><option value="USA">United States</option></select></div>
-  </div>
+  <div class="section-wrap">
+    <div class="section-heading">
+      <div><p class="eyebrow">GLOBAL TRENDS</p><h2>Three measures. Three timelines.</h2></div>
+      <span class="live-label"><span></span> WORLD BANK DATA</span>
+    </div>
 
-  <div class="chart-card trend-chart">
-    <div class="chart-title"><div><span class="eyebrow">HISTORICAL DATA</span><h3 id="trendTitle">Global trend</h3></div><span class="live-dot">WORLD BANK DATA</span></div>
-    <canvas id="trendChart"></canvas>
-    <p class="small-note" id="trendNote">Loading data…</p>
-  </div>
+    <div class="trend-grid">
+      <article class="trend-card">
+        <span>01 · HEALTH & ADOLESCENCE</span>
+        <h3>Adolescent fertility</h3>
+        <p>Births per 1,000 girls aged 15–19.</p>
+        <canvas id="trendFertility"></canvas>
+      </article>
+      <article class="trend-card">
+        <span>02 · MATERNAL HEALTH</span>
+        <h3>Maternal mortality</h3>
+        <p>Maternal deaths per 100,000 live births.</p>
+        <canvas id="trendMortality"></canvas>
+      </article>
+      <article class="trend-card">
+        <span>03 · REPRESENTATION</span>
+        <h3>Women in Parliament</h3>
+        <p>Percentage of parliamentary seats held by women.</p>
+        <canvas id="trendParliament"></canvas>
+      </article>
+    </div>
 
-  <div class="trend-explanations">
-    <article><span>01</span><h3>Adolescent fertility</h3><p>Changes can reflect education, access to health services, economic opportunity and social conditions.</p></article>
-    <article><span>02</span><h3>Maternal mortality</h3><p>Progress is influenced by healthcare access, skilled birth attendance, emergency services and wider inequalities.</p></article>
-    <article><span>03</span><h3>Political representation</h3><p>Representation is influenced by electoral systems, political parties, quotas and social barriers.</p></article>
+    <div class="trend-insight">
+      <div><p class="eyebrow light">READING THE TRENDS</p><h2>Progress is not always equal.</h2></div>
+      <p>Global averages can show overall change, but they may hide differences between countries and regions. Averages should be interpreted alongside country-level evidence, data years and local context.</p>
+    </div>
+
+    <div class="section-heading"><div><p class="eyebrow">COMPARATIVE GEOGRAPHY</p><h2>Why do places differ?</h2></div></div>
+    <div class="region-grid">
+      <article><span>HEALTHCARE</span><i class="fa-solid fa-hospital"></i><h3>Access and quality</h3><p>Healthcare availability, trained staff and transport can influence maternal health outcomes.</p></article>
+      <article><span>EDUCATION</span><i class="fa-solid fa-book-open"></i><h3>Learning opportunities</h3><p>Access to education can influence future choices, employment and health awareness.</p></article>
+      <article><span>GOVERNANCE</span><i class="fa-solid fa-building-columns"></i><h3>Representation</h3><p>Political systems, laws and participation affect how decisions are made and whose voices are heard.</p></article>
+    </div>
   </div>
 </section>
 
 <!-- ACTION -->
 <section class="page" id="action">
-  <div class="page-heading">
-    <span class="eyebrow">05 / CRITERION C</span>
-    <h2>Awareness into<br><em>action.</em></h2>
-    <p>Communicating evidence is a starting point. Sustainable change requires people, institutions and communities to work together.</p>
+  <div class="page-hero page-hero-action">
+    <p class="eyebrow light">05 — CRITERION C</p>
+    <h1>Awareness<br><em>into action.</em></h1>
+    <p>Understanding inequality matters. Responding to it matters too.</p>
   </div>
 
-  <div class="speech-card">
-    <span class="eyebrow light">AWARENESS SPEECH</span>
-    <h2>Beyond the Divide: Equality as Development</h2>
-    <p>Gender equality is not simply a goal written in a document. It affects whether people can access healthcare, continue their education, make decisions and participate in public life.</p>
-    <p>Indicators such as adolescent fertility, maternal mortality and women's representation in parliament help us identify gaps. However, statistics cannot tell the entire story. Behind every number are people, communities and different experiences.</p>
-    <p>These inequalities are influenced by many factors. Healthcare systems, education, infrastructure, laws, economic opportunities and social expectations can all shape outcomes. This means that solutions need to work at different levels.</p>
-    <p>Governments can strengthen healthcare services, support girls' education and improve laws that protect equal participation. Schools can challenge stereotypes and encourage respectful environments. Community organisations can support access to information and services. Individuals can share reliable information and challenge unfair treatment.</p>
-    <p>Progress towards gender equality supports sustainable development because societies are stronger when people have fair access to opportunities and resources. Change requires long-term commitment, evidence and collaboration.</p>
-    <blockquote>Equality is not a favour. It is a foundation for development.</blockquote>
-  </div>
+  <div class="section-wrap">
+    <div class="campaign-opening">
+      <p class="eyebrow">AWARENESS CAMPAIGN</p>
+      <h2>Equality is built<br><em>by what we do next.</em></h2>
+      <p>Gender equality requires more than statements of support. It needs informed decisions, fair opportunities and action from people and institutions.</p>
+    </div>
 
-  <div class="action-grid">
-    <article><span>01 / IMMEDIATE</span><h3>Start conversations</h3><p>Share accurate information, challenge stereotypes respectfully and encourage inclusive school spaces.</p></article>
-    <article><span>02 / COMMUNITY</span><h3>Support initiatives</h3><p>Promote access to education, health information and community support programmes.</p></article>
-    <article><span>03 / LONG TERM</span><h3>Improve systems</h3><p>Support fair policies, strong public services, political participation and institutional accountability.</p></article>
+    <div class="action-grid">
+      <article><span>01 / EVERYDAY</span><i class="fa-solid fa-people-group"></i><h3>Challenge stereotypes</h3><p>Question unfair assumptions and encourage equal participation in classrooms, teams and communities.</p><b>WHO? Individuals and schools</b></article>
+      <article><span>02 / COMMUNITY</span><i class="fa-solid fa-bullhorn"></i><h3>Spread awareness</h3><p>Share reliable information, support local initiatives and make conversations about equality inclusive.</p><b>WHO? Students and communities</b></article>
+      <article><span>03 / INSTITUTIONS</span><i class="fa-solid fa-scale-balanced"></i><h3>Support fair systems</h3><p>Encourage policies that improve access to education, healthcare, safety and representation.</p><b>WHO? Governments and organisations</b></article>
+      <article><span>04 / LONG TERM</span><i class="fa-solid fa-seedling"></i><h3>Invest in opportunity</h3><p>Support education, health services and meaningful participation in decision-making.</p><b>WHO? Public and private institutions</b></article>
+    </div>
+
+    <div class="speech-panel">
+      <p class="eyebrow light">THE MESSAGE</p>
+      <h2>Equality should not depend on geography.</h2>
+      <p>Every person deserves the opportunity to learn, live safely, access healthcare and participate in decisions that shape their future. When communities and institutions work together, progress becomes possible. The first step is recognising the divide; the next is taking responsibility for closing it.</p>
+      <span>BEYOND THE DIVIDE · A CALL TO ACTION</span>
+    </div>
+
+    <div class="sdg-panel">
+      <div class="sdg-number">5</div>
+      <div><p class="eyebrow">SUSTAINABLE DEVELOPMENT GOAL</p><h2>Gender Equality</h2><p>SDG 5 aims to achieve gender equality and empower all women and girls. Progress connects with health, education, decent work and inclusive institutions.</p><a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">Explore UN Sustainable Development Goal 5 ↗</a></div>
+    </div>
   </div>
 </section>
 
 <!-- PERSPECTIVES -->
-<section class="page" id="criteria">
-  <div class="page-heading">
-    <span class="eyebrow">06 / CRITERION D</span>
-    <h2>Stakeholders &<br><em>development perspectives.</em></h2>
-    <p>Different groups influence gender equality through decisions, resources, advocacy and everyday participation.</p>
+<section class="page" id="perspectives">
+  <div class="page-hero page-hero-paper">
+    <p class="eyebrow">06 — CRITERION D</p>
+    <h1>Many voices.<br><em>Shared responsibility.</em></h1>
+    <p>Understanding the people and institutions involved in development.</p>
   </div>
 
-  <div class="stakeholder-grid">
-    <article><span>01</span><h3>Government</h3><p>Creates legislation, funds public services, monitors progress and establishes policies.</p></article>
-    <article><span>02</span><h3>NGOs</h3><p>Provide advocacy, community programmes, support and awareness initiatives.</p></article>
-    <article><span>03</span><h3>International organisations</h3><p>Collect data, support research, provide technical assistance and monitor global development goals.</p></article>
-    <article><span>04</span><h3>Communities</h3><p>Contribute local knowledge, organise initiatives and shape social attitudes.</p></article>
-    <article><span>05</span><h3>Businesses</h3><p>Influence employment opportunities, workplace equality and economic participation.</p></article>
-    <article><span>06</span><h3>Educational institutions</h3><p>Expand learning opportunities, challenge stereotypes and promote inclusion.</p></article>
-    <article><span>07</span><h3>Individuals</h3><p>Participate in decision-making, share information and contribute to social change.</p></article>
-  </div>
+  <div class="section-wrap">
+    <div class="section-heading"><div><p class="eyebrow">STAKEHOLDER NETWORK</p><h2>Who can influence change?</h2></div></div>
 
-  <div class="section-heading"><div><span class="eyebrow">THREE DIMENSIONS</span><h2>Understanding development</h2></div></div>
+    <div class="stakeholder-grid">
+      <article><i class="fa-solid fa-landmark"></i><h3>Government</h3><p>Creates laws, funds public services and develops policies that affect equality.</p></article>
+      <article><i class="fa-solid fa-hand-holding-heart"></i><h3>NGOs</h3><p>Support communities, provide services and advocate for rights and inclusion.</p></article>
+      <article><i class="fa-solid fa-earth-asia"></i><h3>International organisations</h3><p>Collect data, coordinate programmes and support international development goals.</p></article>
+      <article><i class="fa-solid fa-people-roof"></i><h3>Communities</h3><p>Shape local attitudes, support people and identify needs within their area.</p></article>
+      <article><i class="fa-solid fa-briefcase"></i><h3>Businesses</h3><p>Influence employment opportunities, workplace equality and economic participation.</p></article>
+      <article><i class="fa-solid fa-school"></i><h3>Educational institutions</h3><p>Expand learning opportunities and challenge stereotypes through education.</p></article>
+    </div>
 
-  <div class="dimension-grid">
-    <article><span>SOCIAL</span><h3>Wellbeing & access</h3><p>Healthcare, education, safety, social inclusion and access to opportunities.</p></article>
-    <article><span>ECONOMIC</span><h3>Resources & opportunity</h3><p>Employment, income, financial independence and access to economic resources.</p></article>
-    <article><span>POLITICAL</span><h3>Power & participation</h3><p>Representation, rights, legislation and involvement in public decisions.</p></article>
-  </div>
+    <div class="section-heading"><div><p class="eyebrow">THREE DEVELOPMENT PERSPECTIVES</p><h2>Looking at development from different angles.</h2></div></div>
+    <div class="perspective-grid">
+      <article class="perspective-card social"><span>01</span><h3>Social development</h3><p>Focuses on health, education, safety, dignity and equal access to opportunities.</p><small>KEY QUESTION · Are people's quality of life and opportunities improving?</small></article>
+      <article class="perspective-card economic"><span>02</span><h3>Economic development</h3><p>Considers employment, income, financial independence and access to resources.</p><small>KEY QUESTION · Can people participate fairly in the economy?</small></article>
+      <article class="perspective-card political"><span>03</span><h3>Political development</h3><p>Examines representation, rights, participation and influence over decisions.</p><small>KEY QUESTION · Are different groups represented in decision-making?</small></article>
+    </div>
 
-  <div class="comparison-note">
-    <span class="eyebrow">COUNTRY COMPARISONS</span>
-    <h3>Why can countries have different outcomes?</h3>
-    <p>Comparisons between countries such as Rwanda, Sweden and India can reveal different levels of political representation. Maternal health and adolescent fertility also vary. These differences need to be examined using the same data year and indicator definitions, alongside social, economic and political context. A national average may conceal major differences within a country.</p>
+    <div class="content-panel">
+      <p class="eyebrow">EVALUATING STAKEHOLDERS</p>
+      <h2>Cooperation is essential.</h2>
+      <p>Each stakeholder has different responsibilities and resources. Governments can create policies, NGOs can support communities, schools can improve awareness and individuals can challenge unfair behaviour. However, no single stakeholder can solve gender inequality alone. Long-term progress requires cooperation, accountability and attention to local needs.</p>
+    </div>
   </div>
 </section>
 
 <!-- SOURCES -->
 <section class="page" id="sources">
-  <div class="page-heading">
-    <span class="eyebrow">07 / CRITERION A</span>
-    <h2>Evidence, sources<br><em>& reflection.</em></h2>
-    <p>Reliable research depends on evaluating where information comes from, why it was produced and what its limitations are.</p>
+  <div class="page-hero page-hero-sources">
+    <p class="eyebrow light">07 — EVALUATION & REFLECTION</p>
+    <h1>Evidence<br><em>and perspective.</em></h1>
+    <p>Checking where information comes from and recognising the limits of research.</p>
   </div>
 
-  <div class="opvl-grid">
-    <article><span>O</span><h3>Origin</h3><p>International organisations such as the World Bank, United Nations agencies and IPU publish statistical datasets and reports.</p></article>
-    <article><span>P</span><h3>Purpose</h3><p>These sources collect and communicate information to monitor development, support policy and inform research.</p></article>
-    <article><span>V</span><h3>Value</h3><p>Standardised definitions and country-level time series make comparisons possible across locations and years.</p></article>
-    <article><span>L</span><h3>Limitations</h3><p>Data may be estimated, delayed or incomplete. Statistical indicators cannot represent every individual experience.</p></article>
-  </div>
+  <div class="section-wrap">
+    <div class="section-heading"><div><p class="eyebrow">SOURCE EVALUATION</p><h2>OPVL framework.</h2></div></div>
+    <div class="opvl-grid">
+      <article><span>O</span><h3>Origin</h3><p>Who created the source? When was it published? Is it an official organisation, research institution or individual author?</p></article>
+      <article><span>P</span><h3>Purpose</h3><p>Why was the source created? Is it informing, reporting, persuading, educating or advocating?</p></article>
+      <article><span>V</span><h3>Value</h3><p>How does the source help the investigation? Consider its data, expertise, geographical coverage and relevance.</p></article>
+      <article><span>L</span><h3>Limitation</h3><p>What is missing? Consider age of data, possible bias, limited coverage and what the source cannot explain.</p></article>
+    </div>
 
-  <div class="reflection-card">
-    <span class="eyebrow">PERSONAL REFLECTION</span>
-    <h3>What has this investigation taught me?</h3>
-    <p>This investigation helped me understand that development is not only about economic growth. It also involves health, education, representation and equal opportunities. I learned that indicators can reveal geographical patterns, but statistics need context to be interpreted accurately. I would improve my investigation by including more local evidence, checking data years carefully and comparing statistical information with qualitative research. Further research could explore how specific policies influence gender equality over time.</p>
-  </div>
+    <div class="reflection-panel">
+      <p class="eyebrow light">REFLECTION</p>
+      <h2>What the investigation reveals.</h2>
+      <div class="reflection-points">
+        <div><b>What I learned</b><p>Development indicators help compare places, but statistics need context before conclusions can be made.</p></div>
+        <div><b>Skills developed</b><p>Research, source evaluation, data interpretation, geographical comparison and communication.</p></div>
+        <div><b>Changing perspective</b><p>Gender inequality is not one single issue. It connects health, education, economic opportunity and political representation.</p></div>
+        <div><b>Research limitations</b><p>Some country data may be missing or from different years. National averages may hide local differences.</p></div>
+      </div>
+    </div>
 
-  <div class="section-heading"><div><span class="eyebrow">BIBLIOGRAPHY</span><h2>Research sources</h2></div></div>
-
-  <div class="source-list">
-    <a href="https://data.worldbank.org/indicator/SP.ADO.TFRT" target="_blank" rel="noopener"><span>01</span><div><b>World Bank</b><small>Adolescent fertility rate</small></div><span>↗</span></a>
-    <a href="https://data.worldbank.org/indicator/SH.STA.MMRT" target="_blank" rel="noopener"><span>02</span><div><b>World Bank</b><small>Maternal mortality ratio</small></div><span>↗</span></a>
-    <a href="https://data.worldbank.org/indicator/SG.GEN.PARL.ZS" target="_blank" rel="noopener"><span>03</span><div><b>World Bank</b><small>Women in parliament</small></div><span>↗</span></a>
-    <a href="https://data.ipu.org/" target="_blank" rel="noopener"><span>04</span><div><b>Inter-Parliamentary Union</b><small>Women in national parliaments</small></div><span>↗</span></a>
-    <a href="https://www.unwomen.org/" target="_blank" rel="noopener"><span>05</span><div><b>UN Women</b><small>Gender equality research and programmes</small></div><span>↗</span></a>
-    <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener"><span>06</span><div><b>United Nations</b><small>Sustainable Development Goal 5</small></div><span>↗</span></a>
+    <div class="section-heading"><div><p class="eyebrow">BIBLIOGRAPHY</p><h2>Explore the original sources.</h2></div></div>
+    <div class="source-list">
+      <a href="https://data.worldbank.org/indicator/SP.ADO.TFRT" target="_blank" rel="noopener"><span>01</span><div><b>World Bank — Adolescent fertility rate</b><small>Indicator SP.ADO.TFRT</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a href="https://data.worldbank.org/indicator/SH.STA.MMRT" target="_blank" rel="noopener"><span>02</span><div><b>World Bank — Maternal mortality ratio</b><small>Indicator SH.STA.MMRT</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a href="https://data.worldbank.org/indicator/SG.GEN.PARL.ZS" target="_blank" rel="noopener"><span>03</span><div><b>World Bank — Women in Parliament</b><small>Indicator SG.GEN.PARL.ZS</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener"><span>04</span><div><b>United Nations — Sustainable Development Goal 5</b><small>Gender equality</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a href="https://www.unwomen.org/" target="_blank" rel="noopener"><span>05</span><div><b>UN Women</b><small>Gender equality research and resources</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+    <p class="small-note">Remember to add the exact publication dates, access dates, image credits and any additional sources you actually use in your final bibliography.</p>
   </div>
-  <p class="small-note">Add the specific report titles, publication dates, access dates and image credits for every source actually used in your final submission.</p>
 </section>
 
 <!-- ABOUT -->
 <section class="page" id="about">
-  <div class="page-heading">
-    <span class="eyebrow">THE RESEARCHER</span>
-    <h2>A little<br><em>about me.</em></h2>
+  <div class="page-hero page-hero-about">
+    <p class="eyebrow light">THE PERSON BEHIND THE PROJECT</p>
+    <h1>A little<br><em>about me.</em></h1>
+    <p>Research, geography and a question worth exploring.</p>
   </div>
 
-  <div class="about-card">
-    <div class="about-photo">
-      <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85" alt="Portrait placeholder">
+  <div class="section-wrap about-layout">
+    <div class="about-photo-wrap">
+      <img src="images/about-me.jpg" alt="Photograph of Nakshatra" class="about-photo" onerror="this.style.display='none';document.getElementById('photoMissing').style.display='flex';">
+      <div id="photoMissing" class="photo-missing">
+        <i class="fa-regular fa-image"></i>
+        <span>Add your photo as images/about-me.jpg</span>
+      </div>
+      <span class="photo-caption">NAKSHATRA VEERNALA · GRADE 8</span>
     </div>
     <div class="about-copy">
-      <span class="eyebrow">GRADE 8 · IB LEARNER</span>
-      <h2>Nakshatra Veernala</h2>
-      <p>I created this website as part of my geography development-indicator inquiry. I wanted to explore how gender inequality affects health and political representation, understand what statistics reveal and consider how awareness can contribute to meaningful change.</p>
-      <p class="small-note">Replace the placeholder photograph with your own image before publishing.</p>
+      <p class="eyebrow">THE PROJECT AUTHOR</p>
+      <h2>Curiosity can<br><em>start a conversation.</em></h2>
+      <p>I'm Nakshatra Veernala, a Grade 8 student exploring gender inequality through geography and development.</p>
+      <p>I created Beyond the Divide to understand how gender inequality appears in different parts of the world, how it can be measured and why equal opportunities matter.</p>
+      <p>This project brings together research, statistics and examples of people working towards change.</p>
+      <div class="about-signature">Beyond the Divide <span>— 2026</span></div>
     </div>
   </div>
 </section>
@@ -434,12 +617,12 @@
 </main>
 
 <footer class="footer">
-  <span>BEYOND THE DIVIDE</span>
-  <span>Gender · Geography · Development</span>
-  <span>GRADE 8 INQUIRY</span>
+  <a class="brand footer-brand" href="#home" data-page="home"><span class="brand-mark">B.</span><span>BEYOND <i>THE</i> DIVIDE</span></a>
+  <p>A Grade 8 geographical exploration of gender inequality.</p>
+  <span>© 2026 · NAKSHATRA VEERNALA</span>
 </footer>
 
-<div id="tooltip" class="map-tooltip"></div>
+<div id="toast" class="toast" role="status"></div>
 <script src="script.js"></script>
 </body>
 </html>
