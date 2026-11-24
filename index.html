@@ -4,24 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Beyond the Divide explores gender inequality through research, data, stories and action.">
-  <title>Beyond the Divide | Gender Equality</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Beyond the Divide | Gender Inequality</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<header class="site-header">
+<header class="topbar">
   <a class="brand" href="#home">
-    <span class="brand-mark">BD.</span>
-    <span>Beyond the Divide</span>
+    <span class="brand-mark">BD</span>
+    <span>BEYOND THE DIVIDE</span>
   </a>
-
-  <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
-
-  <nav id="mainNav">
+  <nav>
     <a href="#issue">Issue</a>
     <a href="#research">Research</a>
     <a href="#india">India</a>
@@ -38,85 +32,133 @@
 <!-- HOME -->
 <section id="home" class="hero">
   <div class="hero-image">
-    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=85" alt="People standing together">
+    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1800&q=85"
+         alt="People standing together"
+         onerror="this.style.display='none'">
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="eyebrow light">A project about equality</span>
+    <p class="eyebrow">A GLOBAL ISSUE • A HUMAN STORY</p>
     <h1>Beyond<br>the Divide.</h1>
-    <p>What if the opportunities available to us were never determined by our gender?</p>
-    <a href="#issue" class="hero-button">Explore the issue ↓</a>
+    <p class="hero-text">
+      Gender inequality is not just about numbers.
+      It is about opportunities, freedom, voices and futures.
+    </p>
+    <a class="hero-button" href="#issue">Explore the issue ↗</a>
   </div>
-  <span class="hero-caption">UNDERSTANDING · QUESTIONING · CHANGING</span>
+  <span class="hero-number">01 / 08</span>
 </section>
 
 <!-- ISSUE -->
 <section id="issue" class="section issue-section">
-  <div class="section-top">
-    <span class="eyebrow">01 — Understanding</span>
-    <h2>It is more than<br><em>just a statistic.</em></h2>
+  <div class="section-heading">
+    <span class="eyebrow">01 — THE ISSUE</span>
+    <h2>Equality isn't<br>yet a reality.</h2>
   </div>
 
-  <div class="issue-layout">
-    <div class="issue-image">
-      <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1000&q=85" alt="Woman in a thoughtful portrait">
-      <span class="image-label">Equal opportunities matter.</span>
+  <div class="issue-grid">
+    <div class="issue-photo photo-large">
+      <img src="https://images.unsplash.com/photo-1594708767771-a750c1c8b5f2?auto=format&fit=crop&w=900&q=80"
+           alt="Women working in agricultural fields"
+           onerror="imageFallback(this)">
+      <span class="photo-caption">WORK • OPPORTUNITY • RESOURCES</span>
     </div>
-
     <div class="issue-text">
-      <p class="lead">Gender inequality exists when people experience unequal rights, opportunities, treatment or expectations because of their gender.</p>
-      <p>It can influence access to education, healthcare, employment, leadership, safety and the freedom to make personal choices. These inequalities are often shaped by social expectations, traditions, laws and economic circumstances.</p>
-      <p>Equality does not mean everyone has to live the same life. It means everyone deserves the same rights, respect and opportunities to decide what their future looks like.</p>
-      <div class="quote-line">“Equality is not about making everyone identical. It is about making opportunity fair.”</div>
+      <p class="dropcap">
+        Gender inequality occurs when people are treated differently
+        or have unequal access to rights, resources, opportunities
+        and power because of their gender.
+      </p>
+      <p>
+        Around the world, women and girls may face barriers in
+        education, employment, healthcare, leadership, safety and
+        decision-making. These inequalities are influenced by social
+        expectations, laws, traditions and economic conditions.
+      </p>
+      <div class="small-quote">
+        <span>“</span>
+        Equality means having the freedom and opportunity to shape
+        your own future.
+      </div>
     </div>
   </div>
 
-  <div class="issue-strip">
-    <div><span>01</span><h3>Education</h3><p>Who gets to learn, and who gets left behind?</p></div>
-    <div><span>02</span><h3>Economics</h3><p>Who earns, owns and gets recognised?</p></div>
-    <div><span>03</span><h3>Leadership</h3><p>Who makes decisions that affect society?</p></div>
-    <div><span>04</span><h3>Everyday life</h3><p>Who carries expectations and responsibilities?</p></div>
+  <div class="issue-mini-grid">
+    <article class="mini-issue">
+      <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216?auto=format&fit=crop&w=700&q=80"
+           alt="Children in a learning environment" onerror="imageFallback(this)">
+      <h3>Education</h3>
+      <p>Barriers can prevent girls from attending school, completing education or accessing learning opportunities.</p>
+    </article>
+    <article class="mini-issue">
+      <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935e1d8?auto=format&fit=crop&w=700&q=80"
+           alt="Woman carrying out household work" onerror="imageFallback(this)">
+      <h3>Unpaid labour</h3>
+      <p>Domestic work and caregiving are often unevenly distributed and may limit time for paid work or education.</p>
+    </article>
+    <article class="mini-issue">
+      <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=700&q=80"
+           alt="Woman working in a professional environment" onerror="imageFallback(this)">
+      <h3>Work</h3>
+      <p>Discrimination, unequal pay, career barriers and limited access to leadership can affect women.</p>
+    </article>
   </div>
 </section>
 
 <!-- RESEARCH -->
 <section id="research" class="section research-section">
-  <div class="section-top">
-    <span class="eyebrow">02 — The evidence</span>
-    <h2>Numbers that<br><em>tell a story.</em></h2>
-    <p class="section-intro">Gender inequality is not simply an individual experience. It is reflected in patterns across the world.</p>
+  <div class="section-heading centered">
+    <span class="eyebrow">02 — THE EVIDENCE</span>
+    <h2>What the data<br>reveals.</h2>
+    <p>Global indicators show that equality is still a work in progress.</p>
   </div>
 
   <div class="stat-grid">
-    <article class="stat-card stat-blue">
-      <span class="stat-number">~1 in 10</span>
-      <p>Women and girls live in extreme poverty globally, according to UN Women's estimates of poverty among women and girls.</p>
-      <span class="stat-source">UN WOMEN</span>
-    </article>
-
-    <article class="stat-card stat-cream">
-      <span class="stat-number">2.5×</span>
-      <p>Women spend roughly 2.5 times as much time as men on unpaid care and domestic work in many global estimates.</p>
-      <span class="stat-source">UN / ILO DATA</span>
-    </article>
-
-    <article class="stat-card stat-lilac">
-      <span class="stat-number">26.9%</span>
-      <p>Women held about 26.9% of seats in national parliaments globally in 2024.</p>
-      <span class="stat-source">IPU · 2024</span>
-    </article>
+    <div class="stat">
+      <span class="stat-label">GLOBAL LEADERSHIP</span>
+      <strong>~27%</strong>
+      <p>Women held approximately 27% of seats in national parliaments worldwide in recent years.</p>
+    </div>
+    <div class="stat">
+      <span class="stat-label">ECONOMIC PARTICIPATION</span>
+      <strong>Unequal</strong>
+      <p>Women continue to face gaps in labour-force participation, earnings and career opportunities.</p>
+    </div>
+    <div class="stat">
+      <span class="stat-label">CARE WORK</span>
+      <strong>2.5×</strong>
+      <p>Women globally spend around 2.5 times as many hours on unpaid care and domestic work as men.</p>
+    </div>
   </div>
 
-  <div class="research-bottom">
-    <div class="research-note">
-      <span class="eyebrow">What the data reveals</span>
-      <h3>Progress exists.<br>But it isn't equal.</h3>
-      <p>Different countries and communities experience inequality differently. Education, income, disability, location and social background can all influence opportunities.</p>
-      <p>Statistics help identify patterns that may otherwise be overlooked. They also remind us to look beyond averages and consider real people's experiences.</p>
-    </div>
+  <div class="research-note">
+    <p>
+      <strong>Important:</strong> Indicators are approximate, refer to different
+      datasets and reporting periods, and are not directly comparable.
+      Check the linked sources for their definitions and dates.
+    </p>
+  </div>
 
-    <div class="research-photo">
-      <img src="https://images.unsplash.com/photo-1491349174775-aaafddd81942?auto=format&fit=crop&w=900&q=85" alt="Women learning and working together">
+  <div class="research-chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">
+        <span>Representation</span>
+        <small>Women in national parliaments</small>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="parliamentChart"></canvas>
+      </div>
+      <p class="chart-footnote">Approximate global representation. See UN Women / IPU data.</p>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">
+        <span>Care inequality</span>
+        <small>Unpaid work distribution</small>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="careChart"></canvas>
+      </div>
+      <p class="chart-footnote">Illustrative comparison of the global average ratio, not hours per day.</p>
     </div>
   </div>
 </section>
@@ -124,312 +166,367 @@
 <!-- INDIA -->
 <section id="india" class="section india-section">
   <div class="india-heading">
-    <span class="eyebrow">03 — India</span>
-    <h2>India through<br><em>another lens.</em></h2>
-    <p>India has made important progress in education, political participation, employment and legal rights. Yet opportunity can still differ significantly between communities, regions and households.</p>
+    <span class="eyebrow">03 — INDIA</span>
+    <h2>Progress, barriers<br>& possibilities.</h2>
+    <p>
+      India has seen progress in education, entrepreneurship, public
+      participation and leadership. However, gender gaps still exist
+      across many aspects of everyday life.
+    </p>
   </div>
 
   <div class="india-feature">
-    <div class="india-feature-image">
-      <img src="https://images.unsplash.com/photo-1594708767771-a7500d4a3c65?auto=format&fit=crop&w=1100&q=85" alt="Indian woman in a rural setting">
+    <div class="india-feature-photo">
+      <img src="https://images.unsplash.com/photo-1590736969955-71cc94901144?auto=format&fit=crop&w=1100&q=85"
+           alt="Women working in an agricultural setting"
+           onerror="imageFallback(this)">
     </div>
     <div class="india-feature-text">
-      <span class="eyebrow">The everyday reality</span>
-      <h3>Progress and barriers can exist together.</h3>
-      <p>Girls across India are pursuing education, entering professions, participating in sports and contributing to public life. However, barriers such as unequal access to resources, safety concerns, unpaid work and social expectations continue to affect many people.</p>
-      <p>These experiences are not universal. A woman's opportunities may differ depending on her location, economic circumstances, family, community and access to support.</p>
+      <span class="eyebrow">THE EVERYDAY REALITY</span>
+      <h3>Opportunity should not depend on gender.</h3>
+      <p>
+        Rural women may face challenges including limited access to land,
+        credit, education, healthcare, technology and paid employment.
+        These barriers vary by region, income, caste, disability and
+        other social circumstances.
+      </p>
+      <p>
+        Women also contribute substantially to agriculture, family
+        businesses, communities and household economies.
+      </p>
     </div>
   </div>
 
-  <div class="india-mini-grid">
-    <article>
-      <span class="mini-number">01</span>
-      <h3>Education</h3>
-      <p>Access and participation have improved, but regional and socioeconomic differences still affect learning opportunities.</p>
-    </article>
-    <article>
-      <span class="mini-number">02</span>
-      <h3>Employment</h3>
-      <p>Women work across agriculture, industry, services and entrepreneurship, although unpaid work and barriers to employment remain significant.</p>
-    </article>
-    <article>
-      <span class="mini-number">03</span>
-      <h3>Representation</h3>
-      <p>Women participate in government and public life, but their representation in many decision-making spaces remains limited.</p>
-    </article>
-  </div>
-
-  <div class="india-politics">
-    <div class="politics-copy">
-      <span class="eyebrow">Women in Indian politics</span>
-      <h3>Representation changes whose voices are heard.</h3>
-      <p>Women have participated in India's political history as elected representatives, activists, legislators and policymakers. Their representation in the Lok Sabha has increased over time, but women still occupy a minority of seats.</p>
-      <p>The Constitution's 106th Amendment Act, 2023 provides for reservation of one-third of seats for women in the Lok Sabha, state legislative assemblies and the Delhi legislative assembly, subject to the provisions regarding its implementation, including the census and delimitation process.</p>
+  <div class="india-strip">
+    <div>
+      <span class="eyebrow">EDUCATION</span>
+      <p>Access to education can expand choices and economic independence.</p>
     </div>
-    <div class="politics-image">
-      <img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&w=900&q=85" alt="Women participating in a public discussion">
+    <div>
+      <span class="eyebrow">ECONOMY</span>
+      <p>Equal opportunities in work, ownership and financial access matter.</p>
+    </div>
+    <div>
+      <span class="eyebrow">LEADERSHIP</span>
+      <p>Representation in decision-making helps broaden whose voices are heard.</p>
     </div>
   </div>
 </section>
 
 <!-- TRENDS -->
 <section id="trends" class="section trends-section">
-  <div class="section-top">
-    <span class="eyebrow">04 — Patterns over time</span>
-    <h2>Progress, measured<br><em>through trends.</em></h2>
-    <p class="section-intro">Data can reveal how representation changes over time. These charts explore selected indicators, rather than measuring every aspect of gender equality.</p>
+  <div class="trends-top">
+    <span class="eyebrow">04 — TRENDS</span>
+    <h2>Numbers tell<br>part of the story.</h2>
+    <p>
+      Representation has changed over time, but progress has not been
+      equal across countries, institutions or sectors.
+    </p>
   </div>
 
-  <div class="trend-grid">
-    <article class="trend-card">
-      <div class="trend-card-heading">
-        <span class="eyebrow">Global representation</span>
-        <h3>Women in national parliaments</h3>
+  <div class="trend-layout">
+    <div class="trend-chart-box">
+      <div class="chart-title">
+        <span>India's Lok Sabha</span>
+        <small>Women elected as MPs, by election</small>
       </div>
-      <canvas id="globalChart"></canvas>
-      <p class="chart-caption">Approximate global percentage of women in national parliaments. Selected years.</p>
-      <div class="chart-analysis">
-        <span>THE TREND</span>
-        <p>Women's representation has increased over the decades, but women still hold fewer than half of parliamentary seats globally.</p>
+      <div class="chart-wrap tall">
+        <canvas id="indiaChart"></canvas>
       </div>
-    </article>
+      <p class="chart-footnote">
+        Historical figures. Verify values using the Election Commission
+        or Parliament sources before using as final research data.
+      </p>
+    </div>
 
-    <article class="trend-card trend-card-dark">
-      <div class="trend-card-heading">
-        <span class="eyebrow">India · Lok Sabha</span>
-        <h3>Women's representation</h3>
+    <div class="trend-analysis">
+      <div class="trend-label">MY ANALYSIS</div>
+      <h3>Slow progress, persistent gaps.</h3>
+      <p>
+        Women's representation in India's Lok Sabha has increased
+        compared with the early elections. However, the share of women
+        elected remains far below equal representation.
+      </p>
+      <p>
+        This suggests that progress in representation does not
+        automatically mean that barriers to political participation
+        have disappeared.
+      </p>
+      <div class="trend-pull">
+        Progress is measurable.<br>Equality still requires action.
       </div>
-      <canvas id="indiaChart"></canvas>
-      <p class="chart-caption">Approximate share of elected women MPs in selected Lok Sabha elections.</p>
-      <div class="chart-analysis">
-        <span>THE TREND</span>
-        <p>Representation has grown over time, although women remain a minority in the Lok Sabha.</p>
-      </div>
-    </article>
-  </div>
-
-  <div class="trend-footnote">
-    <span class="eyebrow">Reading the graphs</span>
-    <p>These are selected historical data points, not a prediction. Data definitions and reporting years may differ between sources. Consult IPU and Election Commission of India records for exact figures and methodology. These graphs are designed as visual summaries.</p>
+    </div>
   </div>
 </section>
 
 <!-- VOICES -->
 <section id="voices" class="section voices-section">
   <div class="voices-heading">
-    <span class="eyebrow">05 — Voices and change</span>
-    <h2>Women who<br><em>changed the conversation.</em></h2>
-    <p>Three Indian women whose work has influenced education, social movements and public life.</p>
+    <span class="eyebrow">05 — VOICES</span>
+    <h2>Women who<br>challenged boundaries.</h2>
+    <p>Three Indian women whose work influenced social change.</p>
   </div>
 
-  <div class="voice-grid">
-    <article class="voice-card">
-      <div class="voice-image">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Savitribai_Phule.jpg/500px-Savitribai_Phule.jpg" alt="Portrait of Savitribai Phule">
+  <div class="leader-grid">
+
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg"
+             alt="Portrait of Savitribai Phule"
+             onerror="imageFallback(this)">
       </div>
-      <div class="voice-content">
-        <span class="voice-category">Education · 19th century</span>
+      <div class="leader-info">
+        <span class="leader-tag">EDUCATION</span>
         <h3>Savitribai Phule</h3>
-        <p>A pioneering educator and social reformer who worked to expand education for girls and marginalised communities. She challenged barriers that prevented many girls from learning.</p>
+        <p>
+          A pioneering educator and social reformer who helped establish
+          a school for girls in Pune in 1848 alongside Jyotirao Phule.
+          She challenged caste discrimination and barriers to women's education.
+        </p>
+        <a href="https://en.wikipedia.org/wiki/Savitribai_Phule" target="_blank" rel="noopener">Learn more ↗</a>
       </div>
     </article>
 
-    <article class="voice-card">
-      <div class="voice-image">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Aruna_Roy.jpg/500px-Aruna_Roy.jpg" alt="Portrait of Aruna Roy">
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg"
+             alt="Portrait of Aruna Roy"
+             onerror="imageFallback(this)">
       </div>
-      <div class="voice-content">
-        <span class="voice-category">Activism · Transparency</span>
+      <div class="leader-info">
+        <span class="leader-tag">TRANSPARENCY</span>
         <h3>Aruna Roy</h3>
-        <p>A social activist known for her work with the Mazdoor Kisan Shakti Sangathan and campaigns for transparency, accountability and the Right to Information.</p>
+        <p>
+          A social activist associated with the Mazdoor Kisan Shakti Sangathan
+          and the movement for the Right to Information, helping strengthen
+          public accountability and citizen participation.
+        </p>
+        <a href="https://en.wikipedia.org/wiki/Aruna_Roy" target="_blank" rel="noopener">Learn more ↗</a>
       </div>
     </article>
 
-    <article class="voice-card">
-      <div class="voice-image">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Medha_Patkar.jpg/500px-Medha_Patkar.jpg" alt="Portrait of Medha Patkar">
+    <article class="leader-card">
+      <div class="leader-image">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg"
+             alt="Portrait of Medha Patkar"
+             onerror="imageFallback(this)">
       </div>
-      <div class="voice-content">
-        <span class="voice-category">Social movements</span>
+      <div class="leader-info">
+        <span class="leader-tag">SOCIAL JUSTICE</span>
         <h3>Medha Patkar</h3>
-        <p>A social activist associated with the Narmada Bachao Andolan, advocating for the rights of communities affected by development projects and displacement.</p>
+        <p>
+          A social activist known for her work with the Narmada Bachao
+          Andolan and advocacy involving displaced communities,
+          environmental concerns and social justice.
+        </p>
+        <a href="https://en.wikipedia.org/wiki/Medha_Patkar" target="_blank" rel="noopener">Learn more ↗</a>
       </div>
     </article>
+
   </div>
-  <p class="voices-note">These women are featured for their contributions to social change. Feminism and gender equality involve many movements, perspectives and individuals.</p>
 </section>
 
 <!-- ACTION -->
 <section id="action" class="section action-section">
-  <div class="action-heading">
-    <span class="eyebrow">06 — Moving forward</span>
-    <h2>Small actions.<br><em>Structural change.</em></h2>
-  </div>
-
   <div class="action-intro">
-    <p>Gender equality cannot be achieved through awareness alone. It requires changes in attitudes, institutions, policies and everyday behaviour.</p>
+    <span class="eyebrow">06 — ACTION</span>
+    <h2>Change begins<br>with awareness.</h2>
+    <p>
+      Gender equality is not achieved by one person alone.
+      It involves education, policy, communities and everyday choices.
+    </p>
   </div>
 
   <div class="action-list">
-    <article class="action-item">
+    <article>
       <span>01</span>
-      <div><h3>Question stereotypes</h3><p>Challenge assumptions about which careers, subjects, responsibilities or activities belong to a particular gender.</p></div>
+      <div>
+        <h3>Challenge stereotypes</h3>
+        <p>Question expectations that limit what people can learn, do or become.</p>
+      </div>
     </article>
-    <article class="action-item">
+    <article>
       <span>02</span>
-      <div><h3>Share responsibilities</h3><p>Recognise and distribute household work, caregiving and other responsibilities more fairly.</p></div>
+      <div>
+        <h3>Support equal education</h3>
+        <p>Promote learning opportunities and challenge barriers that prevent access.</p>
+      </div>
     </article>
-    <article class="action-item">
+    <article>
       <span>03</span>
-      <div><h3>Support education</h3><p>Promote safe, inclusive learning environments and equal access to resources and opportunities.</p></div>
+      <div>
+        <h3>Share responsibilities</h3>
+        <p>Recognise and fairly distribute household and caregiving responsibilities.</p>
+      </div>
     </article>
-    <article class="action-item">
+    <article>
       <span>04</span>
-      <div><h3>Listen to experiences</h3><p>Take different perspectives seriously without assuming that everyone experiences inequality in the same way.</p></div>
-    </article>
-    <article class="action-item">
-      <span>05</span>
-      <div><h3>Demand accountability</h3><p>Support policies and institutions that protect rights, promote fairness and address discrimination.</p></div>
+      <div>
+        <h3>Amplify voices</h3>
+        <p>Listen to women, respect their perspectives and support inclusive leadership.</p>
+      </div>
     </article>
   </div>
 
-  <div class="action-ending">
-    <p>Equality is not a single destination. It is a commitment that must be continually renewed.</p>
+  <div class="action-banner">
+    <h3>Equality is not a privilege.<br>It is a right.</h3>
   </div>
 </section>
 
 <!-- MYP -->
 <section id="myp" class="section myp-section">
   <div class="myp-heading">
-    <span class="eyebrow">07 — Design journey</span>
-    <h2>The project<br><em>behind the website.</em></h2>
-    <p>This website was developed as an MYP Design project, combining research, planning, creation and evaluation to communicate an important global issue.</p>
+    <span class="eyebrow">07 — DESIGN PORTFOLIO</span>
+    <h2>The MYP<br>design process.</h2>
+    <p>My process of researching, planning, creating and evaluating this website.</p>
   </div>
 
-  <div class="myp-tabs">
-    <button class="myp-tab active" data-target="criterionA">Criterion A</button>
-    <button class="myp-tab" data-target="criterionB">Criterion B</button>
-    <button class="myp-tab" data-target="criterionC">Criterion C</button>
-    <button class="myp-tab" data-target="criterionD">Criterion D</button>
+  <div class="myp-grid">
+    <article class="myp-card a">
+      <span class="myp-letter">A</span>
+      <span class="eyebrow">INQUIRING & ANALYSING</span>
+      <h3>Research</h3>
+      <div class="myp-content">
+        <h4>Problem</h4>
+        <p>Gender inequality remains a global issue, but information about its causes and effects can be fragmented or difficult for young audiences to understand.</p>
+        <h4>Target audience</h4>
+        <p>Students and young people interested in social issues.</p>
+        <h4>Research focus</h4>
+        <p>Education, unpaid labour, employment, leadership and gender inequality in India.</p>
+        <h4>Design brief</h4>
+        <p>Create an accessible, engaging awareness website that presents research, trends, examples and possible actions.</p>
+      </div>
+    </article>
+
+    <article class="myp-card b">
+      <span class="myp-letter">B</span>
+      <span class="eyebrow">DEVELOPING IDEAS</span>
+      <h3>Planning</h3>
+      <div class="myp-content">
+        <h4>Design specifications</h4>
+        <ul>
+          <li>Clear and intuitive navigation</li>
+          <li>Readable text and responsive layouts</li>
+          <li>Meaningful imagery</li>
+          <li>Relevant research and data visualisations</li>
+          <li>Different visual layouts across sections</li>
+          <li>Credible references</li>
+        </ul>
+        <h4>Design approach</h4>
+        <p>A modern editorial website with a restrained palette, compact layouts, accessible typography and a mixture of visual styles.</p>
+      </div>
+    </article>
+
+    <article class="myp-card c">
+      <span class="myp-letter">C</span>
+      <span class="eyebrow">CREATING THE SOLUTION</span>
+      <h3>Development</h3>
+      <div class="myp-content">
+        <h4>Tools</h4>
+        <p>HTML, CSS and JavaScript.</p>
+        <h4>Development</h4>
+        <p>HTML structures the content, CSS establishes layout and visual identity, and JavaScript creates the charts and interactive elements.</p>
+        <h4>Evidence</h4>
+        <p>Add screenshots of your coding process, website pages, graphs and changes made during development.</p>
+        <h4>Time plan</h4>
+        <p>Research → design → code → test → improve.</p>
+      </div>
+    </article>
+
+    <article class="myp-card d">
+      <span class="myp-letter">D</span>
+      <span class="eyebrow">EVALUATING</span>
+      <h3>Testing & reflection</h3>
+      <div class="myp-content">
+        <h4>Testing</h4>
+        <ul>
+          <li>Check navigation links</li>
+          <li>Test images and fallbacks</li>
+          <li>Test on desktop and mobile</li>
+          <li>Check charts and readability</li>
+          <li>Check sources</li>
+        </ul>
+        <h4>Evaluation</h4>
+        <p>Evaluate the website against the design specifications, identify strengths and limitations and propose realistic improvements.</p>
+        <h4>Reflection</h4>
+        <p>Reflect on research skills, design decisions, coding challenges and how the solution informs its target audience.</p>
+      </div>
+    </article>
   </div>
 
-  <div class="myp-panel active" id="criterionA">
-    <span class="eyebrow">Inquiring and analysing</span>
-    <h3>Criterion A</h3>
-    <p>Researching gender inequality helped identify the issue, understand the target audience and investigate how an awareness website could communicate the topic effectively.</p>
-    <div class="myp-subsections">
-      <article><h4>The problem</h4><p>Gender inequality affects opportunities, rights and experiences across different parts of society. Information is often scattered across multiple sources, making it difficult for audiences to understand the issue as a whole.</p></article>
-      <article><h4>The target audience</h4><p>Students and young people who want to learn about gender inequality through accessible information, visual data, examples and actionable ideas.</p></article>
-      <article><h4>Research direction</h4><p>Investigating education, employment, political representation, unpaid work, inequality in India and global trends.</p></article>
-      <article><h4>Design opportunity</h4><p>A website can organise research into clear sections and combine text, visuals, charts and interactive navigation.</p></article>
+  <div class="myp-plan">
+    <h3>Four-week development plan</h3>
+    <div class="plan-grid">
+      <div><span>WEEK 01</span><p>Research, audience and problem definition</p></div>
+      <div><span>WEEK 02</span><p>Design, layout and specifications</p></div>
+      <div><span>WEEK 03</span><p>Website development and visualisation</p></div>
+      <div><span>WEEK 04</span><p>Testing, evaluation and improvements</p></div>
     </div>
-  </div>
-
-  <div class="myp-panel" id="criterionB">
-    <span class="eyebrow">Developing ideas</span>
-    <h3>Criterion B</h3>
-    <p>Design decisions should be based on research, usability, accessibility and the intended audience.</p>
-    <div class="myp-subsections">
-      <article><h4>Design specifications</h4><p>Readable text, clear navigation, consistent spacing, responsive layout, relevant imagery, accurate research, meaningful graphs and organised information.</p></article>
-      <article><h4>Visual direction</h4><p>A modern editorial style using typography, restrained colours, distinct section layouts and compact imagery to make the website engaging without overwhelming the reader.</p></article>
-      <article><h4>Planning</h4><p>Plan the page structure, content hierarchy, visual elements, navigation, graphs and interactive components before building.</p></article>
-      <article><h4>Development plan</h4><p>Research → wireframe → design → code → test → refine → evaluate.</p></article>
-    </div>
-  </div>
-
-  <div class="myp-panel" id="criterionC">
-    <span class="eyebrow">Creating the solution</span>
-    <h3>Criterion C</h3>
-    <p>The website is created using HTML, CSS and JavaScript. Each language contributes to a different part of the design.</p>
-    <div class="myp-subsections">
-      <article><h4>HTML</h4><p>Structures the website into sections, text, images, navigation, graphs and content.</p></article>
-      <article><h4>CSS</h4><p>Creates the layout, colour palette, typography, responsiveness, spacing and visual identity.</p></article>
-      <article><h4>JavaScript</h4><p>Controls navigation, section interactions, chart creation and responsive menu behaviour.</p></article>
-      <article><h4>Creation evidence</h4><p>Capture screenshots of the code, website sections, graphs, responsive layout and testing process as evidence of development.</p></article>
-    </div>
-  </div>
-
-  <div class="myp-panel" id="criterionD">
-    <span class="eyebrow">Evaluating</span>
-    <h3>Criterion D</h3>
-    <p>The final solution should be evaluated against the design specifications and tested with the intended audience.</p>
-    <div class="myp-subsections">
-      <article><h4>Testing</h4><p>Check navigation, image loading, chart display, section links, mobile layout and readability.</p></article>
-      <article><h4>Success criteria</h4><p>Does the website communicate the issue? Are the graphs clear? Is the design organised? Does it work across screen sizes?</p></article>
-      <article><h4>Feedback</h4><p>Collect audience feedback about usability, clarity, visual design and whether the website increased their understanding.</p></article>
-      <article><h4>Improvements</h4><p>Improve accessibility, verify all data and sources, replace failed image links, simplify complex text and refine the layout based on testing.</p></article>
-    </div>
-  </div>
-
-  <div class="roadmap">
-    <span class="eyebrow">Development timeline</span>
-    <h3>Four-week roadmap</h3>
-    <div class="roadmap-grid">
-      <article><span>WEEK 01</span><h4>Research</h4><p>Identify the issue, gather sources, analyse existing solutions and understand the audience.</p></article>
-      <article><span>WEEK 02</span><h4>Plan</h4><p>Develop specifications, wireframes, content structure, design direction and a development plan.</p></article>
-      <article><span>WEEK 03</span><h4>Create</h4><p>Build the website, add content, visual elements, navigation and graphs.</p></article>
-      <article><span>WEEK 04</span><h4>Evaluate</h4><p>Test the solution, collect feedback, identify improvements and document the outcome.</p></article>
-    </div>
-  </div>
-
-  <div class="myp-reflection">
-    <span class="eyebrow">Reflection</span>
-    <p>Creating an awareness website involves more than designing something visually appealing. Research, evidence, accessibility and organisation are essential to communicating an issue responsibly. The design process also requires testing and refining the solution so it is useful to the intended audience.</p>
   </div>
 
   <div class="creator">
     <div class="creator-image">
-      <img src="IMG_4687.jpeg" alt="Website creator">
+      <img src="IMG_4687.jpeg" alt="Website creator" onerror="imageFallback(this)">
     </div>
     <div class="creator-text">
-      <span class="eyebrow">Behind the project</span>
-      <h3>About the creator</h3>
-      <p>This project explores gender inequality through research, design and digital communication. The aim is to make information easier to understand and encourage people to question the barriers that affect equality.</p>
+      <span class="eyebrow">ABOUT THE CREATOR</span>
+      <h3>Created with curiosity and purpose.</h3>
+      <p>
+        This website was developed as an MYP Design project to explore
+        gender inequality, communicate research and encourage awareness
+        through digital design.
+      </p>
+      <p>Designed and developed by Nakshatra.</p>
     </div>
   </div>
 
-  <div class="video-slot">
-    <span class="eyebrow">Project presentation</span>
-    <h3>Explaining the project</h3>
+  <div class="video-section">
+    <span class="eyebrow">PROJECT PRESENTATION</span>
+    <h3>My project video</h3>
     <video controls preload="metadata">
       <source src="speech-video.mp4" type="video/mp4">
-      Your browser does not support video.
+      Your browser does not support this video.
     </video>
-    <p>Replace speech-video.mp4 with your recorded presentation.</p>
+    <p class="chart-footnote">Add speech-video.mp4 to your website folder.</p>
   </div>
 </section>
 
 <!-- SOURCES -->
 <section id="sources" class="section sources-section">
-  <span class="eyebrow">08 — Further reading</span>
-  <h2>Sources &<br><em>references.</em></h2>
-  <p>Explore the organisations and reports used to understand gender inequality, data, policy and representation.</p>
+  <span class="eyebrow">08 — REFERENCES</span>
+  <h2>Where the<br>information comes from.</h2>
+  <p>Use these organisations for research, data and further reading.</p>
 
-  <div class="source-list">
-    <a href="https://www.unwomen.org/en" target="_blank" rel="noopener noreferrer"><span>01</span><div><h3>UN Women</h3><p>Gender equality research, reports, data and global initiatives.</p></div><span>↗</span></a>
-    <a href="https://www.worldbank.org/en/topic/gender" target="_blank" rel="noopener noreferrer"><span>02</span><div><h3>World Bank — Gender</h3><p>Research on economic opportunities, gender and development.</p></div><span>↗</span></a>
-    <a href="https://www.ipu.org/" target="_blank" rel="noopener noreferrer"><span>03</span><div><h3>Inter-Parliamentary Union</h3><p>Political representation and parliamentary data.</p></div><span>↗</span></a>
-    <a href="https://data.ipu.org/women-ranking/" target="_blank" rel="noopener noreferrer"><span>04</span><div><h3>IPU Women in Parliament</h3><p>Data and rankings of women's parliamentary representation.</p></div><span>↗</span></a>
-    <a href="https://www.eci.gov.in/" target="_blank" rel="noopener noreferrer"><span>05</span><div><h3>Election Commission of India</h3><p>Election statistics, results and official information.</p></div><span>↗</span></a>
-    <a href="https://www.pib.gov.in/" target="_blank" rel="noopener noreferrer"><span>06</span><div><h3>Press Information Bureau</h3><p>Government information, policy updates and official announcements.</p></div><span>↗</span></a>
-    <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener noreferrer"><span>07</span><div><h3>United Nations — SDG 5</h3><p>Targets and indicators for achieving gender equality.</p></div><span>↗</span></a>
-    <a href="https://www.ilo.org/" target="_blank" rel="noopener noreferrer"><span>08</span><div><h3>International Labour Organization</h3><p>Employment, labour rights, care work and economic participation.</p></div><span>↗</span></a>
-  </div>
-
-  <div class="sources-note">
-    <p>Statistics on this website should be checked against the original report, publication date and methodology before final submission. Image links are external and may change. The website is an educational project and is not an exhaustive analysis of gender inequality.</p>
+  <div class="sources-list">
+    <a href="https://www.unwomen.org/" target="_blank" rel="noopener">
+      <span>01</span><div><h3>UN Women</h3><p>Gender equality, global research and women's rights.</p></div><span>↗</span>
+    </a>
+    <a href="https://data.ipu.org/" target="_blank" rel="noopener">
+      <span>02</span><div><h3>Inter-Parliamentary Union</h3><p>Women's representation in national parliaments.</p></div><span>↗</span>
+    </a>
+    <a href="https://data.worldbank.org/" target="_blank" rel="noopener">
+      <span>03</span><div><h3>World Bank Data</h3><p>Economic, education and development indicators.</p></div><span>↗</span>
+    </a>
+    <a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">
+      <span>04</span><div><h3>United Nations — SDG 5</h3><p>Gender equality and empowerment of women and girls.</p></div><span>↗</span>
+    </a>
+    <a href="https://eci.gov.in/" target="_blank" rel="noopener">
+      <span>05</span><div><h3>Election Commission of India</h3><p>Election statistics and parliamentary election information.</p></div><span>↗</span>
+    </a>
+    <a href="https://www.pib.gov.in/" target="_blank" rel="noopener">
+      <span>06</span><div><h3>Press Information Bureau</h3><p>Government publications, initiatives and policy information.</p></div><span>↗</span>
+    </a>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <a href="#home" class="footer-brand">Beyond the Divide.</a>
-  <p>Understanding inequality. Questioning barriers. Building equality.</p>
-  <span>DESIGNED AS AN MYP DESIGN PROJECT</span>
+  <span>BEYOND THE DIVIDE</span>
+  <span>Equality. Opportunity. Voice.</span>
+  <a href="#home">Back to top ↑</a>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
