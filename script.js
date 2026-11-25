@@ -1,40 +1,68 @@
 "use strict";
 
-/* =============================================
+/* ============================================
    BEYOND THE DIVIDE
-   Navigation · Charts · Data · Map
-============================================= */
+   Navigation · Map · Data · Charts
+============================================ */
 
 const $ = id => document.getElementById(id);
 
+
 /* NAVIGATION */
 
-const nav = $("mainNav");
-const menuToggle = $("menuToggle");
+function showPage(id) {
+  const pages = document.querySelectorAll(".page");
+  const target = $(id);
 
-menuToggle?.addEventListener("click", () => {
-  nav.classList.toggle("open");
-});
+  if (!target) return;
+
+  pages.forEach(page => page.classList.remove("active"));
+  target.classList.add("active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  document.querySelector("#mainNav")?.classList.remove("open");
+}
 
 document.querySelectorAll("#mainNav a").forEach(link => {
-  link.addEventListener("click", () => nav.classList.remove("open"));
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    const id = link.getAttribute("href").replace("#", "");
+    showPage(id);
+    history.replaceState(null, "", "#" + id);
+  });
 });
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  if (link.closest("#mainNav")) return;
+
+  link.addEventListener("click", e => {
+    const id = link.getAttribute("href").substring(1);
+    const target = $(id);
+
+    if (target && target.classList.contains("page")) {
+      e.preventDefault();
+      showPage(id);
+      history.replaceState(null, "", "#" + id);
+    }
+  });
+});
+
+$("menuToggle")?.addEventListener("click", () => {
+  $("mainNav")?.classList.toggle("open");
+});
+
+const initialPage = location.hash.substring(1);
+if (initialPage && $(initialPage)?.classList.contains("page")) {
+  showPage(initialPage);
+}
 
 
 /* CHARTS */
 
 const chartInstances = {};
 
-if (window.Chart) {
-  Chart.defaults.font.family = "'DM Sans', sans-serif";
-  Chart.defaults.color = "#647e98";
-  Chart.defaults.plugins.legend.display = true;
-  Chart.defaults.plugins.tooltip.backgroundColor = "#081d36";
-  Chart.defaults.plugins.tooltip.padding = 12;
-  Chart.defaults.plugins.tooltip.cornerRadius = 4;
-}
-
-function drawChart(id, config) {
+function createChart(id, config) {
   const canvas = $(id);
   if (!canvas || !window.Chart) return;
 
@@ -45,21 +73,20 @@ function drawChart(id, config) {
   chartInstances[id] = new Chart(canvas, config);
 }
 
-function drawLine(id, labels, values, label, unit) {
-  drawChart(id, {
+function lineChart(id, labels, values, label, unit) {
+  createChart(id, {
     type: "line",
     data: {
       labels,
       datasets: [{
         label,
         data: values,
-        borderColor: "#3477a5",
-        backgroundColor: "rgba(52,119,165,.15)",
+        borderColor: "#326b95",
+        backgroundColor: "rgba(50,107,149,.14)",
         fill: true,
         tension: .3,
-        pointRadius: 3,
-        pointHoverRadius: 6,
-        borderWidth: 3
+        borderWidth: 3,
+        pointRadius: 3
       }]
     },
     options: {
@@ -68,17 +95,21 @@ function drawLine(id, labels, values, label, unit) {
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: unit },
-          grid: { color: "#e4ebf1" }
+          title: {
+            display: true,
+            text: unit
+          }
         },
-        x: { grid: { display: false } }
+        x: {
+          grid: { display: false }
+        }
       }
     }
   });
 }
 
-function drawBar(id, labels, values, label, unit) {
-  drawChart(id, {
+function barChart(id, labels, values, label, unit) {
+  createChart(id, {
     type: "bar",
     data: {
       labels,
@@ -86,8 +117,7 @@ function drawBar(id, labels, values, label, unit) {
         label,
         data: values,
         backgroundColor: "#39739e",
-        borderRadius: 4,
-        maxBarThickness: 45
+        borderRadius: 4
       }]
     },
     options: {
@@ -95,86 +125,103 @@ function drawBar(id, labels, values, label, unit) {
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: unit },
-          grid: { color: "#e4ebf1" }
-        },
-        x: { grid: { display: false } }
+          title: {
+            display: true,
+            text: unit
+          }
+        }
       }
     }
   });
 }
 
+function chartError(id, text) {
+  const canvas = $(id);
+  if (!canvas) return;
 
-/* WORLD BANK DATA */
+  const panel = canvas.parentElement;
+  let message = panel.querySelector(".chart-error");
 
-const WB = {
+  if (!message) {
+    message = document.createElement("p");
+    message.className = "small chart-error";
+    panel.appendChild(message);
+  }
+
+  message.textContent = text;
+}
+
+
+/* WORLD BANK */
+
+const indicators = {
   parliament: "SG.GEN.PARL.ZS",
   fertility: "SP.ADO.TFRT",
   maternal: "SH.STA.MMRT"
 };
 
-const cache = {};
+const dataCache = {};
 
-async function getWB(indicator, years = "1995:2024") {
-  const key = indicator + years;
-  if (cache[key]) return cache[key];
+async function fetchWB(code, dates = "1995:2024") {
+  const cacheKey = code + dates;
+  if (dataCache[cacheKey]) return dataCache[cacheKey];
 
   const url =
     "https://api.worldbank.org/v2/country/all/indicator/" +
-    indicator +
+    code +
     "?format=json&date=" +
-    years +
+    dates +
     "&per_page=20000";
 
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("World Bank request failed.");
+    throw new Error("Data request failed.");
   }
 
-  const data = await response.json();
+  const json = await response.json();
 
-  if (!data || !data[1]) {
+  if (!json || !json[1]) {
     throw new Error("No data returned.");
   }
 
-  cache[key] = data[1];
-  return data[1];
+  dataCache[cacheKey] = json[1];
+  return json[1];
 }
 
-function seriesFor(rows, iso, start = 1995, end = 2024) {
-  const result = rows.filter(row =>
-    row.countryiso3code === iso &&
-    row.value !== null &&
-    Number(row.date) >= start &&
-    Number(row.date) <= end
-  );
-
-  result.sort((a, b) => Number(a.date) - Number(b.date));
+function extractSeries(rows, iso, from = 1995, to = 2024) {
+  const data = rows
+    .filter(r =>
+      r.countryiso3code === iso &&
+      r.value !== null &&
+      Number(r.date) >= from &&
+      Number(r.date) <= to
+    )
+    .sort((a, b) => Number(a.date) - Number(b.date));
 
   return {
-    labels: result.map(r => r.date),
-    values: result.map(r => Number(r.value)),
-    records: result
+    labels: data.map(r => r.date),
+    values: data.map(r => Number(r.value)),
+    records: data
   };
 }
 
-function latestByCountry(rows, yearLimit = 2024) {
+function latestCountryValues(rows, limit = 2024) {
   const output = {};
 
   rows.forEach(row => {
     if (!row.countryiso3code || row.value === null) return;
 
-    const year = Number(row.date);
-    if (year > yearLimit) return;
-
     const iso = row.countryiso3code;
+    const year = Number(row.date);
+
+    if (year > limit) return;
 
     if (!output[iso] || year > output[iso].year) {
       output[iso] = {
+        name: row.country?.value || iso,
         value: Number(row.value),
-        year,
-        name: row.country?.value || iso
+        year
       };
     }
   });
@@ -183,23 +230,23 @@ function latestByCountry(rows, yearLimit = 2024) {
 }
 
 
-/* GLOBAL COUNTRY COMPARISON */
+/* COUNTRY CHART */
 
-async function loadCountryChart() {
+async function loadCountryComparison() {
   try {
-    const rows = await getWB(WB.parliament, "2020:2024");
-    const latest = latestByCountry(rows);
+    const rows = await fetchWB(indicators.parliament, "2020:2024");
+    const latest = latestCountryValues(rows);
 
-    const codes = [
+    const selected = [
       "RWA", "SWE", "NOR", "FIN", "MEX",
       "IND", "USA", "JPN", "PAK", "NGA"
     ];
 
-    const data = codes.map(code => latest[code]).filter(Boolean);
+    const data = selected.map(code => latest[code]).filter(Boolean);
 
     if (!data.length) throw new Error("Country data unavailable.");
 
-    drawBar(
+    barChart(
       "globalCountryChart",
       data.map(d => d.name),
       data.map(d => d.value),
@@ -209,21 +256,21 @@ async function loadCountryChart() {
 
   } catch (error) {
     console.error(error);
-    showChartMessage("globalCountryChart", "Country comparison could not be loaded. Open the World Bank source to view the data.");
+    chartError("globalCountryChart", "Country comparison unavailable. Visit the World Bank dataset.");
   }
 }
 
 
 /* INDIA CHART */
 
-async function loadIndiaChart() {
+async function loadIndiaRepresentation() {
   try {
-    const rows = await getWB(WB.parliament, "1995:2024");
-    const series = seriesFor(rows, "IND");
+    const rows = await fetchWB(indicators.parliament, "1995:2024");
+    const series = extractSeries(rows, "IND");
 
     if (!series.values.length) throw new Error("India data unavailable.");
 
-    drawLine(
+    lineChart(
       "indiaChart",
       series.labels,
       series.values,
@@ -233,7 +280,7 @@ async function loadIndiaChart() {
 
   } catch (error) {
     console.error(error);
-    showChartMessage("indiaChart", "India's data could not be loaded.");
+    chartError("indiaChart", "India data unavailable.");
   }
 }
 
@@ -242,14 +289,12 @@ async function loadIndiaChart() {
 
 async function loadGlobalTrend() {
   try {
-    const rows = await getWB(WB.parliament, "1995:2024");
-    const series = seriesFor(rows, "WLD");
+    const rows = await fetchWB(indicators.parliament, "1995:2024");
+    const series = extractSeries(rows, "WLD");
 
-    if (!series.values.length) {
-      throw new Error("Global trend unavailable.");
-    }
+    if (!series.values.length) throw new Error("Global data unavailable.");
 
-    drawLine(
+    lineChart(
       "trendChart",
       series.labels,
       series.values,
@@ -259,83 +304,64 @@ async function loadGlobalTrend() {
 
   } catch (error) {
     console.error(error);
-    showChartMessage("trendChart", "The global time series could not be loaded.");
+    chartError("trendChart", "Global trend unavailable.");
   }
 }
 
 
-/* INDIA SUPPORTING INDICATORS */
+/* INDIA SUPPORTING DATA */
 
-async function loadSupportingCharts() {
+async function loadFertility() {
   try {
-    const rows = await getWB(WB.fertility, "1995:2024");
-    const series = seriesFor(rows, "IND");
+    const rows = await fetchWB(indicators.fertility, "1995:2024");
+    const series = extractSeries(rows, "IND");
 
-    if (series.values.length) {
-      drawLine(
-        "fertilityChart",
-        series.labels,
-        series.values,
-        "Adolescent fertility rate",
-        "Births per 1,000 women aged 15–19"
-      );
-    } else {
-      showChartMessage("fertilityChart", "Data unavailable.");
-    }
+    if (!series.values.length) throw new Error("No data.");
+
+    lineChart(
+      "fertilityChart",
+      series.labels,
+      series.values,
+      "Adolescent fertility rate",
+      "Births per 1,000 women aged 15–19"
+    );
 
   } catch (error) {
     console.error(error);
-    showChartMessage("fertilityChart", "Adolescent fertility data could not be loaded.");
+    chartError("fertilityChart", "Adolescent fertility data unavailable.");
   }
+}
 
+async function loadMaternal() {
   try {
-    const rows = await getWB(WB.maternal, "1995:2024");
-    const series = seriesFor(rows, "IND");
+    const rows = await fetchWB(indicators.maternal, "1995:2024");
+    const series = extractSeries(rows, "IND");
 
-    if (series.values.length) {
-      drawLine(
-        "maternalChart",
-        series.labels,
-        series.values,
-        "Maternal mortality ratio",
-        "Deaths per 100,000 live births"
-      );
-    } else {
-      showChartMessage("maternalChart", "Data unavailable.");
-    }
+    if (!series.values.length) throw new Error("No data.");
+
+    lineChart(
+      "maternalChart",
+      series.labels,
+      series.values,
+      "Maternal mortality ratio",
+      "Deaths per 100,000 live births"
+    );
 
   } catch (error) {
     console.error(error);
-    showChartMessage("maternalChart", "Maternal mortality data could not be loaded.");
+    chartError("maternalChart", "Maternal mortality data unavailable.");
   }
 }
 
 
-/* CHART ERROR MESSAGE */
+/* WORLD MAP */
 
-function showChartMessage(id, message) {
-  const canvas = $(id);
-  if (!canvas) return;
-
-  const panel = canvas.parentElement;
-
-  if (!panel.querySelector(".chart-error")) {
-    const error = document.createElement("p");
-    error.className = "chart-error small";
-    error.textContent = message;
-    panel.appendChild(error);
-  }
-}
-
-
-/* MAP */
-
-let map = null;
-let geoLayer = null;
+let mapInstance;
+let countryLayer;
 const mapData = {};
 
-function mapColour(value) {
-  if (value === null || value === undefined || isNaN(value)) return "#e8edf2";
+function colour(value) {
+  if (value == null) return "#e8edf2";
   if (value < 10) return "#edf5fa";
   if (value < 20) return "#b9d4e5";
   if (value < 30) return "#7daac9";
@@ -343,62 +369,55 @@ function mapColour(value) {
   return "#123e68";
 }
 
-function getISO(feature) {
+function isoCode(feature) {
   const p = feature.properties || {};
 
-  return (
-    p.ISO_A3 ||
+  return p.ISO_A3 ||
     p.iso_a3 ||
     p.ADM0_A3 ||
     p.ISO3 ||
     p.A3 ||
-    p["ISO3166-1-Alpha-3"] ||
-    null
-  );
+    null;
 }
 
-function getName(feature) {
+function countryName(feature) {
   const p = feature.properties || {};
-  return p.ADMIN || p.name || p.NAME || p.name_en || "Country";
+  return p.ADMIN || p.name || p.NAME || "Country";
 }
 
-function styleFeature(feature) {
-  const iso = getISO(feature);
-  const value = mapData[iso]?.value;
+function featureStyle(feature) {
+  const code = isoCode(feature);
+  const value = mapData[code]?.value;
 
   return {
-    fillColor: mapColour(value),
+    fillColor: colour(value),
     fillOpacity: .85,
-    color: "#fff",
+    color: "#ffffff",
     weight: .7
   };
 }
 
-function addFeatureInteractions(feature, layer) {
-  const iso = getISO(feature);
-  const name = getName(feature);
-  const data = mapData[iso];
+function addMapInteractions(feature, layer) {
+  const code = isoCode(feature);
+  const name = countryName(feature);
+  const data = mapData[code];
 
-  const text = data
-    ? `${name}<br>Women in parliament: ${data.value.toFixed(1)}%<br>Data year: ${data.year}`
+  const tooltip = data
+    ? `${name}<br>Women in parliament: ${data.value.toFixed(1)}%<br>Year: ${data.year}`
     : `${name}<br>Data unavailable`;
 
-  layer.bindTooltip(text, {
-    sticky: true,
-    direction: "auto"
-  });
+  layer.bindTooltip(tooltip, { sticky: true });
 
   layer.on({
     mouseover() {
       this.setStyle({
-        color: "#081d36",
         weight: 2,
+        color: "#071c34",
         fillOpacity: 1
       });
     },
-
     mouseout() {
-      this.setStyle(styleFeature(feature));
+      this.setStyle(featureStyle(feature));
     }
   });
 }
@@ -407,19 +426,17 @@ async function loadMap() {
   const status = $("mapStatus");
 
   if (!window.L) {
-    if (status) status.textContent = "Map library unavailable. The map could not be initialized.";
+    status.textContent = "Leaflet map library unavailable.";
     return;
   }
 
   try {
-    if (status) status.textContent = "Loading country boundaries and data…";
+    status.textContent = "Loading interactive map…";
 
-    map = L.map("worldMap", {
-      zoomControl: true,
-      scrollWheelZoom: false,
+    mapInstance = L.map("worldMap", {
       minZoom: 1,
       maxZoom: 5,
-      worldCopyJump: true
+      scrollWheelZoom: false
     }).setView([20, 0], 2);
 
     L.tileLayer(
@@ -428,87 +445,46 @@ async function loadMap() {
         attribution: "&copy; OpenStreetMap &copy; CARTO",
         maxZoom: 5
       }
-    ).addTo(map);
+    ).addTo(mapInstance);
 
     const geoURL =
       "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson";
 
-    const [geoResponse, dataRows] = await Promise.all([
+    const [geoResponse, rows] = await Promise.all([
       fetch(geoURL),
-      getWB(WB.parliament, "2020:2024")
+      fetchWB(indicators.parliament, "2020:2024")
     ]);
 
-    if (!geoResponse.ok) {
-      throw new Error("Country boundary data unavailable.");
-    }
+    if (!geoResponse.ok) throw new Error("GeoJSON unavailable.");
 
     const geoJSON = await geoResponse.json();
-    const latest = latestByCountry(dataRows);
+    const latest = latestCountryValues(rows);
 
     Object.assign(mapData, latest);
 
-    geoLayer = L.geoJSON(geoJSON, {
-      style: styleFeature,
-      onEachFeature: addFeatureInteractions
-    }).addTo(map);
+    countryLayer = L.geoJSON(geoJSON, {
+      style: featureStyle,
+      onEachFeature: addMapInteractions
+    }).addTo(mapInstance);
 
-    if (status) {
-      status.textContent = "Map loaded. Hover over or tap a country to see available data.";
-    }
-
-    map.invalidateSize();
+    status.textContent = "Map loaded. Tap or hover over a country to view data.";
+    mapInstance.invalidateSize();
 
   } catch (error) {
     console.error(error);
-
-    if (status) {
-      status.textContent = "Map data could not be loaded. Check your internet connection or open the World Bank dataset.";
-    }
+    status.textContent = "Map could not load. Check your connection or visit the World Bank source.";
   }
 }
-
-
-/* GLOBAL SNAPSHOT */
-
-async function loadGlobalSnapshot() {
-  try {
-    const rows = await getWB(WB.parliament, "2020:2024");
-    const global = latestByCountry(rows)["WLD"];
-
-    if (global) {
-      $("globalSnapshot").textContent = global.value.toFixed(1) + "%";
-    }
-
-  } catch (error) {
-    console.error(error);
-    $("globalSnapshot").textContent = "Unavailable";
-  }
-}
-
-
-/* LEADER IMAGE FALLBACK */
-
-document.querySelectorAll(".leader-image img").forEach(img => {
-  img.addEventListener("error", () => {
-    img.parentElement.classList.add("image-error");
-  });
-
-  if (img.complete && img.naturalWidth === 0) {
-    img.parentElement.classList.add("image-error");
-  }
-});
 
 
 /* VIDEO EMBED */
 
 $("embedVideo")?.addEventListener("click", () => {
-  const input = $("videoURL");
+  const raw = $("videoURL").value.trim();
   const container = $("videoContainer");
 
-  const raw = input.value.trim();
-
   if (!raw) {
-    container.textContent = "Please paste a video URL.";
+    container.textContent = "Paste a video URL first.";
     return;
   }
 
@@ -518,10 +494,10 @@ $("embedVideo")?.addEventListener("click", () => {
     const url = new URL(raw);
 
     if (url.hostname.includes("youtube.com")) {
-      const videoID = url.searchParams.get("v");
+      const id = url.searchParams.get("v");
 
-      if (videoID) {
-        embedURL = "https://www.youtube-nocookie.com/embed/" + videoID;
+      if (id) {
+        embedURL = "https://www.youtube-nocookie.com/embed/" + id;
       } else if (url.pathname.startsWith("/embed/")) {
         embedURL = "https://www.youtube-nocookie.com" + url.pathname;
       }
@@ -533,6 +509,7 @@ $("embedVideo")?.addEventListener("click", () => {
 
     if (url.hostname.includes("vimeo.com")) {
       const id = url.pathname.split("/").filter(Boolean).pop();
+
       if (/^\d+$/.test(id)) {
         embedURL = "https://player.vimeo.com/video/" + id;
       }
@@ -543,28 +520,28 @@ $("embedVideo")?.addEventListener("click", () => {
   }
 
   if (!embedURL) {
-    container.textContent = "This link cannot be embedded here. Use a supported YouTube or Vimeo link.";
+    container.textContent = "Unsupported video URL. Use YouTube or Vimeo.";
     return;
   }
 
   const iframe = document.createElement("iframe");
   iframe.src = embedURL;
-  iframe.title = "Speech video";
+  iframe.title = "Criterion C speech video";
   iframe.width = "100%";
   iframe.height = "400";
-  iframe.loading = "lazy";
   iframe.allow = "fullscreen; picture-in-picture";
   iframe.setAttribute("allowfullscreen", "");
+  iframe.loading = "lazy";
 
   container.replaceChildren(iframe);
 });
 
 
-/* INITIALIZE */
+/* INITIALIZATION */
 
-loadCountryChart();
-loadIndiaChart();
+loadCountryComparison();
+loadIndiaRepresentation();
 loadGlobalTrend();
-loadSupportingCharts();
-loadGlobalSnapshot();
+loadFertility();
+loadMaternal();
 loadMap();
