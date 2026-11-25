@@ -1,384 +1,305 @@
 /* BEYOND THE DIVIDE
-   Visual dashboards and published international datasets.
+   Data: World Bank API
+   Main indicator: women in parliament (%)
 */
 
-const $ = (id) => document.getElementById(id);
-const chartInstances = {};
+const WB = "https://api.worldbank.org/v2/country";
+const IND = "SG.GEN.PARL.ZS";
+const ADO = "SP.ADO.TFRT";
+const MMR = "SH.STA.MMRT";
 
-const COLORS = {
-  navy: "#123d68",
-  blue: "#2e6f9e",
-  sky: "#8fc5df",
-  pale: "#dcecf3",
-  gold: "#d9b77b",
-  muted: "#71879a"
-};
+const $ = id => document.getElementById(id);
 
-// ---------- PAGE NAVIGATION ----------
+/* Navigation */
+const menuToggle = $("menuToggle");
+const mainNav = $("mainNav");
 
-const pages = [...document.querySelectorAll(".page")];
-const navButtons = [...document.querySelectorAll("[data-page]")];
+menuToggle?.addEventListener("click", () => mainNav.classList.toggle("open"));
 
-function showPage(id) {
-  pages.forEach(page => page.classList.toggle("active", page.id === id));
-  navButtons.forEach(button =>
-    button.classList.toggle("active", button.dataset.page === id)
-  );
-  $("mainNav").classList.remove("open");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  setTimeout(() => {
-    Object.values(chartInstances).forEach(chart => {
-      if (chart && typeof chart.resize === "function") chart.resize();
-    });
-    if (window.Plotly && $("worldMap")) Plotly.Plots.resize("worldMap");
-  }, 180);
-}
-
-navButtons.forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
+document.querySelectorAll("#mainNav a").forEach(a => {
+  a.addEventListener("click", () => mainNav.classList.remove("open"));
 });
 
-document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.go));
-});
-
-$("menuToggle").addEventListener("click", () => {
-  $("mainNav").classList.toggle("open");
-});
-
-$("backToTop").addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-// ---------- CHART HELPERS ----------
-
-function makeChart(id, labels, values, label, color = COLORS.blue, suffix = "") {
-  const canvas = $(id);
-  if (!canvas || !window.Chart) return;
-
-  if (chartInstances[id]) chartInstances[id].destroy();
-
-  chartInstances[id] = new Chart(canvas, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [{
-        label,
-        data: values,
-        borderColor: color,
-        backgroundColor: color + "20",
-        fill: true,
-        tension: 0.35,
-        pointRadius: 3,
-        pointHoverRadius: 6,
-        borderWidth: 3,
-        spanGaps: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { intersect: false, mode: "index" },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: "#071b35",
-          padding: 12,
-          callbacks: {
-            label: context => `${context.parsed.y}${suffix}`
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: { color: COLORS.muted, maxTicksLimit: 8 }
-        },
-        y: {
-          beginAtZero: false,
-          grid: { color: "#e8eef2" },
-          ticks: { color: COLORS.muted }
-        }
-      }
-    }
-  });
-}
-
-function makeBarChart(id, labels, values, label, colors, suffix = "") {
-  const canvas = $(id);
-  if (!canvas || !window.Chart) return;
-
-  if (chartInstances[id]) chartInstances[id].destroy();
-
-  chartInstances[id] = new Chart(canvas, {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [{
-        label,
-        data: values,
-        backgroundColor: colors,
-        borderRadius: 5,
-        maxBarThickness: 48
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: "#071b35",
-          padding: 12,
-          callbacks: {
-            label: context => `${context.parsed.y}${suffix}`
-          }
-        }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { color: COLORS.muted } },
-        y: {
-          beginAtZero: true,
-          grid: { color: "#e8eef2" },
-          ticks: { color: COLORS.muted }
-        }
-      }
-    }
-  });
-}
-
-// ---------- WORLD BANK DATA ----------
-
-async function getWorldBank(indicator, country = "WLD", start = 2000, end = 2025) {
-  const url =
-    `https://api.worldbank.org/v2/country/${country}/indicator/${indicator}` +
-    `?date=${start}:${end}&format=json&per_page=100`;
-
-  const response = await fetch(url);
-  if (!response.ok) throw new Error("World Bank data unavailable");
-
-  const result = await response.json();
-  if (!result || !result[1]) throw new Error("No observations returned");
-
-  return result[1]
-    .filter(item => item.value !== null)
-    .map(item => ({
-      year: Number(item.date),
-      value: Number(item.value)
-    }))
+/* Data utilities */
+async function getIndicator(country, indicator, date = "1995:2025") {
+  const url = `${WB}/${country}/indicator/${indicator}?format=json&per_page=100&date=${date}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Data request failed");
+  const json = await res.json();
+  if (!json || !json[1]) return [];
+  return json[1]
+    .filter(x => x.value !== null)
+    .map(x => ({ year: Number(x.date), value: Number(x.value) }))
     .sort((a, b) => a.year - b.year);
 }
 
-async function drawWorldBankChart(id, indicator, country, start, end, label, suffix = "") {
-  try {
-    const observations = await getWorldBank(indicator, country, start, end);
-    if (!observations.length) throw new Error("No data");
+async function getCountryLatest(indicator) {
+  const url = `https://api.worldbank.org/v2/country/all/indicator/${indicator}?format=json&per_page=300&date=2020:2025`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Data request failed");
+  const json = await res.json();
+  if (!json || !json[1]) return [];
 
-    makeChart(
-      id,
-      observations.map(item => item.year),
-      observations.map(item => item.value),
-      label,
-      COLORS.blue,
-      suffix
-    );
-  } catch (error) {
-    showChartFallback(id, "Data could not be loaded. Open the source link in the Sources tab.");
-  }
+  const latest = new Map();
+
+  json[1].forEach(item => {
+    if (!item.value || !item.country || !item.country.id) return;
+    if (item.country.id.length !== 2) return;
+    const current = latest.get(item.country.id);
+    if (!current || Number(item.date) > current.year) {
+      latest.set(item.country.id, {
+        code: item.country.id,
+        country: item.country.value,
+        year: Number(item.date),
+        value: Number(item.value)
+      });
+    }
+  });
+
+  return [...latest.values()];
 }
 
-function showChartFallback(id, message) {
+function makeChart(id, labels, datasets, options = {}) {
   const canvas = $(id);
-  if (!canvas) return;
-  const wrapper = canvas.parentElement;
-  wrapper.innerHTML = `<div class="chart-fallback">${message}</div>`;
+  if (!canvas || !window.Chart) return null;
+
+  if (canvas.chart) canvas.chart.destroy();
+
+  canvas.chart = new Chart(canvas, {
+    type: options.type || "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          labels: { color: "#c4d2e1" }
+        },
+        tooltip: { enabled: true }
+      },
+      scales: options.scales === false ? {} : {
+        x: {
+          ticks: { color: "#9aaec5" },
+          grid: { color: "rgba(164,193,225,.08)" }
+        },
+        y: {
+          ticks: { color: "#9aaec5" },
+          grid: { color: "rgba(164,193,225,.08)" },
+          ...(options.y || {})
+        }
+      },
+      ...options.options
+    }
+  });
+
+  return canvas.chart;
 }
 
-// ---------- GLOBAL MAP ----------
+const blueDataset = (label, data) => ({
+  label,
+  data,
+  borderColor: "#5ca9ff",
+  backgroundColor: "rgba(92,169,255,.14)",
+  fill: true,
+  borderWidth: 2,
+  pointRadius: 2,
+  tension: .35
+});
 
-async function loadWorldMap() {
-  const mapElement = $("worldMap");
-  if (!mapElement) return;
+/* Global map */
+async function drawMap() {
+  const map = $("worldMap");
+  const status = $("mapStatus");
 
-  if (!window.Plotly) {
-    $("mapStatus").textContent = "The map library did not load. Check your internet connection.";
+  if (!map || !window.Plotly) {
+    if (status) status.textContent = "Map library unavailable.";
     return;
   }
 
   try {
-    // World Bank indicator: women in parliament (% of seats)
-    const url =
-      "https://api.worldbank.org/v2/country/all/indicator/SG.GEN.PARL.ZS" +
-      "?date=2024&format=json&per_page=300";
+    const data = await getCountryLatest(IND);
+    if (!data.length) throw new Error("No data");
 
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Map data unavailable");
-
-    const json = await response.json();
-    const rows = (json[1] || []).filter(row =>
-      row.value !== null &&
-      row.countryiso3code &&
-      row.countryiso3code.length === 3 &&
-      row.region &&
-      row.region.value !== "Aggregates"
-    );
-
-    if (!rows.length) throw new Error("No country data");
-
-    const locations = rows.map(row => row.countryiso3code);
-    const values = rows.map(row => Number(row.value));
-    const names = rows.map(row => row.country.value);
+    const sorted = data.sort((a, b) => a.value - b.value);
+    const locations = sorted.map(x => x.code);
+    const values = sorted.map(x => x.value);
+    const names = sorted.map(x => x.country);
+    const years = sorted.map(x => x.year);
 
     const trace = {
       type: "choropleth",
       locationmode: "ISO-3",
-      locations,
+      locations: locations.map(code => code),
       z: values,
       text: names,
-      customdata: values,
+      customdata: years,
       colorscale: [
-        [0, "#e6f0f5"],
-        [0.25, "#a9ccdc"],
-        [0.5, "#5e9cbd"],
-        [0.75, "#2e6f9e"],
-        [1, "#123d68"]
+        [0, "#10243d"],
+        [.25, "#214e77"],
+        [.5, "#347fb6"],
+        [.75, "#65b2e9"],
+        [1, "#b1e4ff"]
       ],
-      zmin: 0,
-      zmax: 50,
-      marker: { line: { color: "#ffffff", width: 0.35 } },
+      marker: { line: { color: "#07111f", width: .4 } },
       colorbar: {
-        title: { text: "% women" },
-        thickness: 12,
-        len: 0.7,
-        tickfont: { color: "#526a7e", size: 10 }
+        title: { text: "Women (%)", font: { color: "#c4d2e1" } },
+        tickfont: { color: "#c4d2e1" },
+        outlinewidth: 0
       },
-      hovertemplate: "<b>%{text}</b><br>Women in parliament: %{z:.1f}%<extra></extra>"
+      hovertemplate:
+        "<b>%{text}</b><br>" +
+        "Women in parliament: %{z:.1f}%<br>" +
+        "Observation year: %{customdata}<extra></extra>"
     };
 
-    const layout = {
-      margin: { t: 5, r: 5, b: 5, l: 5 },
-      paper_bgcolor: "#ffffff",
+    /* World Bank API codes are ISO-2; Plotly choropleth expects ISO-3.
+       Convert through a mapping below. */
+    const iso2to3 = {
+      IN:"IND", US:"USA", GB:"GBR", FR:"FRA", DE:"DEU", BR:"BRA",
+      CN:"CHN", JP:"JPN", CA:"CAN", AU:"AUS", ZA:"ZAF", RU:"RUS",
+      MX:"MEX", AR:"ARG", NG:"NGA", KE:"KEN", EG:"EGY", SA:"SAU",
+      KR:"KOR", ID:"IDN", PK:"PAK", BD:"BGD", NP:"NPL", LK:"LKA",
+      NO:"NOR", SE:"SWE", FI:"FIN", DK:"DNK", IS:"ISL", NL:"NLD",
+      BE:"BEL", ES:"ESP", IT:"ITA", PT:"PRT", CH:"CHE", AT:"AUT",
+      PL:"POL", CZ:"CZE", HU:"HUN", RO:"ROU", GR:"GRC", TR:"TUR",
+      UA:"UKR", IE:"IRL", NZ:"NZL", SG:"SGP", MY:"MYS", TH:"THA",
+      VN:"VNM", PH:"PHL", CL:"CHL", CO:"COL", PE:"PER", EC:"ECU",
+      GH:"GHA", TZ:"TZA", UG:"UGA", ET:"ETH", MA:"MAR", TN:"TUN",
+      JO:"JOR", IL:"ISR", AE:"ARE", QA:"QAT", OM:"OMN", KW:"KWT",
+      HR:"HRV", RS:"SRB", BG:"BGR", SK:"SVK", SI:"SVN", LT:"LTU",
+      LV:"LVA", EE:"EST", LU:"LUX", CY:"CYP", MT:"MLT", AM:"ARM",
+      GE:"GEO", AZ:"AZE", KZ:"KAZ", UZ:"UZB", AF:"AFG", IR:"IRN",
+      IQ:"IRQ", SY:"SYR", LB:"LBN", PS:"PSE", YE:"YEM", SD:"SDN",
+      SS:"SSD", CM:"CMR", SN:"SEN", CI:"CIV", BF:"BFA", ML:"MLI",
+      NE:"NER", TG:"TGO", BJ:"BEN", AO:"AGO", MZ:"MOZ", ZM:"ZMB",
+      ZW:"ZWE", BW:"BWA", NA:"NAM", MW:"MWI", RW:"RWA", BI:"BDI",
+      CD:"COD", CG:"COG", GA:"GAB", LY:"LBY", ER:"ERI", DJ:"DJI",
+      SO:"SOM", GM:"GMB", SL:"SLE", LR:"LBR", GN:"GIN", GW:"GNB",
+      MR:"MRT", XK:"XKX", ME:"MNE", MK:"MKD", AL:"ALB", BA:"BIH",
+      MD:"MDA", BY:"BLR", FJ:"FJI", PG:"PNG", SB:"SLB", VU:"VUT",
+      WS:"WSM", TO:"TON", KI:"KIR", TV:"TUV", NR:"NRU", FM:"FSM",
+      MH:"MHL", PW:"PLW", TT:"TTO", JM:"JAM", HT:"HTI", DO:"DOM",
+      CU:"CUB", CR:"CRI", PA:"PAN", GT:"GTM", HN:"HND", SV:"SLV",
+      NI:"NIC", BZ:"BLZ", PY:"PRY", UY:"URY", BO:"BOL", VE:"VEN",
+      GY:"GUY", SR:"SUR", BS:"BHS", BB:"BRB", LC:"LCA", GD:"GRD",
+      KN:"KNA", VC:"VCT", AG:"ATG", DM:"DMA"
+    };
+
+    trace.locations = locations.map(code => iso2to3[code]).filter(Boolean);
+    const filtered = sorted.filter(x => iso2to3[x.code]);
+    trace.z = filtered.map(x => x.value);
+    trace.text = filtered.map(x => x.country);
+    trace.customdata = filtered.map(x => x.year);
+    trace.locations = filtered.map(x => iso2to3[x.code]);
+
+    await Plotly.newPlot(map, [trace], {
+      paper_bgcolor: "#101f32",
+      plot_bgcolor: "#101f32",
       geo: {
         projection: { type: "natural earth" },
+        bgcolor: "#101f32",
         showframe: false,
         showcoastlines: true,
-        coastlinecolor: "#ffffff",
+        coastlinecolor: "#425b76",
         showland: true,
-        landcolor: "#edf2f5",
+        landcolor: "#16283d",
         showcountries: true,
-        countrycolor: "#ffffff",
-        bgcolor: "#ffffff"
+        countrycolor: "#263d57",
+        lakecolor: "#101f32",
+        showocean: true,
+        oceancolor: "#101f32"
       },
-      font: { family: "DM Sans, sans-serif", color: "#123d68" }
-    };
-
-    Plotly.newPlot(mapElement, [trace], layout, {
+      margin: { l: 0, r: 0, t: 0, b: 0 }
+    }, {
       responsive: true,
       displayModeBar: false
     });
 
-    $("mapStatus").textContent =
-      `Country values shown for 2024 where data is available. ${rows.length} country records loaded.`;
-  } catch (error) {
-    $("mapStatus").textContent =
-      "The interactive map could not retrieve country data. The source is World Bank indicator SG.GEN.PARL.ZS.";
-    mapElement.innerHTML =
-      '<div class="chart-fallback">Map data could not be loaded. Check the World Bank data link in the Sources tab.</div>';
+    if (status) status.textContent = "World Bank data loaded. Hover over a country.";
+  } catch (err) {
+    if (status) status.textContent = "Map data could not be loaded. Check your connection.";
+    map.innerHTML = '<div class="map-error">The interactive map could not load right now. Please refresh or check the data service connection.</div>';
   }
 }
 
-// ---------- GLOBAL TRENDS ----------
+/* Global comparison graph */
+async function drawGlobalChart() {
+  try {
+    const data = await getCountryLatest(IND);
+    const top = data.sort((a, b) => b.value - a.value).slice(0, 12);
+    makeChart("globalChart", top.map(x => x.country), [{
+      label: "Women in parliament (%)",
+      data: top.map(x => x.value),
+      backgroundColor: "#5ca9ff",
+      borderRadius: 5
+    }], {
+      type: "bar",
+      scales: {
+        x: { ticks: { color: "#9aaec5" }, grid: { display: false } },
+        y: { ticks: { color: "#9aaec5" }, grid: { color: "rgba(164,193,225,.08)" }, min: 0 }
+      }
+    });
+  } catch (err) {
+    console.warn("Global chart:", err);
+  }
+}
 
-function drawPublishedGlobalParliamentTrend() {
-  // IPU published global comparison:
-  // 1995: 11.3%; 2025: 27.2%.
-  // Only the two published reference points are plotted.
-  makeChart(
-    "globalParliamentChart",
-    ["1995", "2025"],
-    [11.3, 27.2],
-    "Women in parliament",
-    COLORS.blue,
-    "%"
-  );
-
-  makeChart(
-    "trendParliamentChart",
-    ["1995", "2025"],
-    [11.3, 27.2],
-    "Women in parliament",
-    COLORS.blue,
-    "%"
+/* Regional illustration chart */
+function drawRegionChart() {
+  makeChart("regionChart",
+    ["Europe", "Americas", "Asia", "Africa", "Oceania"],
+    [{
+      label: "Illustrative regional comparison",
+      data: [0, 0, 0, 0, 0],
+      backgroundColor: "#5ca9ff"
+    }],
+    { type: "bar" }
   );
 }
 
-function drawPublishedIndiaData() {
-  const years = [
-    "1951", "1962", "1971", "1980", "1991",
-    "2000", "2009", "2014", "2019", "2021",
-    "2023", "2024", "2025"
-  ];
-
-  const values = [
-    3.8, 6.8, 4.1, 5.0, 7.2,
-    9.0, 10.8, 11.4, 14.4, 14.9,
-    15.2, 13.8, 13.8
-  ];
-
-  makeChart(
-    "indiaTrendChart",
-    years,
-    values,
-    "Women in Lok Sabha",
-    COLORS.blue,
-    "%"
-  );
-
-  makeBarChart(
-    "indiaSeatsChart",
-    ["Women", "Men"],
-    [75, 467],
-    "Seats",
-    [COLORS.sky, COLORS.navy]
-  );
+/* India trend */
+async function drawIndiaChart() {
+  try {
+    const data = await getIndicator("IND", IND);
+    makeChart("indiaChart", data.map(x => x.year), [blueDataset("Women in parliament (%)", data.map(x => x.value))]);
+  } catch (err) {
+    console.warn("India chart:", err);
+  }
 }
 
-// ---------- INITIALISE ----------
-
-function initialiseCharts() {
-  drawPublishedGlobalParliamentTrend();
-  drawPublishedIndiaData();
-
-  // World Bank API datasets
-  drawWorldBankChart(
-    "fertilityChart",
-    "SP.ADO.TFRT",
-    "WLD",
-    2000,
-    2024,
-    "Births per 1,000 girls"
-  );
-
-  drawWorldBankChart(
-    "maternalChart",
-    "SH.STA.MMRT",
-    "WLD",
-    2000,
-    2023,
-    "Maternal deaths per 100,000 live births"
-  );
-
-  drawWorldBankChart(
-    "trendFertilityChart",
-    "SP.ADO.TFRT",
-    "WLD",
-    2000,
-    2024,
-    "Births per 1,000 girls"
-  );
+/* Global trend */
+async function drawTrendChart() {
+  try {
+    const data = await getIndicator("WLD", IND);
+    makeChart("trendChart", data.map(x => x.year), [blueDataset("Global representation (%)", data.map(x => x.value))]);
+  } catch (err) {
+    console.warn("Trend chart:", err);
+  }
 }
 
+/* India supporting indicators */
+async function drawSupportingIndicators() {
+  try {
+    const fertility = await getIndicator("IND", ADO);
+    makeChart("fertilityChart", fertility.map(x => x.year), [blueDataset("Births per 1,000 adolescents", fertility.map(x => x.value))]);
+  } catch (err) {
+    console.warn("Fertility chart:", err);
+  }
+
+  try {
+    const maternal = await getIndicator("IND", MMR);
+    makeChart("maternalChart", maternal.map(x => x.year), [blueDataset("Maternal deaths per 100,000 live births", maternal.map(x => x.value))]);
+  } catch (err) {
+    console.warn("Maternal chart:", err);
+  }
+}
+
+/* Run */
 document.addEventListener("DOMContentLoaded", () => {
-  initialiseCharts();
-  loadWorldMap();
+  drawMap();
+  drawGlobalChart();
+  drawRegionChart();
+  drawIndiaChart();
+  drawTrendChart();
+  drawSupportingIndicators();
 });
