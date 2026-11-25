@@ -1,33 +1,37 @@
 "use strict";
 
-/* ============================================
+/* ==============================================
    BEYOND THE DIVIDE
-   Navigation · Map · Data · Charts
-============================================ */
+   Navigation · Geographic Explorer · Charts
+================================================ */
 
 const $ = id => document.getElementById(id);
 
-
-/* NAVIGATION */
+/* ---------- NAVIGATION ---------- */
 
 function showPage(id) {
-  const pages = document.querySelectorAll(".page");
   const target = $(id);
-
   if (!target) return;
 
-  pages.forEach(page => page.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   target.classList.add("active");
 
+  document.querySelectorAll("#mainNav a").forEach(a => {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+  });
+
+  $("mainNav")?.classList.remove("open");
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  document.querySelector("#mainNav")?.classList.remove("open");
+  if (mapInstance && id === "indicator") {
+    setTimeout(() => mapInstance.invalidateSize(), 250);
+  }
 }
 
 document.querySelectorAll("#mainNav a").forEach(link => {
   link.addEventListener("click", e => {
     e.preventDefault();
-    const id = link.getAttribute("href").replace("#", "");
+    const id = link.getAttribute("href").slice(1);
     showPage(id);
     history.replaceState(null, "", "#" + id);
   });
@@ -37,10 +41,8 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   if (link.closest("#mainNav")) return;
 
   link.addEventListener("click", e => {
-    const id = link.getAttribute("href").substring(1);
-    const target = $(id);
-
-    if (target && target.classList.contains("page")) {
+    const id = link.getAttribute("href").slice(1);
+    if ($(id)?.classList.contains("page")) {
       e.preventDefault();
       showPage(id);
       history.replaceState(null, "", "#" + id);
@@ -58,7 +60,7 @@ if (initialPage && $(initialPage)?.classList.contains("page")) {
 }
 
 
-/* CHARTS */
+/* ---------- CHARTS ---------- */
 
 const chartInstances = {};
 
@@ -66,9 +68,7 @@ function createChart(id, config) {
   const canvas = $(id);
   if (!canvas || !window.Chart) return;
 
-  if (chartInstances[id]) {
-    chartInstances[id].destroy();
-  }
+  if (chartInstances[id]) chartInstances[id].destroy();
 
   chartInstances[id] = new Chart(canvas, config);
 }
@@ -81,28 +81,28 @@ function lineChart(id, labels, values, label, unit) {
       datasets: [{
         label,
         data: values,
-        borderColor: "#326b95",
-        backgroundColor: "rgba(50,107,149,.14)",
+        borderColor: "#376f9b",
+        backgroundColor: "rgba(55,111,155,.14)",
         fill: true,
-        tension: .3,
+        tension: .25,
         borderWidth: 3,
-        pointRadius: 3
+        pointRadius: 3,
+        pointHoverRadius: 6
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      plugins: {
+        legend: { display: true },
+        tooltip: { mode: "index", intersect: false }
+      },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: unit
-          }
+          title: { display: true, text: unit }
         },
-        x: {
-          grid: { display: false }
-        }
+        x: { grid: { display: false } }
       }
     }
   });
@@ -117,42 +117,43 @@ function barChart(id, labels, values, label, unit) {
         label,
         data: values,
         backgroundColor: "#39739e",
-        borderRadius: 4
+        borderRadius: 6
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: true }
+      },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: unit
-          }
+          title: { display: true, text: unit }
         }
       }
     }
   });
 }
 
-function chartError(id, text) {
+function chartError(id, message) {
   const canvas = $(id);
   if (!canvas) return;
 
   const panel = canvas.parentElement;
-  let message = panel.querySelector(".chart-error");
+  let error = panel.querySelector(".chart-error");
 
-  if (!message) {
-    message = document.createElement("p");
-    message.className = "small chart-error";
-    panel.appendChild(message);
+  if (!error) {
+    error = document.createElement("p");
+    error.className = "small chart-error";
+    panel.appendChild(error);
   }
 
-  message.textContent = text;
+  error.textContent = message;
 }
 
 
-/* WORLD BANK */
+/* ---------- WORLD BANK ---------- */
 
 const indicators = {
   parliament: "SG.GEN.PARL.ZS",
@@ -164,6 +165,7 @@ const dataCache = {};
 
 async function fetchWB(code, dates = "1995:2024") {
   const cacheKey = code + dates;
+
   if (dataCache[cacheKey]) return dataCache[cacheKey];
 
   const url =
@@ -175,15 +177,11 @@ async function fetchWB(code, dates = "1995:2024") {
 
   const response = await fetch(url);
 
-  if (!response.ok) {
-    throw new Error("Data request failed.");
-  }
+  if (!response.ok) throw new Error("World Bank request failed.");
 
   const json = await response.json();
 
-  if (!json || !json[1]) {
-    throw new Error("No data returned.");
-  }
+  if (!json || !json[1]) throw new Error("No data returned.");
 
   dataCache[cacheKey] = json[1];
   return json[1];
@@ -230,7 +228,7 @@ function latestCountryValues(rows, limit = 2024) {
 }
 
 
-/* COUNTRY CHART */
+/* ---------- COUNTRY COMPARISON CHART ---------- */
 
 async function loadCountryComparison() {
   try {
@@ -244,7 +242,7 @@ async function loadCountryComparison() {
 
     const data = selected.map(code => latest[code]).filter(Boolean);
 
-    if (!data.length) throw new Error("Country data unavailable.");
+    if (!data.length) throw new Error("No comparison data.");
 
     barChart(
       "globalCountryChart",
@@ -253,15 +251,14 @@ async function loadCountryComparison() {
       "Women in parliament",
       "Seats held by women (%)"
     );
-
   } catch (error) {
     console.error(error);
-    chartError("globalCountryChart", "Country comparison unavailable. Visit the World Bank dataset.");
+    chartError("globalCountryChart", "Country comparison unavailable.");
   }
 }
 
 
-/* INDIA CHART */
+/* ---------- INDIA ---------- */
 
 async function loadIndiaRepresentation() {
   try {
@@ -277,39 +274,11 @@ async function loadIndiaRepresentation() {
       "Women in parliament",
       "Seats held by women (%)"
     );
-
   } catch (error) {
     console.error(error);
     chartError("indiaChart", "India data unavailable.");
   }
 }
-
-
-/* GLOBAL TREND */
-
-async function loadGlobalTrend() {
-  try {
-    const rows = await fetchWB(indicators.parliament, "1995:2024");
-    const series = extractSeries(rows, "WLD");
-
-    if (!series.values.length) throw new Error("Global data unavailable.");
-
-    lineChart(
-      "trendChart",
-      series.labels,
-      series.values,
-      "Global representation",
-      "Seats held by women (%)"
-    );
-
-  } catch (error) {
-    console.error(error);
-    chartError("trendChart", "Global trend unavailable.");
-  }
-}
-
-
-/* INDIA SUPPORTING DATA */
 
 async function loadFertility() {
   try {
@@ -325,7 +294,6 @@ async function loadFertility() {
       "Adolescent fertility rate",
       "Births per 1,000 women aged 15–19"
     );
-
   } catch (error) {
     console.error(error);
     chartError("fertilityChart", "Adolescent fertility data unavailable.");
@@ -346,7 +314,6 @@ async function loadMaternal() {
       "Maternal mortality ratio",
       "Deaths per 100,000 live births"
     );
-
   } catch (error) {
     console.error(error);
     chartError("maternalChart", "Maternal mortality data unavailable.");
@@ -354,14 +321,79 @@ async function loadMaternal() {
 }
 
 
-/* WORLD MAP */
+/* ---------- GLOBAL TREND ---------- */
+
+async function loadGlobalTrend() {
+  try {
+    const rows = await fetchWB(indicators.parliament, "1995:2024");
+    const series = extractSeries(rows, "WLD");
+
+    if (!series.values.length) throw new Error("Global data unavailable.");
+
+    lineChart(
+      "trendChart",
+      series.labels,
+      series.values,
+      "Global representation",
+      "Seats held by women (%)"
+    );
+  } catch (error) {
+    console.error(error);
+    chartError("trendChart", "Global trend unavailable.");
+  }
+}
+
+
+/* ---------- GLOBAL EQUITY EXPLORER ---------- */
 
 let mapInstance;
 let countryLayer;
+let selectedFeatureLayer;
 const mapData = {};
+const geoFeatures = [];
+const comparison = [];
+let selectedCountryCode = null;
+let compareChartInstance = null;
+
+const countryRegion = {
+  AFR: "Africa",
+  ASI: "Asia",
+  EUR: "Europe",
+  AME: "Americas",
+  OCE: "Oceania"
+};
+
+const countryRegions = {
+  "RWA":"Africa","NGA":"Africa","ZAF":"Africa","KEN":"Africa",
+  "GHA":"Africa","EGY":"Africa","ETH":"Africa","UGA":"Africa",
+  "TZA":"Africa","SEN":"Africa","MAR":"Africa","DZA":"Africa",
+  "CMR":"Africa","COD":"Africa","BWA":"Africa","MOZ":"Africa",
+  "IND":"Asia","PAK":"Asia","BGD":"Asia","NPL":"Asia",
+  "LKA":"Asia","AFG":"Asia","CHN":"Asia","JPN":"Asia",
+  "KOR":"Asia","IDN":"Asia","PHL":"Asia","THA":"Asia",
+  "VNM":"Asia","MYS":"Asia","SGP":"Asia","IRN":"Asia",
+  "IRQ":"Asia","SAU":"Asia","TUR":"Asia","KAZ":"Asia",
+  "UZB":"Asia","MMR":"Asia","KHM":"Asia","LAO":"Asia",
+  "SWE":"Europe","NOR":"Europe","FIN":"Europe","DNK":"Europe",
+  "ISL":"Europe","GBR":"Europe","IRL":"Europe","FRA":"Europe",
+  "DEU":"Europe","ESP":"Europe","ITA":"Europe","PRT":"Europe",
+  "NLD":"Europe","BEL":"Europe","CHE":"Europe","AUT":"Europe",
+  "POL":"Europe","CZE":"Europe","SVK":"Europe","HUN":"Europe",
+  "ROU":"Europe","BGR":"Europe","GRC":"Europe","HRV":"Europe",
+  "SRB":"Europe","UKR":"Europe","RUS":"Europe","EST":"Europe",
+  "LVA":"Europe","LTU":"Europe","ALB":"Europe","MDA":"Europe",
+  "USA":"Americas","CAN":"Americas","MEX":"Americas",
+  "BRA":"Americas","ARG":"Americas","CHL":"Americas",
+  "COL":"Americas","PER":"Americas","URY":"Americas",
+  "ECU":"Americas","BOL":"Americas","VEN":"Americas",
+  "CUB":"Americas","DOM":"Americas","HTI":"Americas",
+  "JAM":"Americas","CRI":"Americas","PAN":"Americas",
+  "AUS":"Oceania","NZL":"Oceania","FJI":"Oceania",
+  "PNG":"Oceania","SLB":"Oceania","VUT":"Oceania"
+};
 
 function colour(value) {
-  if (value == null) return "#e8edf2";
+  if (value == null) return "#8794a0";
   if (value < 10) return "#edf5fa";
   if (value < 20) return "#b9d4e5";
   if (value < 30) return "#7daac9";
@@ -371,18 +403,16 @@ function colour(value) {
 
 function isoCode(feature) {
   const p = feature.properties || {};
-
-  return p.ISO_A3 ||
-    p.iso_a3 ||
-    p.ADM0_A3 ||
-    p.ISO3 ||
-    p.A3 ||
-    null;
+  return p.ISO_A3 || p.iso_a3 || p.ADM0_A3 || p.ISO3 || p.A3 || null;
 }
 
 function countryName(feature) {
   const p = feature.properties || {};
-  return p.ADMIN || p.name || p.NAME || "Country";
+  return p.ADMIN || p.name || p.NAME || p.name_long || "Country";
+}
+
+function regionFor(code) {
+  return countryRegions[code] || "Region unavailable";
 }
 
 function featureStyle(feature) {
@@ -391,10 +421,56 @@ function featureStyle(feature) {
 
   return {
     fillColor: colour(value),
-    fillOpacity: .85,
-    color: "#ffffff",
-    weight: .7
+    fillOpacity: .9,
+    color: "#263e54",
+    weight: .65
   };
+}
+
+function highlightStyle() {
+  return {
+    color: "#c6a46a",
+    weight: 3,
+    fillOpacity: 1
+  };
+}
+
+function clearSelectionHighlight() {
+  if (selectedFeatureLayer && countryLayer) {
+    countryLayer.resetStyle(selectedFeatureLayer);
+  }
+  selectedFeatureLayer = null;
+}
+
+function selectCountry(feature, layer) {
+  const code = isoCode(feature);
+  const name = countryName(feature);
+
+  if (!code) return;
+
+  selectedCountryCode = code;
+  clearSelectionHighlight();
+
+  selectedFeatureLayer = layer;
+  layer.setStyle(highlightStyle());
+
+  const data = mapData[code];
+
+  $("countryEmpty").hidden = true;
+  $("countryDetails").hidden = false;
+
+  $("selectedCountryName").textContent = name;
+  $("selectedValue").textContent =
+    data ? data.value.toFixed(1) + "%" : "No data";
+
+  $("selectedYear").textContent = data ? data.year : "Unavailable";
+  $("selectedRegion").textContent = regionFor(code);
+
+  $("countryAnalysis").textContent = data
+    ? `${name} has ${data.value.toFixed(1)}% of parliamentary seats held by women in ${data.year}. This value can be compared with other countries and regional patterns. The statistic measures representation, but does not by itself explain the political, economic or social factors influencing the result.`
+    : `Data for ${name} was not available in the loaded dataset. Missing information should not be interpreted as zero representation.`;
+
+  $("addComparison").disabled = !data;
 }
 
 function addMapInteractions(feature, layer) {
@@ -402,22 +478,24 @@ function addMapInteractions(feature, layer) {
   const name = countryName(feature);
   const data = mapData[code];
 
-  const tooltip = data
-    ? `${name}<br>Women in parliament: ${data.value.toFixed(1)}%<br>Year: ${data.year}`
-    : `${name}<br>Data unavailable`;
+  layer.bindTooltip(
+    data
+      ? `${name}<br>${data.value.toFixed(1)}% · ${data.year}`
+      : `${name}<br>Data unavailable`,
+    { sticky: true }
+  );
 
-  layer.bindTooltip(tooltip, { sticky: true });
+  layer.on("click", () => selectCountry(feature, layer));
 
-  layer.on({
-    mouseover() {
-      this.setStyle({
-        weight: 2,
-        color: "#071c34",
-        fillOpacity: 1
-      });
-    },
-    mouseout() {
-      this.setStyle(featureStyle(feature));
+  layer.on("mouseover", function() {
+    if (this !== selectedFeatureLayer) {
+      this.setStyle({ weight: 2, color: "#c6a46a" });
+    }
+  });
+
+  layer.on("mouseout", function() {
+    if (this !== selectedFeatureLayer && countryLayer) {
+      countryLayer.resetStyle(this);
     }
   });
 }
@@ -426,17 +504,18 @@ async function loadMap() {
   const status = $("mapStatus");
 
   if (!window.L) {
-    status.textContent = "Leaflet map library unavailable.";
+    status.textContent = "Map library unavailable.";
     return;
   }
 
   try {
-    status.textContent = "Loading interactive map…";
+    status.textContent = "Loading geographic data…";
 
     mapInstance = L.map("worldMap", {
       minZoom: 1,
       maxZoom: 5,
-      scrollWheelZoom: false
+      scrollWheelZoom: false,
+      zoomControl: true
     }).setView([20, 0], 2);
 
     L.tileLayer(
@@ -455,29 +534,214 @@ async function loadMap() {
       fetchWB(indicators.parliament, "2020:2024")
     ]);
 
-    if (!geoResponse.ok) throw new Error("GeoJSON unavailable.");
+    if (!geoResponse.ok) throw new Error("Geographic dataset unavailable.");
 
     const geoJSON = await geoResponse.json();
     const latest = latestCountryValues(rows);
 
     Object.assign(mapData, latest);
+    geoFeatures.push(...geoJSON.features);
 
     countryLayer = L.geoJSON(geoJSON, {
       style: featureStyle,
       onEachFeature: addMapInteractions
     }).addTo(mapInstance);
 
-    status.textContent = "Map loaded. Tap or hover over a country to view data.";
+    status.textContent = "Map loaded. Click a country to explore its data.";
     mapInstance.invalidateSize();
 
   } catch (error) {
     console.error(error);
-    status.textContent = "Map could not load. Check your connection or visit the World Bank source.";
+    status.textContent = "Map could not load. Check your connection or data sources.";
   }
 }
 
 
-/* VIDEO EMBED */
+/* ---------- REGION FILTER ---------- */
+
+$("regionFilter")?.addEventListener("change", function() {
+  const region = this.value;
+
+  if (!countryLayer) return;
+
+  countryLayer.eachLayer(layer => {
+    const code = isoCode(layer.feature);
+    const countryRegionName = regionFor(code);
+
+    if (region === "all" || countryRegionName === region) {
+      layer.setStyle({
+        opacity: 1,
+        fillOpacity: .9
+      });
+      layer.getElement?.()?.classList.remove("filtered-out");
+    } else {
+      layer.setStyle({
+        opacity: .15,
+        fillOpacity: .08
+      });
+    }
+  });
+});
+
+$("resetMap")?.addEventListener("click", () => {
+  if (!countryLayer) return;
+
+  $("regionFilter").value = "all";
+  $("countrySearch").value = "";
+  $("searchResults").innerHTML = "";
+
+  countryLayer.eachLayer(layer => countryLayer.resetStyle(layer));
+
+  mapInstance.setView([20, 0], 2);
+
+  clearSelectionHighlight();
+
+  $("countryEmpty").hidden = false;
+  $("countryDetails").hidden = true;
+
+  selectedCountryCode = null;
+});
+
+
+/* ---------- COUNTRY SEARCH ---------- */
+
+$("countrySearch")?.addEventListener("input", function() {
+  const query = this.value.trim().toLowerCase();
+  const results = $("searchResults");
+
+  results.innerHTML = "";
+
+  if (!query || !geoFeatures.length) return;
+
+  const matches = geoFeatures
+    .filter(f => countryName(f).toLowerCase().includes(query))
+    .slice(0, 8);
+
+  matches.forEach(feature => {
+    const name = countryName(feature);
+    const button = document.createElement("button");
+
+    button.className = "search-result";
+    button.textContent = name;
+    button.type = "button";
+
+    button.addEventListener("click", () => {
+      const layer = countryLayer.getLayers().find(
+        l => isoCode(l.feature) === isoCode(feature)
+      );
+
+      if (layer) {
+        mapInstance.fitBounds(layer.getBounds(), { maxZoom: 4 });
+        selectCountry(feature, layer);
+      }
+
+      results.innerHTML = "";
+      $("countrySearch").value = name;
+    });
+
+    results.appendChild(button);
+  });
+});
+
+
+/* ---------- COUNTRY COMPARISON ---------- */
+
+function renderComparison() {
+  const list = $("compareList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  comparison.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "compare-country";
+
+    const label = document.createElement("span");
+    label.textContent = `${item.name} · ${item.value.toFixed(1)}% (${item.year})`;
+
+    const remove = document.createElement("button");
+    remove.textContent = "Remove";
+    remove.type = "button";
+
+    remove.addEventListener("click", () => {
+      const index = comparison.findIndex(c => c.code === item.code);
+      if (index >= 0) comparison.splice(index, 1);
+      renderComparison();
+    });
+
+    row.append(label, remove);
+    list.appendChild(row);
+  });
+
+  updateCompareChart();
+}
+
+function updateCompareChart() {
+  if (!window.Chart || !$("compareChart")) return;
+
+  if (compareChartInstance) compareChartInstance.destroy();
+
+  if (!comparison.length) {
+    compareChartInstance = null;
+    return;
+  }
+
+  compareChartInstance = new Chart($("compareChart"), {
+    type: "bar",
+    data: {
+      labels: comparison.map(c => c.name),
+      datasets: [{
+        label: "Women in Parliament (%)",
+        data: comparison.map(c => c.value),
+        backgroundColor: "#39739e",
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: { display: true, text: "Seats held by women (%)" }
+        }
+      }
+    }
+  });
+}
+
+$("addComparison")?.addEventListener("click", () => {
+  if (!selectedCountryCode || !mapData[selectedCountryCode]) return;
+
+  const item = {
+    code: selectedCountryCode,
+    name: mapData[selectedCountryCode].name,
+    value: mapData[selectedCountryCode].value,
+    year: mapData[selectedCountryCode].year
+  };
+
+  if (comparison.some(c => c.code === item.code)) return;
+
+  if (comparison.length >= 3) {
+    alert("You can compare up to three countries. Remove a country to add another.");
+    return;
+  }
+
+  comparison.push(item);
+  renderComparison();
+});
+
+$("clearCompare")?.addEventListener("click", () => {
+  comparison.length = 0;
+  renderComparison();
+});
+
+
+/* ---------- VIDEO EMBED ---------- */
 
 $("embedVideo")?.addEventListener("click", () => {
   const raw = $("videoURL").value.trim();
@@ -496,15 +760,14 @@ $("embedVideo")?.addEventListener("click", () => {
     if (url.hostname.includes("youtube.com")) {
       const id = url.searchParams.get("v");
 
-      if (id) {
-        embedURL = "https://www.youtube-nocookie.com/embed/" + id;
-      } else if (url.pathname.startsWith("/embed/")) {
+      if (id) embedURL = "https://www.youtube-nocookie.com/embed/" + id;
+      else if (url.pathname.startsWith("/embed/"))
         embedURL = "https://www.youtube-nocookie.com" + url.pathname;
-      }
     }
 
     if (url.hostname === "youtu.be") {
-      embedURL = "https://www.youtube-nocookie.com/embed/" + url.pathname.substring(1);
+      embedURL = "https://www.youtube-nocookie.com/embed/" +
+        url.pathname.substring(1);
     }
 
     if (url.hostname.includes("vimeo.com")) {
@@ -514,7 +777,6 @@ $("embedVideo")?.addEventListener("click", () => {
         embedURL = "https://player.vimeo.com/video/" + id;
       }
     }
-
   } catch (error) {
     console.error(error);
   }
@@ -537,7 +799,7 @@ $("embedVideo")?.addEventListener("click", () => {
 });
 
 
-/* INITIALIZATION */
+/* ---------- INITIALIZATION ---------- */
 
 loadCountryComparison();
 loadIndiaRepresentation();
