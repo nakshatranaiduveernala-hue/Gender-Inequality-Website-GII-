@@ -1,319 +1,254 @@
 
 (() => {
 const nav=document.querySelector('#nav');
-const pages=[...document.querySelectorAll('.page')];
-const links=[...document.querySelectorAll('.navlink')];
 
-function showPage(id){
-pages.forEach(p=>p.classList.toggle('active',p.id===id));
-links.forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-nav.classList.remove('open');
+// Navigation: switch sections and remove numbered labels.
+document.querySelectorAll('#nav a').forEach(a=>{
+a.addEventListener('click',e=>{
+const id=a.getAttribute('href')?.slice(1);
+const target=document.getElementById(id);
+if(target){
+e.preventDefault();
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+target.classList.add('active');
+document.querySelectorAll('#nav a').forEach(x=>x.classList.toggle('active',x===a));
+nav?.classList.remove('open');
 window.scrollTo({top:0,behavior:'smooth'});
-if(id==='indicator'&&!mapStarted)initMap();
-if(id==='trends')drawAllCharts();
+setTimeout(()=>resizeCharts(),250);
+if(id==='indicator')initMap();
 }
+});
+});
 
-links.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));
-document.querySelector('#menuToggle').addEventListener('click',()=>nav.classList.toggle('open'));
-document.querySelector('#topBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+document.querySelectorAll('[href^="#"]:not(#nav a)').forEach(a=>{
+a.addEventListener('click',e=>{
+const id=a.getAttribute('href').slice(1);
+const target=document.getElementById(id);
+if(target?.classList.contains('page')){
+e.preventDefault();
+document.querySelector(`#nav a[href="#${id}"]`)?.click();
+}
+});
+});
 
-const indicators={
+const menu=document.querySelector('#menu');
+menu?.addEventListener('click',()=>nav?.classList.toggle('open'));
+
+// Image fallbacks.
+document.querySelectorAll('img').forEach(img=>{
+img.addEventListener('error',()=>{
+img.dataset.failed='true';
+img.alt=img.alt+' (image unavailable; see caption/source)';
+img.style.minHeight='150px';
+img.style.background='linear-gradient(135deg,#dbeaf4,#91bdd8)';
+img.style.objectFit='contain';
+},{once:true});
+});
+
+// Indicator definitions.
+const indicatorMeta={
 'SG.GEN.PARL.ZS':{
-name:'Women in Parliament',
-unit:'Percent of seats (%)',
-why:'Shows the share of parliamentary seats held by women. It measures representation, not the full extent of influence or equality.',
-variable:'Share of seats held by women in national parliament.',
-countries:['IND','NPL','BGD','PAK','USA','RWA','SWE','JPN']
+title:'Women in Parliament (%)',
+desc:'Percentage of seats in national parliaments held by women. This indicator measures representation, but not necessarily power, influence or the quality of participation.',
+importance:'Representation is one dimension of participation in political decision-making; it should be considered alongside rights, institutions and lived experiences.'
 },
 'SP.ADO.TFRT':{
-name:'Adolescent fertility rate',
-unit:'Births per 1,000 women ages 15–19',
-why:'Provides information about adolescent childbearing, which relates to education, health, services and social conditions.',
-variable:'Annual births per 1,000 women aged 15–19.',
-countries:['IND','NPL','BGD','PAK','USA','RWA','SWE','JPN']
+title:'Adolescent fertility rate',
+desc:'Births per 1,000 women ages 15–19. The indicator reflects a range of social, health, educational and economic conditions.',
+importance:'Rates can be associated with access to health services, education, social conditions and opportunities. Association is not proof of a single cause.'
 },
 'SH.STA.MMRT':{
-name:'Maternal mortality ratio',
-unit:'Deaths per 100,000 live births',
-why:'Reflects maternal health risks and access to quality care, but estimates and health-system context must be considered.',
-variable:'Maternal deaths per 100,000 live births.',
-countries:['IND','NPL','BGD','PAK','USA','RWA','SWE','JPN']
+title:'Maternal mortality ratio',
+desc:'Maternal deaths per 100,000 live births. Estimates reflect health risks and access to quality services.',
+importance:'It can help examine health-system access and disparities, but data estimates, definitions and context matter.'
 }
 };
 
-const countryNames={
-IND:'India',NPL:'Nepal',BGD:'Bangladesh',PAK:'Pakistan',
-USA:'United States',RWA:'Rwanda',SWE:'Sweden',JPN:'Japan'
-};
+const countries=['India','Nepal','Bangladesh','Pakistan','United States','Rwanda','Sweden','Japan'];
+const codes=['IND','NPL','BGD','PAK','USA','RWA','SWE','JPN'];
+let selected='SG.GEN.PARL.ZS',map,layer,initialized=false;
+const chartRefs={};
 
-let currentIndicator='SG.GEN.PARL.ZS';
-let mapStarted=false;
-let mapObj=null;
-let geoLayer=null;
-let latestValues={};
-
-async function wb(code,indicator){
-const url=`https://api.worldbank.org/v2/country/${code}/indicator/${indicator}?format=json&per_page=100`;
-const res=await fetch(url);
-if(!res.ok)throw Error('Data request failed');
-const data=await res.json();
-return (data[1]||[])
-.filter(x=>x.value!=null)
-.sort((a,b)=>+a.date-+b.date)
-.map(x=>({year:+x.date,value:+x.value}));
+function chart(id,type,labels,datasets,options={}){
+const el=document.getElementById(id);
+if(!el||!window.Chart)return;
+if(chartRefs[id])chartRefs[id].destroy();
+chartRefs[id]=new Chart(el,{
+type,
+data:{labels,datasets},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{display:datasets.length>1},
+tooltip:{enabled:true}
+},
+scales:{
+y:{
+beginAtZero:options.zero!==false,
+title:{display:!!options.unit,text:options.unit||''}
+},
+x:{ticks:{maxTicksLimit:8}}
+},
+...options.extra
 }
-
-async function getCountries(indicator){
-let all={};
-await Promise.all(indicators[indicator].countries.map(async c=>{
-try{all[c]=await wb(c,indicator)}catch(e){all[c]=[]}
-}));
-return all;
-}
-
-function drawCanvas(id,series,labels=[],opts={}){
-const canvas=document.getElementById(id);
-if(!canvas)return;
-const ctx=canvas.getContext('2d');
-const rect=canvas.getBoundingClientRect();
-if(rect.width<5)return;
-const dpr=window.devicePixelRatio||1;
-canvas.width=rect.width*dpr;
-canvas.height=(opts.height||240)*dpr;
-canvas.style.height=(opts.height||240)+'px';
-ctx.scale(dpr,dpr);
-
-const w=rect.width,h=opts.height||240;
-const p={l:45,r:15,t:18,b:32};
-const cw=w-p.l-p.r,ch=h-p.t-p.b;
-ctx.clearRect(0,0,w,h);
-ctx.font='11px DM Sans, sans-serif';
-ctx.fillStyle='#64778a';
-ctx.strokeStyle='#dce5ec';
-ctx.lineWidth=1;
-
-let values=series.flatMap(s=>s.data.map(d=>d.value)).filter(v=>Number.isFinite(v));
-if(!values.length){
-ctx.fillText('No data available',p.l,h/2);
-return;
-}
-
-let min=opts.zero?0:Math.min(...values);
-let max=Math.max(...values);
-if(max===min)max+=1;
-let pad=(max-min)*.12;
-min=opts.zero?0:min-pad;
-max+=pad;
-
-for(let i=0;i<5;i++){
-let val=min+(max-min)*i/4;
-let y=p.t+ch-(val-min)/(max-min)*ch;
-ctx.beginPath();
-ctx.moveTo(p.l,y);
-ctx.lineTo(w-p.r,y);
-ctx.stroke();
-ctx.fillText(val.toFixed(opts.decimals??0),4,y+4);
-}
-
-const years=labels.length?labels:series.flatMap(s=>s.data.map(d=>d.year));
-const yearMin=Math.min(...years);
-const yearMax=Math.max(...years);
-
-if(yearMin===yearMax){
-ctx.fillText(yearMin,p.l,h-7);
-}
-
-series.forEach((s,idx)=>{
-ctx.strokeStyle=s.color||['#2671a8','#0c2c50','#79b9df','#548cbb'][idx%4];
-ctx.lineWidth=2.4;
-ctx.beginPath();
-let started=false;
-
-s.data.forEach(d=>{
-if(!Number.isFinite(d.value))return;
-let x=p.l+(d.year-yearMin)/(yearMax-yearMin||1)*cw;
-let y=p.t+ch-(d.value-min)/(max-min)*ch;
-if(!started){ctx.moveTo(x,y);started=true}else ctx.lineTo(x,y);
-});
-if(started)ctx.stroke();
-
-s.data.forEach(d=>{
-let x=p.l+(d.year-yearMin)/(yearMax-yearMin||1)*cw;
-let y=p.t+ch-(d.value-min)/(max-min)*ch;
-ctx.fillStyle=s.color||'#2671a8';
-ctx.beginPath();
-ctx.arc(x,y,2.5,0,Math.PI*2);
-ctx.fill();
-});
-});
-
-ctx.fillStyle='#64778a';
-let yearTicks=[yearMin,Math.round((yearMin+yearMax)/2),yearMax];
-yearTicks.forEach(y=>{
-ctx.fillText(String(y),p.l+(y-yearMin)/(yearMax-yearMin||1)*cw-10,h-8);
-});
-
-if(opts.legend){
-let lx=p.l;
-series.forEach(s=>{
-ctx.fillStyle=s.color||'#2671a8';
-ctx.fillRect(lx,p.t-10,9,9);
-ctx.fillStyle='#536a80';
-ctx.fillText(s.name,lx+13,p.t-2);
-lx+=ctx.measureText(s.name).width+30;
 });
 }
+
+async function api(code,ind){
+const u=`https://api.worldbank.org/v2/country/${code}/indicator/${ind}?format=json&per_page=100`;
+const r=await fetch(u);
+if(!r.ok)throw Error('API unavailable');
+const j=await r.json();
+return(j[1]||[])
+.filter(x=>x.value!==null)
+.map(x=>({year:+x.date,value:+x.value}))
+.sort((a,b)=>a.year-b.year);
 }
 
-function latest(data){return data?.length?data[data.length-1]:null}
-function seriesFor(data,name,color){return {name,data:data||[],color}}
+function latest(d){
+return d?.length?d[d.length-1]:null;
+}
 
-async function loadTrends(){
+async function trend(){
 try{
-const g=await wb('WLD','SG.GEN.PARL.ZS');
-drawCanvas('trendChart',[seriesFor(g,'World','#2671a8')],[],{decimals:1});
-}catch(e){drawCanvas('trendChart',[],[],{});}
-
-try{
-const f=await wb('IND','SP.ADO.TFRT');
-drawCanvas('fertilityChart',[seriesFor(f,'India','#2474a9')],[],{decimals:0});
-}catch(e){drawCanvas('fertilityChart',[],[],{});}
-
-try{
-const m=await wb('IND','SH.STA.MMRT');
-drawCanvas('maternalChart',[seriesFor(m,'India','#2474a9')],[],{decimals:0});
-}catch(e){drawCanvas('maternalChart',[],[],{});}
-
-try{
-const vals=await getCountries('SG.GEN.PARL.ZS');
-let ss=Object.keys(vals).map((c,i)=>seriesFor(vals[c],countryNames[c],['#2671a8','#0c2c50','#79b9df','#548cbb'][i]));
-drawCanvas('indiaChart',ss,[],{decimals:1,legend:true});
-}catch(e){drawCanvas('indiaChart',[],[],{});}
+let data=await api('WLD','SG.GEN.PARL.ZS');
+chart('trendChart','line',data.map(x=>x.year),[
+{label:'World (%)',data:data.map(x=>x.value),borderColor:'#2879b4',backgroundColor:'#2879b4',tension:.25}
+]);
+}catch(e){}
 }
 
-function drawAllCharts(){loadTrends();}
-loadTrends();
-
-function mapColor(v,min,max){
-if(v==null)return'#d9e5ed';
-let t=(v-min)/(max-min||1);
-return t<.25?'#d0e5f1':t<.5?'#8fc4df':t<.75?'#4189b9':'#174b78';
-}
-
-async function initMap(){
-if(mapStarted)return;
-mapStarted=true;
-if(!window.L){
-document.getElementById('worldMap').innerHTML='<p style="padding:20px">The map library could not load. Please check your connection.</p>';
-return;
-}
-mapObj=L.map('worldMap',{worldCopyJump:true}).setView([20,0],2);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
-attribution:'© OpenStreetMap contributors © CARTO',
-maxZoom:7
-}).addTo(mapObj);
-await loadMapData();
-setTimeout(()=>mapObj.invalidateSize(),200);
-}
-
-async function loadMapData(){
-const id=currentIndicator;
-document.querySelector('#mapTitle').textContent=indicators[id].name;
-
+async function comparison(ind){
 try{
-let all=await fetch(`https://api.worldbank.org/v2/country/all/indicator/${id}?format=json&per_page=20000`).then(r=>r.json());
-latestValues={};
+let series=await Promise.all(codes.map(c=>api(c,ind)));
+const values=series.map(x=>latest(x)?.value??null);
 
-(all[1]||[]).forEach(d=>{
-if(d.countryiso3code&&d.value!=null&&(!latestValues[d.countryiso3code]||+d.date>latestValues[d.countryiso3code].year)){
-latestValues[d.countryiso3code]={value:+d.value,year:+d.date,name:d.country?.value};
+chart('globalCountryChart','bar',countries,[
+{label:indicatorMeta[ind].title,data:values,backgroundColor:'#78b9dc'}
+],{unit:indicatorMeta[ind].title});
+
+chart('fertilityChart','bar',countries,[
+{label:indicatorMeta[ind].title,data:values,backgroundColor:'#78b9dc'}
+],{unit:indicatorMeta[ind].title});
+}catch(e){}
+}
+
+async function india(ind='SG.GEN.PARL.ZS'){
+try{
+let list=await Promise.all(codes.map(c=>api(c,ind)));
+chart('indiaChart','bar',countries,[
+{label:'Women in parliament (%)',data:list.map(d=>latest(d)?.value??null),backgroundColor:'#78b9dc'}
+]);
+}catch(e){}
+}
+
+async function loadIndicator(){
+const m=indicatorMeta[selected];
+const desc=document.getElementById('indicatorDescription');
+const importance=document.getElementById('indicatorImportance');
+if(desc)desc.textContent=m.desc;
+if(importance)importance.textContent=m.importance;
+await comparison(selected);
+if(initialized)loadMap();
+}
+
+async function loadMap(){
+if(!map)return;
+try{
+const r=await fetch(`https://api.worldbank.org/v2/country/all/indicator/${selected}?format=json&per_page=20000`);
+const j=await r.json();
+let vals={};
+
+(j[1]||[]).forEach(d=>{
+if(d.countryiso3code&&d.value!=null&&
+(!vals[d.countryiso3code]||+d.date>vals[d.countryiso3code].year)){
+vals[d.countryiso3code]={value:+d.value,year:+d.date};
 }
 });
 
-let geo=await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson').then(r=>r.json());
-if(geoLayer)mapObj.removeLayer(geoLayer);
+const g=await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson').then(r=>r.json());
 
-let nums=Object.values(latestValues).map(x=>x.value);
-let min=Math.min(...nums),max=Math.max(...nums);
+if(layer)map.removeLayer(layer);
 
-geoLayer=L.geoJSON(geo,{
+let v=Object.values(vals).map(x=>x.value);
+let lo=Math.min(...v),hi=Math.max(...v);
+
+const color=x=>x==null?'#e1eaf0':
+x<lo+(hi-lo)*.25?'#d2e5f0':
+x<lo+(hi-lo)*.5?'#9bc9df':
+x<lo+(hi-lo)*.75?'#5798c5':'#174b78';
+
+layer=L.geoJSON(g,{
 style:f=>{
-let code=f.properties.ISO3166-1-Alpha-3||f.properties.ADM0_A3||f.properties.iso_a3;
-let v=latestValues[code]?.value;
-return{
-fillColor:mapColor(v,min,max),
-color:'#fff',
-weight:.65,
-fillOpacity:.85
-};
+let p=f.properties;
+let code=p['ISO3166-1-Alpha-3']||p.ADM0_A3||p.iso_a3;
+return{fillColor:color(vals[code]?.value),color:'#fff',weight:.6,fillOpacity:.85};
 },
 onEachFeature:(f,l)=>{
-let code=f.properties.ISO3166-1-Alpha-3||f.properties.ADM0_A3||f.properties.iso_a3;
-let v=latestValues[code];
-l.bindTooltip(`${f.properties.name||f.properties.ADMIN||code}: ${v?`${v.value.toFixed(1)} (${v.year})`:'No data'}`);
-l.on('click',()=>selectCountry(code,f.properties.name||f.properties.ADMIN));
+let p=f.properties;
+let code=p['ISO3166-1-Alpha-3']||p.ADM0_A3||p.iso_a3;
+let entry=vals[code];
+l.bindTooltip(`${p.name||p.ADMIN||code}: ${entry?entry.value.toFixed(2)+' ('+entry.year+')':'No data'}`);
 }
-}).addTo(mapObj);
+}).addTo(map);
 
 }catch(e){
-document.getElementById('worldMap').innerHTML='<p style="padding:20px">Map data could not load. Check your internet connection.</p>';
+document.getElementById('map')?.insertAdjacentHTML('beforeend','<p class="map-error">Map data could not load. Check your connection.</p>');
 }
 }
 
-async function selectCountry(code,name){
-document.querySelector('#countryName').textContent=name||countryNames[code]||code;
-const val=latestValues[code];
-document.querySelector('#countryValue').textContent=val?`${val.value.toFixed(1)}${currentIndicator==='SG.GEN.PARL.ZS'?'%':''}`:'No data';
-document.querySelector('#countryDescription').textContent=val?`Latest available value: ${val.year}. Source: World Bank.`:'No recent data was returned for this country.';
-
-try{
-const data=await wb(code,currentIndicator);
-drawCanvas('globalCountryChart',[seriesFor(data,name,'#2671a8')],[],{height:180,decimals:1});
-}catch(e){
-drawCanvas('globalCountryChart',[],[],{height:180});
-}
-}
-
-function changeIndicator(id){
-currentIndicator=id;
-let meta=indicators[id];
-document.querySelector('#mapTitle').textContent=meta.name;
-document.querySelector('#indicatorWhy').textContent=meta.why;
-document.querySelector('#variableText').textContent=meta.variable;
-document.querySelector('#unitText').textContent=meta.unit;
-loadMapData();
-const chosen=document.querySelector('#compareSelect').value;
-selectCountry(chosen,countryNames[chosen]);
-}
-
-document.querySelector('#indicatorSelect').addEventListener('change',e=>changeIndicator(e.target.value));
-document.querySelector('#compareBtn').addEventListener('click',()=>{
-let c=document.querySelector('#compareSelect').value;
-selectCountry(c,countryNames[c]);
-});
-document.querySelector('#compareSelect').addEventListener('change',e=>selectCountry(e.target.value,countryNames[e.target.value]));
-
-document.querySelector('#loadVideo').addEventListener('click',()=>{
-let url=document.querySelector('#videoUrl').value.trim();
-let container=document.querySelector('#videoFrame');
-if(!url){container.innerHTML='<p>Please enter an embed URL.</p>';return;}
-try{
-let u=new URL(url);
-if(u.hostname==='www.youtube.com'&&u.pathname==='/watch')u.pathname='/embed/'+u.searchParams.get('v');
-if(u.hostname==='youtu.be')u.pathname='/embed'+u.pathname;
-if(!u.hostname.includes('youtube.com')&&!u.hostname.includes('youtu.be')&&!u.hostname.includes('vimeo.com')){
-container.innerHTML='<p>Use a supported video embed link.</p>';
+function initMap(){
+if(initialized)return;
+initialized=true;
+if(!window.L){
+const m=document.getElementById('map');
+if(m)m.innerHTML='<p>Map library could not load. Check your connection.</p>';
 return;
 }
-container.innerHTML=`<iframe src="${u.href}" title="Project video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+map=L.map('map').setView([20,0],2);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
+attribution:'© OpenStreetMap © CARTO'
+}).addTo(map);
+loadMap();
+setTimeout(()=>map.invalidateSize(),300);
+}
+
+document.getElementById('indicatorSelect')?.addEventListener('change',e=>{
+selected=e.target.value;
+loadIndicator();
+});
+
+// YouTube video validation.
+document.getElementById('loadVideo')?.addEventListener('click',()=>{
+let input=document.getElementById('videoUrl')?.value.trim();
+let box=document.getElementById('videoFrame');
+if(!box)return;
+if(!input){box.textContent='Enter a video URL first.';return;}
+
+try{
+let u=new URL(input),id='';
+if(u.hostname==='youtu.be')id=u.pathname.slice(1);
+else if(u.hostname.includes('youtube.com'))id=u.searchParams.get('v')||u.pathname.split('/').pop();
+else if(u.hostname.includes('youtube-nocookie.com'))id=u.pathname.split('/').pop();
+
+if(!id||!/^[\w-]{6,}$/.test(id)){
+box.textContent='Please use a valid YouTube video URL.';
+return;
+}
+box.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Presentation video" allowfullscreen></iframe>`;
 }catch(e){
-container.innerHTML='<p>That URL does not look valid.</p>';
+box.textContent='That URL is not valid.';
 }
 });
 
-window.addEventListener('resize',()=>{
-drawAllCharts();
-if(mapObj)mapObj.invalidateSize();
-});
+function resizeCharts(){
+Object.values(chartRefs).forEach(c=>c.resize());
+}
+window.addEventListener('resize',resizeCharts);
+
+trend();
+comparison(selected);
+india();
+
 })();
