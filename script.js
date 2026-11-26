@@ -174,7 +174,7 @@ function makeChart(id,type,labels,values,label,unit){
     },
     options:{
       responsive:true,
-      maintainAspectRatio:true,
+      maintainAspectRatio:false,
       plugins:{
         legend:{display:true},
         tooltip:{enabled:true}
@@ -266,6 +266,7 @@ async function loadCountryChart(){
     chartError("globalCountryChart","Country data unavailable.");
   }
 }
+
 
 /* INDIA AND GLOBAL CHARTS */
 
@@ -472,7 +473,7 @@ async function loadMapData(key){
     $("mapHeading").textContent=indicators[key].title;
 
     status.textContent=
-      "Map loaded. Click a country to view its observation.";
+      "Map loaded. Hover for details; click a country to view its observation.";
 
     $("countryName").textContent="Click a country on the map";
 
