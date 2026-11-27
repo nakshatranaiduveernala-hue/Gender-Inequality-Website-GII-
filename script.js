@@ -1,536 +1,552 @@
-
 /* ==========================================
-   NAVIGATION
+   GLOBAL GENDER EQUALITY WEBSITE
+   Navigation, data, map and charts
 ========================================== */
+
+/* ---------- NAVIGATION ---------- */
 
 const navButtons = document.querySelectorAll(".nav-btn");
 const pages = document.querySelectorAll(".page");
-const pageHeading = document.getElementById("page-heading");
+const heading = document.getElementById("page-heading");
 
-const pageNames = {
-  home: "Home",
-  issue: "The Issue",
+const headings = {
+  home: "Exploring Gender Inequality",
+  issue: "Understanding the Issue",
   india: "India",
-  trends: "Trends",
+  trends: "Global Data & Trends",
   indicator: "Development Indicator",
-  "criterion-b": "Criterion B",
-  "criterion-c": "Criterion C",
-  "criterion-d": "Criterion D",
-  sources: "Sources",
+  "criterion-b": "Criterion B · Planning",
+  "criterion-c": "Criterion C · Communication",
+  "criterion-d": "Criterion D · Analysis",
+  sources: "Sources & Evaluation",
   about: "About Me"
 };
 
-function showPage(pageId) {
-  pages.forEach(page => page.classList.remove("active"));
-  navButtons.forEach(button => button.classList.remove("active"));
-
-  const target = document.getElementById(pageId);
-  if (target) target.classList.add("active");
-
-  const activeButton = document.querySelector(`[data-page="${pageId}"]`);
-  if (activeButton) activeButton.classList.add("active");
-
-  if (pageHeading) pageHeading.textContent = pageNames[pageId] || pageId;
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-  if (pageId === "trends" && map) {
-    setTimeout(() => map.invalidateSize(), 200);
-  }
-}
-
 navButtons.forEach(button => {
   button.addEventListener("click", () => {
-    showPage(button.dataset.page);
+    const pageId = button.dataset.page;
+
+    navButtons.forEach(btn => btn.classList.remove("active"));
+    pages.forEach(page => page.classList.remove("active"));
+
+    button.classList.add("active");
+
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) targetPage.classList.add("active");
+
+    if (heading) heading.textContent = headings[pageId] || "Development Investigation";
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    if (pageId === "trends") {
+      setTimeout(() => {
+        if (map) map.invalidateSize();
+      }, 200);
+    }
   });
 });
 
 
-/* ==========================================
-   DATA
-========================================== */
+/* ---------- WORLD BANK DATA ---------- */
 
-const INDICATORS = {
+const indicators = {
   "SG.GEN.PARL.ZS": {
-    name: "Women in Parliament (% seats)",
+    name: "Women in Parliament (%)",
+    description: "Proportion of seats held by women in national parliaments.",
     unit: "%",
-    higherIsBetter: true
+    reverse: false
   },
+
   "SP.ADO.TFRT": {
     name: "Adolescent Fertility Rate",
-    unit: "births per 1,000",
-    higherIsBetter: false
+    description: "Births per 1,000 women aged 15–19.",
+    unit: "births per 1,000 women",
+    reverse: true
   },
+
   "SH.STA.MMRT": {
     name: "Maternal Mortality Ratio",
-    unit: "deaths per 100,000",
-    higherIsBetter: false
+    description: "Maternal deaths per 100,000 live births.",
+    unit: "deaths per 100,000 live births",
+    reverse: true
   }
 };
 
-const COUNTRIES = [
-  {code:"IND",name:"India"},
-  {code:"RWA",name:"Rwanda"},
-  {code:"SWE",name:"Sweden"},
-  {code:"JPN",name:"Japan"},
-  {code:"USA",name:"United States"},
-  {code:"NOR",name:"Norway"},
-  {code:"AFG",name:"Afghanistan"},
-  {code:"ARE",name:"United Arab Emirates"},
-  {code:"NZL",name:"New Zealand"},
-  {code:"BRA",name:"Brazil"},
-  {code:"FRA",name:"France"},
-  {code:"ZAF",name:"South Africa"}
-];
+const countryNames = {
+  IND: "India",
+  RWA: "Rwanda",
+  SWE: "Sweden",
+  JPN: "Japan",
+  USA: "United States",
+  NOR: "Norway",
+  AFG: "Afghanistan",
+  ARE: "United Arab Emirates",
+  NZL: "New Zealand",
+  BRA: "Brazil",
+  FRA: "France",
+  ZAF: "South Africa"
+};
 
-const countrySelect = document.getElementById("country-select");
-const indicatorSelect = document.getElementById("indicator-select");
-const countryInfo = document.getElementById("country-info");
-const mapStatus = document.getElementById("map-status");
-
-let map;
-let geoLayer;
-let chart;
 let currentIndicator = "SG.GEN.PARL.ZS";
-let geoData = null;
-let currentData = {};
+let map;
+let mapLayer;
+let chart;
+let countryData = {};
+let mapData = {};
 let dataCache = {};
 
 
-/* ==========================================
-   WORLD BANK API
-========================================== */
+/* ---------- FETCH WORLD BANK ---------- */
 
-async function fetchIndicator(indicator) {
-  if (dataCache[indicator]) return dataCache[indicator];
+async function fetchIndicator(code) {
+  if (dataCache[code]) {
+    return dataCache[code];
+  }
 
   const url =
-    `https://api.worldbank.org/v2/country/all/indicator/${indicator}?format=json&per_page=20000`;
+    `https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&per_page=20000&date=2020:2025`;
 
-  const response = await fetch(url);
+  try {
+    const response = await fetch(url);
 
-  if (!response.ok) {
-    throw new Error("World Bank data request failed.");
-  }
+    if (!response.ok) {
+      throw new Error("World Bank request failed");
+    }
 
-  const json = await response.json();
+    const data = await response.json();
 
-  if (!json || !json[1]) {
-    throw new Error("No data returned.");
-  }
+    if (!data || !data[1]) {
+      throw new Error("No indicator data returned");
+    }
 
-  const values = {};
+    const records = {};
 
-  json[1].forEach(item => {
-    if (
-      item.countryiso3code &&
-      item.value !== null &&
-      item.countryiso3code.length === 3
-    ) {
-      const existing = values[item.countryiso3code];
+    data[1].forEach(item => {
+      const countryCode = item.countryiso3code;
+      const value = item.value;
+      const year = item.date;
 
-      if (!existing || Number(item.date) > Number(existing.year)) {
-        values[item.countryiso3code] = {
-          value: Number(item.value),
-          year: Number(item.date),
-          name: item.country?.value || item.countryiso3code
+      if (!countryCode || value === null) return;
+
+      if (!records[countryCode] || year > records[countryCode].year) {
+        records[countryCode] = {
+          value: value,
+          year: year
         };
+      }
+    });
+
+    dataCache[code] = records;
+
+    return records;
+
+  } catch (error) {
+    console.error("Indicator error:", error);
+    return {};
+  }
+}
+
+
+/* ---------- MAP ---------- */
+
+function initMap() {
+  const mapElement = document.getElementById("map");
+
+  if (!mapElement || typeof L === "undefined") return;
+
+  map = L.map("map", {
+    zoomControl: true,
+    scrollWheelZoom: true
+  }).setView([20, 15], 2);
+
+  L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    {
+      attribution: "&copy; OpenStreetMap &copy; CARTO",
+      maxZoom: 8
+    }
+  ).addTo(map);
+
+  loadMap();
+}
+
+
+async function loadMap() {
+  const status = document.getElementById("map-status");
+
+  try {
+    const response = await fetch(
+      "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+    );
+
+    if (!response.ok) {
+      throw new Error("Map boundaries failed to load");
+    }
+
+    const geoData = await response.json();
+
+    mapLayer = L.geoJSON(geoData, {
+      style: styleFeature,
+      onEachFeature: addFeatureEvents
+    }).addTo(map);
+
+    if (status) {
+      status.textContent = "Map loaded. Exploring data...";
+    }
+
+    await updateMap(currentIndicator);
+
+  } catch (error) {
+    console.error(error);
+
+    if (status) {
+      status.textContent =
+        "The map boundaries could not load. Please check your internet connection.";
+    }
+  }
+}
+
+
+function getISO(feature) {
+  const properties = feature.properties || {};
+
+  return (
+    properties.ISO_A3 ||
+    properties.iso_a3 ||
+    properties.ISO3 ||
+    properties.ADM0_A3 ||
+    properties.SOV_A3 ||
+    properties["ISO3166-1-Alpha-3"] ||
+    properties.iso3 ||
+    ""
+  );
+}
+
+
+function getValue(code) {
+  return mapData[code] ? mapData[code].value : null;
+}
+
+
+function styleFeature(feature) {
+  const code = getISO(feature);
+  const value = getValue(code);
+
+  return {
+    fillColor: getColour(value),
+    weight: 0.6,
+    color: "#FFFFFF",
+    fillOpacity: value === null ? 0.35 : 0.8
+  };
+}
+
+
+function getColour(value) {
+  if (value === null || value === undefined) {
+    return "#DCE5EF";
+  }
+
+  if (currentIndicator === "SG.GEN.PARL.ZS") {
+    if (value < 10) return "#F2DCE6";
+    if (value < 20) return "#D8A8C0";
+    if (value < 30) return "#B77596";
+    if (value < 40) return "#865070";
+    if (value < 50) return "#4F315A";
+    return "#173D70";
+  }
+
+  if (currentIndicator === "SP.ADO.TFRT") {
+    if (value < 10) return "#DCEFF9";
+    if (value < 30) return "#A4CDE6";
+    if (value < 60) return "#6BA7D1";
+    if (value < 100) return "#397FB8";
+    return "#174C8E";
+  }
+
+  if (currentIndicator === "SH.STA.MMRT") {
+    if (value < 20) return "#DDEEE9";
+    if (value < 70) return "#9BCDBB";
+    if (value < 150) return "#66A98E";
+    if (value < 300) return "#3D8069";
+    return "#1F5145";
+  }
+
+  return "#DCE5EF";
+}
+
+
+function addFeatureEvents(feature, layer) {
+  layer.on({
+    mouseover: function(event) {
+      event.target.setStyle({
+        weight: 2,
+        color: "#C7A45C",
+        fillOpacity: 0.95
+      });
+
+      event.target.bringToFront();
+    },
+
+    mouseout: function(event) {
+      if (mapLayer) {
+        mapLayer.resetStyle(event.target);
       }
     }
   });
 
-  dataCache[indicator] = values;
-  return values;
-}
+  const code = getISO(feature);
+  const name =
+    feature.properties.ADMIN ||
+    feature.properties.name ||
+    feature.properties.NAME ||
+    "Unknown country";
 
+  layer.bindTooltip(name, {
+    sticky: true
+  });
 
-/* ==========================================
-   MAP
-========================================== */
+  layer.on("click", () => {
+    const record = mapData[code];
 
-function getCountryCode(feature) {
-  const p = feature.properties || {};
-
-  const possible = [
-    p.ISO_A3,
-    p.iso_a3,
-    p.ISO3,
-    p.ADM0_A3,
-    p.SOV_A3,
-    p["ISO3166-1-Alpha-3"],
-    p.iso3
-  ];
-
-  for (const code of possible) {
-    if (code && typeof code === "string" && code.length === 3 && code !== "-99") {
-      return code.toUpperCase();
+    if (record) {
+      showCountryDetails(code, name, record);
+    } else {
+      showCountryDetails(code, name, null);
     }
-  }
-
-  return null;
+  });
 }
 
-function getCountryName(feature) {
-  const p = feature.properties || {};
-  return p.ADMIN || p.name || p.NAME || p.name_en || "Unknown";
+
+async function updateMap(indicatorCode) {
+  currentIndicator = indicatorCode;
+
+  const status = document.getElementById("map-status");
+
+  if (status) {
+    status.textContent = "Loading data...";
+  }
+
+  mapData = await fetchIndicator(indicatorCode);
+
+  if (mapLayer) {
+    mapLayer.setStyle(styleFeature);
+  }
+
+  updateLegend();
+
+  if (status) {
+    status.textContent =
+      `Showing ${indicators[indicatorCode].name}. Click a country for details.`;
+  }
+
+  updateChart();
+  updateCountryInfo();
 }
 
-function getMapColor(value, indicator) {
-  if (value === null || value === undefined || !Number.isFinite(value)) {
-    return "#ded9d5";
-  }
 
-  if (indicator === "SG.GEN.PARL.ZS") {
-    if (value < 10) return "#f2e6e8";
-    if (value < 20) return "#dfbac5";
-    if (value < 30) return "#c7889b";
-    if (value < 40) return "#a95270";
-    if (value < 50) return "#7c2948";
-    return "#4b1028";
-  }
+function updateLegend() {
+  const legend = document.getElementById("map-legend");
 
-  if (indicator === "SP.ADO.TFRT") {
-    if (value < 10) return "#f2e6e8";
-    if (value < 25) return "#dfbac5";
-    if (value < 50) return "#c7889b";
-    if (value < 75) return "#a95270";
-    if (value < 100) return "#7c2948";
-    return "#4b1028";
-  }
+  if (!legend) return;
 
-  if (indicator === "SH.STA.MMRT") {
-    if (value < 20) return "#f2e6e8";
-    if (value < 50) return "#dfbac5";
-    if (value < 100) return "#c7889b";
-    if (value < 300) return "#a95270";
-    if (value < 500) return "#7c2948";
-    return "#4b1028";
-  }
+  let levels;
 
-  return "#ded9d5";
-}
-
-function getLegend(indicator) {
-  if (indicator === "SG.GEN.PARL.ZS") {
-    return [
-      ["0–9.9%", "#f2e6e8"],
-      ["10–19.9%", "#dfbac5"],
-      ["20–29.9%", "#c7889b"],
-      ["30–39.9%", "#a95270"],
-      ["40–49.9%", "#7c2948"],
-      ["50%+", "#4b1028"]
+  if (currentIndicator === "SG.GEN.PARL.ZS") {
+    levels = [
+      ["<10%", "#F2DCE6"],
+      ["10–19.9%", "#D8A8C0"],
+      ["20–29.9%", "#B77596"],
+      ["30–39.9%", "#865070"],
+      ["40–49.9%", "#4F315A"],
+      ["50%+", "#173D70"]
     ];
   }
 
-  if (indicator === "SP.ADO.TFRT") {
-    return [
-      ["0–9.9", "#f2e6e8"],
-      ["10–24.9", "#dfbac5"],
-      ["25–49.9", "#c7889b"],
-      ["50–74.9", "#a95270"],
-      ["75–99.9", "#7c2948"],
-      ["100+", "#4b1028"]
+  else if (currentIndicator === "SP.ADO.TFRT") {
+    levels = [
+      ["<10", "#DCEFF9"],
+      ["10–29.9", "#A4CDE6"],
+      ["30–59.9", "#6BA7D1"],
+      ["60–99.9", "#397FB8"],
+      ["100+", "#174C8E"]
     ];
   }
 
-  return [
-    ["0–19.9", "#f2e6e8"],
-    ["20–49.9", "#dfbac5"],
-    ["50–99.9", "#c7889b"],
-    ["100–299.9", "#a95270"],
-    ["300–499.9", "#7c2948"],
-    ["500+", "#4b1028"]
-  ];
-}
+  else {
+    levels = [
+      ["<20", "#DDEEE9"],
+      ["20–69.9", "#9BCDBB"],
+      ["70–149.9", "#66A98E"],
+      ["150–299.9", "#3D8069"],
+      ["300+", "#1F5145"]
+    ];
+  }
 
-function updateLegend(indicator) {
-  const container = document.getElementById("map-legend");
-  if (!container) return;
-
-  const entries = getLegend(indicator);
-
-  container.innerHTML = `
-    <div class="legend-row">
-      ${entries.map(entry => `
+  legend.innerHTML = `
+    <div class="legend-title">${indicators[currentIndicator].name}</div>
+    <div class="legend-items">
+      ${levels.map(item => `
         <div class="legend-item">
-          <span class="legend-color" style="background:${entry[1]}"></span>
-          <span>${entry[0]}</span>
+          <span class="legend-swatch" style="background:${item[1]}"></span>
+          <span>${item[0]}</span>
         </div>
       `).join("")}
       <div class="legend-item">
-        <span class="legend-color" style="background:#ded9d5"></span>
+        <span class="legend-swatch" style="background:#DCE5EF"></span>
         <span>No data</span>
       </div>
     </div>
   `;
 }
 
-function mapStyle(feature) {
-  const code = getCountryCode(feature);
-  const record = currentData[code];
-  const value = record ? record.value : null;
 
-  return {
-    fillColor: getMapColor(value, currentIndicator),
-    fillOpacity: 0.88,
-    color: "#fffdfb",
-    weight: 0.7
-  };
-}
+/* ---------- COUNTRY POPUP ---------- */
 
-function mapPopup(feature, layer) {
-  const code = getCountryCode(feature);
-  const name = getCountryName(feature);
-  const record = currentData[code];
+function showCountryDetails(code, name, record) {
+  const info = document.getElementById("country-info");
 
-  let text = `<strong>${name}</strong>`;
+  if (!info) return;
 
-  if (record) {
-    text += `<br>${INDICATORS[currentIndicator].name}: ${record.value}`;
-    text += `<br>Year: ${record.year}`;
-  } else {
-    text += `<br>No data available`;
+  if (!record) {
+    info.innerHTML = `
+      <div class="country-detail-card">
+        <h3>${name}</h3>
+        <p>No recent data available for this indicator.</p>
+      </div>
+    `;
+
+    return;
   }
 
-  layer.bindPopup(text);
+  info.innerHTML = `
+    <div class="country-detail-card">
+      <h3>${name}</h3>
+      <div class="country-value">${Number(record.value).toLocaleString()}</div>
+      <p>${indicators[currentIndicator].name}</p>
+      <p class="caption">Year: ${record.year}</p>
+    </div>
+  `;
 }
 
-function mapHover(feature, layer) {
-  layer.on({
-    mouseover: function(e) {
-      e.target.setStyle({
-        weight: 2,
-        color: "#4b1028",
-        fillOpacity: 1
-      });
 
-      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        e.target.bringToFront();
-      }
+/* ---------- CHART ---------- */
+
+async function updateChart() {
+  const canvas = document.getElementById("countryChart");
+
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const countries = Object.keys(countryNames);
+
+  const data = await fetchIndicator(currentIndicator);
+
+  const values = countries.map(code => {
+    return data[code] ? data[code].value : null;
+  });
+
+  const labels = countries.map(code => countryNames[code]);
+
+  if (chart) {
+    chart.destroy();
+  }
+
+  chart = new Chart(canvas, {
+    type: "bar",
+
+    data: {
+      labels: labels,
+
+      datasets: [{
+        label: indicators[currentIndicator].name,
+        data: values,
+        borderWidth: 1,
+        borderRadius: 5,
+        backgroundColor: [
+          "#174C8E",
+          "#246BCE",
+          "#4F8FE8",
+          "#80B1EA",
+          "#A6C9F2",
+          "#C6DCF8",
+          "#365B83",
+          "#6795C1",
+          "#8AB5DF",
+          "#3973A8",
+          "#6B9BC8",
+          "#31587F"
+        ]
+      }]
     },
 
-    mouseout: function(e) {
-      if (geoLayer) geoLayer.resetStyle(e.target);
-    }
-  });
-}
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
 
-async function loadMapIndicator(indicator) {
-  currentIndicator = indicator;
-
-  if (mapStatus) {
-    mapStatus.textContent = "Loading country data…";
-  }
-
-  updateLegend(indicator);
-
-  try {
-    currentData = await fetchIndicator(indicator);
-
-    if (!geoData) {
-      const geoResponse = await fetch(
-        "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
-      );
-
-      if (!geoResponse.ok) {
-        throw new Error("Map geography could not be loaded.");
-      }
-
-      geoData = await geoResponse.json();
-    }
-
-    if (geoLayer) {
-      map.removeLayer(geoLayer);
-    }
-
-    geoLayer = L.geoJSON(geoData, {
-      style: mapStyle,
-      onEachFeature: function(feature, layer) {
-        mapPopup(feature, layer);
-        mapHover(feature, layer);
-      }
-    }).addTo(map);
-
-    if (mapStatus) {
-      mapStatus.textContent =
-        `Map displayed using the latest available value for each country. ` +
-        `Some countries may have missing data or different reporting years.`;
-    }
-
-    if (map) map.invalidateSize();
-
-  } catch (error) {
-    console.error(error);
-
-    if (mapStatus) {
-      mapStatus.textContent =
-        "The map data could not be loaded. Check your internet connection or try refreshing.";
-    }
-  }
-}
-
-function initializeMap() {
-  const mapElement = document.getElementById("map");
-  if (!mapElement || typeof L === "undefined") return;
-
-  map = L.map("map", {
-    worldCopyJump: true
-  }).setView([20, 10], 2);
-
-  L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    {
-      attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
-      maxZoom: 8
-    }
-  ).addTo(map);
-
-  loadMapIndicator(currentIndicator);
-}
-
-
-/* ==========================================
-   COUNTRY EXPLORER + CHART
-========================================== */
-
-async function updateCountryChart(indicator) {
-  try {
-    const values = await fetchIndicator(indicator);
-
-    const chartCountries = COUNTRIES.map(country => ({
-      name: country.name,
-      code: country.code,
-      value: values[country.code]?.value ?? null,
-      year: values[country.code]?.year ?? null
-    })).filter(country => country.value !== null);
-
-    const ctx = document.getElementById("countryChart");
-    if (!ctx) return;
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: chartCountries.map(c => c.name),
-        datasets: [{
-          label: INDICATORS[indicator].name,
-          data: chartCountries.map(c => c.value),
-          backgroundColor: [
-            "#4b1028",
-            "#701d3b",
-            "#922d50",
-            "#a95270",
-            "#c7889b",
-            "#7c2948",
-            "#b66a83",
-            "#d8a6b8",
-            "#8b3d5c",
-            "#c5a15b",
-            "#e0c78f",
-            "#ad7586"
-          ],
-          borderRadius: 4
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            callbacks: {
-              afterLabel: function(context) {
-                const item = chartCountries[context.dataIndex];
-                return `Year: ${item.year}`;
-              }
-            }
-          }
+      plugins: {
+        legend: {
+          display: false
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: INDICATORS[indicator].unit
-            }
-          },
-          x: {
-            ticks: {
-              maxRotation: 45,
-              minRotation: 0
+
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.parsed.y ?? "No data"}`;
             }
           }
         }
+      },
+
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
-    });
-
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function updateCountryInfo() {
-  if (!countrySelect || !countryInfo) return;
-
-  const code = countrySelect.value;
-  const country = COUNTRIES.find(c => c.code === code);
-
-  if (!country) return;
-
-  countryInfo.innerHTML = "Loading country data…";
-
-  try {
-    const values = await fetchIndicator(currentIndicator);
-    const record = values[code];
-
-    if (!record) {
-      countryInfo.innerHTML =
-        `<strong>${country.name}</strong><p>No data available for this indicator.</p>`;
-      return;
     }
-
-    countryInfo.innerHTML = `
-      <h3>${country.name}</h3>
-      <p><strong>${INDICATORS[currentIndicator].name}</strong></p>
-      <p class="country-value">${record.value}</p>
-      <p>Reporting year: ${record.year}</p>
-      <p>Values are based on the latest available observation returned for this country.</p>
-    `;
-
-  } catch (error) {
-    console.error(error);
-    countryInfo.innerHTML = "Unable to retrieve country data.";
-  }
-}
-
-
-/* ==========================================
-   EVENT LISTENERS
-========================================== */
-
-if (indicatorSelect) {
-  indicatorSelect.addEventListener("change", async function() {
-    currentIndicator = indicatorSelect.value;
-    await loadMapIndicator(currentIndicator);
-    await updateCountryChart(currentIndicator);
-    await updateCountryInfo();
   });
 }
 
-if (countrySelect) {
-  countrySelect.addEventListener("change", updateCountryInfo);
+
+/* ---------- COUNTRY DROPDOWN ---------- */
+
+function updateCountryInfo() {
+  const selector = document.getElementById("country-select");
+
+  if (!selector) return;
+
+  const code = selector.value;
+  const name = countryNames[code];
+
+  const record = mapData[code];
+
+  showCountryDetails(code, name, record || null);
 }
 
 
-/* ==========================================
-   START
-========================================== */
+/* ---------- EVENT LISTENERS ---------- */
 
-initializeMap();
+const indicatorSelector = document.getElementById("indicator-select");
 
-updateCountryChart(currentIndicator);
+if (indicatorSelector) {
+  indicatorSelector.addEventListener("change", async event => {
+    await updateMap(event.target.value);
+  });
+}
 
-updateCountryInfo();
+const countrySelector = document.getElementById("country-select");
+
+if (countrySelector) {
+  countrySelector.addEventListener("change", () => {
+    updateCountryInfo();
+  });
+}
+
+
+/* ---------- INITIALISE ---------- */
+
+document.addEventListener("DOMContentLoaded", () => {
+  initMap();
+  updateChart();
+});
