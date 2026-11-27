@@ -1,368 +1,200 @@
-<div class="site">
-<header class="topbar">
-  <a class="brand" href="#" onclick="showPage('home');return false">BEYOND <span>THE DIVIDE</span></a>
-  <nav id="nav">
-    <a onclick="showPage('home')">Home</a>
-    <a onclick="showPage('issue')">The Issue</a>
-    <a onclick="showPage('india')">India</a>
-    <a onclick="showPage('trends')">Trends</a>
-    <a onclick="showPage('indicator')">Development Indicator</a>
-    <a onclick="showPage('b')">Criterion B</a>
-    <a onclick="showPage('c')">Criterion C</a>
-    <a onclick="showPage('d')">Criterion D</a>
-    <a onclick="showPage('sources')">Sources & Reflection</a>
-    <a onclick="showPage('about')">About Me</a>
+<div class="shell">
+<header>
+  <div class="logo">BEYOND <span>THE DIVIDE</span></div>
+  <nav>
+    <a onclick="go('home')">Home</a><a onclick="go('issue')">The Issue</a>
+    <a onclick="go('india')">India</a><a onclick="go('trends')">Trends</a>
+    <a onclick="go('indicator')">Indicator</a><a onclick="go('b')">Criterion B</a>
+    <a onclick="go('c')">Criterion C</a><a onclick="go('d')">Criterion D</a>
+    <a onclick="go('sources')">Sources</a><a onclick="go('about')">About Me</a>
   </nav>
 </header>
 
 <main>
 
-<section id="home" class="page active">
-  <div class="hero">
-    <div class="hero-text">
-      <p class="eyebrow">GEOGRAPHY · DEVELOPMENT · EQUALITY</p>
-      <h1>Beyond<br><span>the Divide.</span></h1>
-      <p class="intro">Understanding the geographical inequalities that shape women's representation, opportunities and development across the world.</p>
-      <div class="hero-tags"><span>Development</span><span>Fairness & Development</span><span>SDG 5</span></div>
-      <button onclick="showPage('issue')" class="primary">Explore the issue ↗</button>
+<section class="page active" id="home">
+  <div class="homehero">
+    <div>
+      <span class="kicker">GEOGRAPHY · INEQUALITY · DEVELOPMENT</span>
+      <h1>Beyond<br><em>the Divide</em></h1>
+      <p class="lead">Exploring women's representation, opportunity and development across the world.</p>
+      <div class="pillrow"><span>Development</span><span>Fairness & Development</span><span>SDG 5</span></div>
+      <button onclick="go('issue')">Explore the investigation ↗</button>
     </div>
-    <figure class="hero-image">
-      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85" alt="People embracing in a community gathering" onerror="imgFallback(this)">
-      <figcaption>Solidarity and collective action are important to building more equal communities.</figcaption>
+    <figure>
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85" alt="A group embracing together in a community hug" onerror="fallback(this)">
+      <figcaption>A community embracing in solidarity. <small>Illustrative image.</small></figcaption>
     </figure>
   </div>
 
-  <div class="intro-grid">
-    <article class="panel">
-      <p class="eyebrow">SELECTED INDICATOR</p>
-      <h2>Women in national parliaments</h2>
-      <p>Percentage of parliamentary seats held by women in national parliaments.</p>
-      <div class="big-stat" id="homeStat">Loading data…</div>
-      <small id="homeStatYear"></small>
-    </article>
-    <article class="panel">
-      <p class="eyebrow">STATEMENT OF INQUIRY</p>
-      <h3>Unequal access to opportunities and decision-making can shape quality of life and influence the sustainable development of communities.</h3>
-    </article>
+  <div class="homecards">
+    <article class="darkcard"><span>INDICATOR</span><h2>Women in national parliaments</h2><p>Percentage of parliamentary seats held by women.</p><div id="homeValue" class="value">Loading…</div><p id="homeYear"></p></article>
+    <article class="quote"><span>STATEMENT OF INQUIRY</span><h2>Unequal access to opportunities and decision-making can shape quality of life and influence the sustainable development of communities.</h2></article>
   </div>
-
-  <div class="concept-grid">
-    <article><small>KEY CONCEPT</small><h2>Development</h2></article>
-    <article><small>GLOBAL CONTEXT</small><h2>Fairness & Development</h2></article>
-    <article><small>AKA DEVELOPMENT STRAND</small><h2>Economic Development</h2></article>
+  <div class="triple">
+    <article><span>KEY CONCEPT</span><h3>Development</h3></article>
+    <article><span>GLOBAL CONTEXT</span><h3>Fairness & Development</h3></article>
+    <article><span>AKA STRAND</span><h3>Economic Development</h3></article>
   </div>
-
-  <div class="section-heading"><p class="eyebrow">WHY THIS MATTERS</p><h2>Who gets a voice in decisions?</h2></div>
-  <div class="three-grid">
-    <article class="mini-card"><h3>Representation</h3><p>Political representation influences whose needs and experiences are considered when laws and policies are created.</p></article>
-    <article class="mini-card"><h3>Opportunity</h3><p>Education, economic opportunity, social expectations and institutional barriers can influence participation.</p></article>
-    <article class="mini-card"><h3>Development</h3><p>Inclusive institutions and equitable opportunities can contribute to more sustainable communities.</p></article>
+  <h2>Why representation matters</h2>
+  <div class="triple">
+    <article class="tile"><h3>Decision-making</h3><p>Parliamentary representation measures who is present in national political decision-making.</p></article>
+    <article class="tile"><h3>Opportunity</h3><p>Education, social expectations, access to resources and institutional structures can influence participation.</p></article>
+    <article class="tile"><h3>Development</h3><p>Inclusive institutions and equal opportunities are important dimensions of sustainable development.</p></article>
   </div>
 </section>
 
-<section id="issue" class="page">
-  <div class="page-heading"><p class="eyebrow">01 · CONTEXT</p><h1>The Issue</h1><p>Political participation is one dimension of gender equality. Development is influenced by a complex combination of social, economic and geographical factors.</p></div>
-
+<section class="page" id="issue">
+  <span class="kicker">01 · CONTEXT</span><h1>The Issue</h1>
   <div class="split">
-    <figure>
-      <img src="https://images.unsplash.com/photo-1594708767771-a7509c2b3f14?auto=format&fit=crop&w=1000&q=85" alt="Women working together in a rural community" onerror="imgFallback(this)">
-      <figcaption>Access to resources and opportunities can differ between communities.</figcaption>
-    </figure>
-    <article>
-      <h2>What is gender inequality?</h2>
-      <p>Gender inequality occurs when people experience unequal opportunities, rights, resources or treatment because of gender. It can affect education, healthcare, employment, safety and political participation.</p>
-      <p>These inequalities do not affect every woman in the same way. Location, income, disability, age, social background and access to services can influence people's experiences.</p>
-    </article>
+    <figure><img src="https://images.unsplash.com/photo-1594708767771-a7509c2b3f14?auto=format&fit=crop&w=1100&q=85" alt="Women working together in a community" onerror="fallback(this)"><figcaption>Access to resources and opportunities varies across communities.</figcaption></figure>
+    <article><h2>What is gender inequality?</h2><p>Gender inequality occurs when people experience unequal access to rights, opportunities, resources or treatment because of gender. It can influence education, healthcare, employment, safety and participation in political decisions.</p><p>Gender inequality is not experienced in the same way by everyone. Geography, income, disability, age, social background, access to services and other factors can influence people's experiences.</p></article>
   </div>
-
-  <h2 class="section-heading">Factors influencing inequality</h2>
-  <div class="three-grid">
-    <article class="mini-card"><h3>Social</h3><p>Unequal education access, social expectations, unpaid care responsibilities and discrimination can restrict opportunities.</p></article>
-    <article class="mini-card"><h3>Economic</h3><p>Limited access to employment, credit, land ownership and financial resources can affect independence and participation.</p></article>
-    <article class="mini-card"><h3>Political</h3><p>Institutional barriers, unequal representation, political violence and unequal access to decision-making can influence participation.</p></article>
+  <h2>Why does it happen?</h2>
+  <div class="triple">
+    <article class="tile"><h3>Social factors</h3><p>Unequal educational access, social expectations, discrimination and unpaid care responsibilities can limit participation.</p></article>
+    <article class="tile"><h3>Economic factors</h3><p>Employment opportunities, income, land ownership, access to credit and financial resources influence independence.</p></article>
+    <article class="tile"><h3>Political factors</h3><p>Electoral systems, political parties, institutional barriers, representation and policies influence participation.</p></article>
   </div>
-
   <div class="split reverse">
-    <article>
-      <h2>Why representation matters</h2>
-      <p>Parliaments influence laws, national budgets and policy priorities. Greater representation can help bring a wider range of experiences into public debate. However, representation alone does not guarantee equality. Institutions, policies and meaningful participation also matter.</p>
-      <p>Political representation is one indicator of development, not a complete measurement of gender equality.</p>
-    </article>
-    <figure>
-      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=85" alt="Women participating in a professional discussion" onerror="imgFallback(this)">
-      <figcaption>Participation in decision-making is influenced by many different factors.</figcaption>
-    </figure>
+    <figure><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1100&q=85" alt="Women participating in a discussion" onerror="fallback(this)"><figcaption>Participation and access to decision-making are shaped by institutions and society.</figcaption></figure>
+    <article><h2>Representation is one part of equality</h2><p>Parliaments influence laws, budgets and public policy. Representation can help bring different experiences into public discussion, but numbers alone cannot guarantee equality.</p><p>Political representation must be considered alongside rights, institutions, access to services and meaningful participation.</p></article>
   </div>
 </section>
 
-<section id="india" class="page">
-  <div class="page-heading"><p class="eyebrow">02 · COUNTRY CONTEXT</p><h1>India</h1><p>Understanding gender equality through the experiences, contributions and challenges of people in India.</p></div>
-
-  <figure class="wide-photo">
-    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1400&q=85" alt="Community members working together" onerror="imgFallback(this)">
-    <figcaption>Community participation and access to resources are important parts of development.</figcaption>
-  </figure>
-
-  <h2>Gender equality in the Indian context</h2>
-  <p>India is geographically, economically and socially diverse. Women's opportunities can vary across states, urban and rural areas, communities and income groups. National averages may conceal substantial regional differences.</p>
-
-  <div class="three-grid">
-    <article class="mini-card"><h3>Education</h3><p>Access to schools, educational quality, safety, affordability and social expectations influence educational opportunities.</p></article>
-    <article class="mini-card"><h3>Employment</h3><p>Employment opportunities, working conditions, unpaid care responsibilities and access to resources shape participation in the economy.</p></article>
-    <article class="mini-card"><h3>Political voice</h3><p>Representation in elected institutions, local government and decision-making influences political participation.</p></article>
+<section class="page" id="india">
+  <span class="kicker">02 · COUNTRY STUDY</span><h1>India</h1>
+  <figure class="banner"><img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1300&q=85" alt="People participating in a community project" onerror="fallback(this)"><figcaption>Community participation is part of development.</figcaption></figure>
+  <h2>Gender inequality in the Indian context</h2>
+  <p>India's population, geography, economic conditions and cultural contexts are highly diverse. Opportunities may vary between states, urban and rural communities, income groups and social backgrounds. National averages can hide differences within the country.</p>
+  <div class="triple">
+    <article class="tile"><h3>Education</h3><p>Access, affordability, school infrastructure, safety and educational quality influence opportunities.</p></article>
+    <article class="tile"><h3>Employment</h3><p>Jobs, wages, workplace conditions, care responsibilities and access to resources affect participation.</p></article>
+    <article class="tile"><h3>Political participation</h3><p>Political institutions, elections, policies and opportunities influence representation and decision-making.</p></article>
   </div>
-
-  <h2 class="section-heading">Women who influenced change</h2>
-  <div class="leader-grid">
-    <article class="leader">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg" alt="Portrait of Savitribai Phule" onerror="imgFallback(this)">
-      <h3>Savitribai Phule</h3>
-      <p>Educator and social reformer who helped establish schools for girls and challenged caste and gender discrimination in nineteenth-century India.</p>
-      <a href="https://commons.wikimedia.org/wiki/Category:Savitribai_Phule" target="_blank">Image source collection ↗</a>
-    </article>
-    <article class="leader">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg" alt="Portrait of Aruna Roy" onerror="imgFallback(this)">
-      <h3>Aruna Roy</h3>
-      <p>Social activist associated with the Right to Information movement and efforts to strengthen transparency, accountability and citizen participation.</p>
-      <a href="https://commons.wikimedia.org/wiki/Category:Aruna_Roy" target="_blank">Image source collection ↗</a>
-    </article>
-    <article class="leader">
-      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg" alt="Portrait of Medha Patkar" onerror="imgFallback(this)">
-      <h3>Medha Patkar</h3>
-      <p>Social activist known for working with communities affected by development projects and advocating for social justice and rights.</p>
-      <a href="https://commons.wikimedia.org/wiki/Category:Medha_Patkar" target="_blank">Image source collection ↗</a>
-    </article>
+  <h2>Women who influenced change</h2>
+  <div class="leaders">
+    <article><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg" alt="Savitribai Phule portrait" onerror="fallback(this)"><h3>Savitribai Phule</h3><p>Educator and social reformer who helped establish schools for girls and challenged caste and gender discrimination.</p><a href="https://commons.wikimedia.org/wiki/Category:Savitribai_Phule" target="_blank">Browse portrait sources ↗</a></article>
+    <article><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg" alt="Aruna Roy portrait" onerror="fallback(this)"><h3>Aruna Roy</h3><p>Social activist associated with the Right to Information movement and efforts to strengthen accountability and citizen participation.</p><a href="https://commons.wikimedia.org/wiki/Category:Aruna_Roy" target="_blank">Browse portrait sources ↗</a></article>
+    <article><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg" alt="Medha Patkar portrait" onerror="fallback(this)"><h3>Medha Patkar</h3><p>Social activist known for working with communities affected by development projects and advocating for social justice.</p><a href="https://commons.wikimedia.org/wiki/Category:Medha_Patkar" target="_blank">Browse portrait sources ↗</a></article>
   </div>
-
-  <p class="note">If a portrait does not load, use the linked Commons collection to select a properly attributed image. The image links above are not verified in this environment.</p>
-
-  <h2 class="section-heading">India's data</h2>
-  <div class="chart-box"><canvas id="indiaChart"></canvas></div>
-  <p>Use the charts to compare India with other countries and to investigate the relationship between representation and broader development conditions.</p>
+  <p class="warning">Portrait URLs may not resolve correctly on every device. The linked Wikimedia Commons collections provide alternatives. Verify the actual image and its licence before presenting.</p>
+  <h2>Representation in India over time</h2><div class="chart"><canvas id="indiaGraph"></canvas></div>
 </section>
 
-<section id="trends" class="page">
-  <div class="page-heading"><p class="eyebrow">03 · EVIDENCE</p><h1>Trends & Comparisons</h1><p>Explore the patterns, differences and changing levels of women's representation across countries.</p></div>
-
-  <div class="image-mosaic">
-    <figure><img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=85" alt="Students learning together" onerror="imgFallback(this)"><figcaption>Education and access</figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=85" alt="Women discussing ideas" onerror="imgFallback(this)"><figcaption>Leadership and participation</figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1594708767771-a7509c2b3f14?auto=format&fit=crop&w=800&q=85" alt="Community work" onerror="imgFallback(this)"><figcaption>Community opportunity</figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=85" alt="People working together" onerror="imgFallback(this)"><figcaption>Collective action</figcaption></figure>
+<section class="page" id="trends">
+  <span class="kicker">03 · DATA & EVIDENCE</span><h1>Trends</h1>
+  <p>Visual evidence can reveal geographical differences, changes over time and contrasts between countries.</p>
+  <div class="gallery">
+    <figure><img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=80" alt="Students learning" onerror="fallback(this)"><figcaption>Education and opportunity</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" alt="Community members working together" onerror="fallback(this)"><figcaption>Community participation</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="Women participating in a discussion" onerror="fallback(this)"><figcaption>Leadership and decision-making</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1594708767771-a7509c2b3f14?auto=format&fit=crop&w=800&q=80" alt="Women working together" onerror="fallback(this)"><figcaption>Economic opportunity</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=800&q=80" alt="Community initiative" onerror="fallback(this)"><figcaption>Collective action</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Group embracing" onerror="fallback(this)"><figcaption>Solidarity</figcaption></figure>
   </div>
-
-  <h2>Global comparisons</h2>
-  <p>Countries can have different levels of representation because of electoral systems, quotas, party policies, education, economic conditions, social attitudes and historical context.</p>
-  <div class="chart-box"><canvas id="topChart"></canvas></div>
-  <div class="chart-box"><canvas id="bottomChart"></canvas></div>
-  <h2>Change over time</h2>
-  <div class="chart-box"><canvas id="trendChart"></canvas></div>
-  <h2>Comparing development indicators</h2>
-  <p>Adolescent fertility and maternal mortality are related to health, access to services and wider development conditions. These indicators do not directly measure parliamentary representation.</p>
-  <div class="chart-box"><canvas id="healthChart"></canvas></div>
-  <div class="chart-box"><canvas id="fertilityChart"></canvas></div>
-  <p class="note">All charts use available World Bank observations and display the data years used. Missing data is not treated as zero.</p>
+  <h2>Countries with higher representation</h2><div class="chart"><canvas id="highest"></canvas></div>
+  <h2>Countries with lower representation</h2><div class="chart"><canvas id="lowest"></canvas></div>
+  <h2>Changes through time</h2><div class="chart"><canvas id="overTime"></canvas></div>
+  <h2>Maternal mortality comparison</h2><div class="chart"><canvas id="mortality"></canvas></div>
+  <h2>Adolescent fertility comparison</h2><div class="chart"><canvas id="fertility"></canvas></div>
+  <h2>Reading the patterns</h2>
+  <div class="triple"><article class="tile"><h3>Spatial patterns</h3><p>Compare regions and countries. Do similar patterns appear in neighbouring countries?</p></article><article class="tile"><h3>Anomalies</h3><p>Identify countries that differ from their regional pattern and investigate possible reasons.</p></article><article class="tile"><h3>Limitations</h3><p>National averages conceal regional and social differences. Data years can also vary.</p></article></div>
 </section>
 
-<section id="indicator" class="page">
-  <div class="page-heading"><p class="eyebrow">04 · GEOGRAPHICAL ANALYSIS</p><h1>Development Indicator</h1><p>Explore the geographical distribution of three indicators related to gender equality and development.</p></div>
-
-  <div class="panel">
-    <label for="indicatorSelect">Choose a development indicator</label>
-    <select id="indicatorSelect">
-      <option value="SG.GEN.PARL.ZS">Women in Parliament (%)</option>
-      <option value="SP.ADO.TFRT">Adolescent fertility rate</option>
-      <option value="SH.STA.MMRT">Maternal mortality ratio</option>
-    </select>
-    <p id="mapDataYear"></p>
+<section class="page" id="indicator">
+  <span class="kicker">04 · GEOGRAPHICAL DISTRIBUTION</span><h1>Development Indicator</h1>
+  <div class="panel"><label for="indicatorChoice">Choose indicator</label><select id="indicatorChoice"><option value="SG.GEN.PARL.ZS">Women in Parliament (%)</option><option value="SP.ADO.TFRT">Adolescent fertility rate</option><option value="SH.STA.MMRT">Maternal mortality ratio</option></select><p id="mapInfo">Loading geographical data…</p></div>
+  <div id="map"></div>
+  <div id="legend" class="legend"></div>
+  <div class="chart"><canvas id="mapGraph"></canvas></div>
+  <h2>Definitions and units</h2>
+  <div class="triple">
+    <article class="tile"><h3>Parliamentary representation</h3><p>Percentage of seats in national parliaments held by women.</p><small>Unit: % of seats</small></article>
+    <article class="tile"><h3>Adolescent fertility</h3><p>Births per 1,000 women aged 15–19.</p><small>Unit: births per 1,000 women aged 15–19</small></article>
+    <article class="tile"><h3>Maternal mortality</h3><p>Maternal deaths per 100,000 live births.</p><small>Unit: deaths per 100,000 live births</small></article>
   </div>
-
-  <div id="worldMap"></div>
-  <div id="mapLegend" class="map-legend"></div>
-
-  <div class="chart-box"><canvas id="mapChart"></canvas></div>
-
-  <h2>Understanding the indicators</h2>
-  <div class="three-grid">
-    <article class="mini-card"><h3>Women in Parliament</h3><p>Percentage of seats in national parliaments held by women. A higher percentage indicates greater numerical representation, but not necessarily full equality.</p><small>Unit: % of seats</small></article>
-    <article class="mini-card"><h3>Adolescent fertility</h3><p>Births per 1,000 women aged 15–19. It can relate to education, health services, economic opportunities and social conditions.</p><small>Unit: births per 1,000 women aged 15–19</small></article>
-    <article class="mini-card"><h3>Maternal mortality</h3><p>Maternal deaths per 100,000 live births. It reflects health-system access, care quality and wider social conditions.</p><small>Unit: deaths per 100,000 live births</small></article>
-  </div>
-
-  <h2>Variables and geographical patterns</h2>
-  <p>The map uses country-level observations, the indicator value and the observation year. The data are from the World Bank. The latest available observation may differ between countries.</p>
-  <div class="analysis-grid">
-    <article class="mini-card"><h3>High and low values</h3><p>Compare countries with higher and lower indicator values. High representation is generally positive, whereas high fertility and mortality rates represent greater challenges.</p></article>
-    <article class="mini-card"><h3>Anomalies</h3><p>Countries may not follow a regional trend. Examine political institutions, policies, historical context, healthcare, education and economic factors.</p></article>
-    <article class="mini-card"><h3>Limitations</h3><p>National averages hide inequalities within countries. Different observation years and data quality also affect comparisons.</p></article>
-  </div>
+  <h2>Pattern analysis</h2>
+  <div class="triple"><article class="tile"><h3>High & low values</h3><p>Identify countries at different ends of the distribution and compare them.</p></article><article class="tile"><h3>Geographical explanations</h3><p>Investigate social, economic, political, historical and environmental influences.</p></article><article class="tile"><h3>Interpretation</h3><p>Higher representation is generally positive. Higher fertility and maternal mortality indicate greater challenges.</p></article></div>
 </section>
 
-<section id="b" class="page">
-  <div class="page-heading"><p class="eyebrow">05 · INVESTIGATION</p><h1>Criterion B</h1><p>Investigating and planning a geographical inquiry.</p></div>
-
-  <article class="panel">
-    <h2>Statement of Inquiry</h2>
-    <p>Unequal access to opportunities and decision-making can shape quality of life and influence the sustainable development of communities.</p>
-  </article>
-
-  <article class="panel">
-    <h2>Research Question</h2>
-    <h3>To what extent does women's representation in national parliaments differ between countries, and how can geographical, social, economic and political factors help explain these differences?</h3>
-  </article>
-
-  <h2>Justification</h2>
-  <p>I selected this research question because political representation is an important part of development and gender equality. Comparing countries helps me understand why inequalities exist in different geographical contexts instead of assuming every country faces the same challenges. This research can help identify how social, economic and political conditions influence women's participation in decision-making.</p>
-
-  <h2>Data collection plan</h2>
-  <div class="two-grid">
-    <article class="panel">
-      <h3>Primary data</h3>
-      <ul>
-        <li>Conduct a short anonymous questionnaire with students about their awareness of gender equality and political representation.</li>
-        <li>Use neutral questions and avoid collecting identifying or sensitive personal information.</li>
-        <li>Participants: willing school students, with teacher permission.</li>
-        <li>Record results using charts and analyse the limitations of a small school sample.</li>
-        <li>Primary data would measure awareness, not national representation.</li>
-      </ul>
-    </article>
-    <article class="panel">
-      <h3>Secondary data</h3>
-      <ul>
-        <li>World Bank indicator databases</li>
-        <li>Inter-Parliamentary Union (IPU)</li>
-        <li>UN Women reports</li>
-        <li>Government publications and statistics</li>
-        <li>Research articles and geographical studies</li>
-        <li>Maps, reports and comparative datasets</li>
-      </ul>
-    </article>
-  </div>
-
+<section class="page" id="b">
+  <span class="kicker">05 · INVESTIGATION</span><h1>Criterion B</h1>
+  <article class="panel"><h2>Statement of Inquiry</h2><p>Unequal access to opportunities and decision-making can shape quality of life and influence the sustainable development of communities.</p></article>
+  <article class="panel"><h2>Research Question</h2><h3>To what extent does women's representation in national parliaments differ between countries, and how can geographical, social, economic and political factors help explain these differences?</h3></article>
+  <h2>Justification</h2><p>This question allows me to investigate how political representation varies geographically and examine the factors that could explain the differences. It is connected to development because representation, access to opportunities and participation in decision-making can influence institutions and society. Comparing countries helps me understand that development is shaped by more than one factor.</p>
+  <h2>Data collection</h2>
+  <div class="two"><article class="tile"><h3>Primary data</h3><ul><li>Anonymous awareness questionnaire with willing students, with teacher permission.</li><li>Questions about awareness of representation and gender equality.</li><li>Use charts to summarise responses.</li><li>Small sample limits representativeness.</li><li>Does not measure actual national representation.</li></ul></article><article class="tile"><h3>Secondary data</h3><ul><li>World Bank indicators</li><li>IPU datasets</li><li>UN Women reports</li><li>Government statistics</li><li>Research articles</li><li>Maps and comparative datasets</li></ul></article></div>
   <h2>Detailed action plan</h2>
-  <div class="timeline">
-    <article class="week"><span>WEEK 01</span><h3>Topic development & research planning</h3><ul><li>Identify the topic of gender inequality and political representation.</li><li>Review the task requirements, SOI and assessment criteria.</li><li>Define the selected indicator and refine the research question.</li><li>Identify possible variables, units and data sources.</li><li>Begin background research and identify the geographical scope.</li><li>Plan the methods for primary and secondary data collection.</li></ul></article>
-    <article class="week"><span>WEEK 02</span><h3>Data collection & geographical research</h3><ul><li>Collect data from World Bank and international organisations.</li><li>Record indicator values, country names, units and observation years.</li><li>Compare countries and investigate regional differences.</li><li>Research the Indian context and examples of women's contributions.</li><li>Collect relevant photographs and check their sources.</li><li>Organise the research in notes and tables.</li></ul></article>
-    <article class="week"><span>WEEK 03</span><h3>Analysis & communication</h3><ul><li>Analyse patterns, high and low values and anomalies.</li><li>Explain differences using social, economic, political and geographical factors.</li><li>Identify stakeholders and potential solutions.</li><li>Draft the speech and proposed action plan.</li><li>Evaluate the feasibility, sustainability and possible impact of actions.</li><li>Begin the source evaluation and reflection.</li></ul></article>
-    <article class="week"><span>WEEK 04</span><h3>Website development & finalisation</h3><ul><li>Build and organise the website tabs.</li><li>Integrate the map, graphs, photographs and data.</li><li>Write and revise the content for each criterion.</li><li>Add citations, image credits and bibliography.</li><li>Check links, navigation, visuals and accuracy.</li><li>Complete the OPVL, reflection and final presentation preparation.</li></ul></article>
-    <article class="week"><span>WEEK 05</span><h3>Testing & final quality check</h3><ul><li>Check that all pages contain their required content.</li><li>Verify data sources and graph labels.</li><li>Test the map, colour scale and controls.</li><li>Check readability and image loading.</li><li>Rehearse the presentation and make final corrections.</li></ul></article>
+  <div class="weeks">
+    <article><span>WEEK 01</span><h3>Planning</h3><ul><li>Review rubric and SOI.</li><li>Define the topic and indicator.</li><li>Refine the RQ.</li><li>Identify variables and units.</li><li>Begin background research.</li><li>Identify sources and plan methods.</li></ul></article>
+    <article><span>WEEK 02</span><h3>Research & collection</h3><ul><li>Collect data from international databases.</li><li>Record country, year, unit and value.</li><li>Compare countries and regions.</li><li>Research India.</li><li>Find relevant visuals.</li><li>Organise notes and evidence.</li></ul></article>
+    <article><span>WEEK 03</span><h3>Analysis</h3><ul><li>Analyse patterns and anomalies.</li><li>Explain social and economic factors.</li><li>Investigate political and geographical factors.</li><li>Identify stakeholders.</li><li>Draft the speech and proposed action.</li><li>Begin source evaluation.</li></ul></article>
+    <article><span>WEEK 04</span><h3>Website construction</h3><ul><li>Organise tabs.</li><li>Integrate images, charts and map.</li><li>Write criterion sections.</li><li>Insert citations.</li><li>Complete reflection and OPVL.</li><li>Review and revise.</li></ul></article>
+    <article><span>WEEK 05</span><h3>Final checks</h3><ul><li>Check all rubric requirements.</li><li>Verify data and sources.</li><li>Test visuals and navigation.</li><li>Check readability.</li><li>Rehearse presentation.</li><li>Make final improvements.</li></ul></article>
   </div>
-  <p class="note">Edit the timeline to accurately reflect the work you actually completed. It is a proposed record structure, not proof that each task was completed.</p>
-
-  <h2>Proposed action plan</h2>
-  <div class="split">
-    <figure><img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1000&q=85" alt="Community members participating in a group initiative" onerror="imgFallback(this)"><figcaption>Community participation can help turn awareness into action.</figcaption></figure>
-    <article><h3>Action: promote awareness and participation</h3><p>Create an awareness campaign that explains the importance of women's representation and encourages informed discussion, education and participation.</p><ul><li>Resources: infographics, school displays, reliable research and a short presentation.</li><li>Target groups: school students and community members.</li><li>Expected outcome: greater awareness of representation and barriers to equality.</li><li>Possible indicator of impact: audience participation, survey responses and engagement with campaign material.</li></ul></article>
-  </div>
-
-  <h2>Evaluation of the action plan</h2>
-  <div class="three-grid">
-    <article class="mini-card"><h3>Strengths</h3><p>Low cost, educational, accessible to students and capable of encouraging discussion.</p></article>
-    <article class="mini-card"><h3>Weaknesses</h3><p>Awareness does not directly change laws or institutions. Participation may be limited and the impact may be difficult to measure.</p></article>
-    <article class="mini-card"><h3>Appraisal</h3><p>Feasible as a school project and potentially sustainable if repeated. Its direct impact on parliamentary representation would be limited, so larger institutional actions are also necessary.</p></article>
-  </div>
+  <p class="warning">Edit this timeline to match the work you actually completed. This is a suggested record, not evidence of completed activities.</p>
+  <h2>Proposed action</h2>
+  <div class="split"><figure><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=85" alt="Group solidarity" onerror="fallback(this)"><figcaption>Awareness and community participation.</figcaption></figure><article><h3>School awareness campaign</h3><p>Develop an awareness campaign using posters, an infographic and a presentation to explain gender inequality and political representation.</p><p><b>Resources:</b> research, posters, digital tools and classroom space.</p><p><b>Target group:</b> students and school community.</p><p><b>Outcome:</b> greater awareness and discussion.</p><p><b>Impact measure:</b> participation and a short anonymous awareness survey before and after.</p></article></div>
+  <h2>Action plan evaluation</h2><div class="triple"><article class="tile"><h3>Strengths</h3><p>Low cost, accessible and educational; can encourage discussion and participation.</p></article><article class="tile"><h3>Weaknesses</h3><p>Awareness alone does not change political institutions. Impact may be limited and hard to measure.</p></article><article class="tile"><h3>Appraisal</h3><p>Feasible and potentially sustainable if repeated, but it would need broader policy and institutional changes to have a direct effect on representation.</p></article></div>
 </section>
 
-<section id="c" class="page">
-  <div class="page-heading"><p class="eyebrow">06 · COMMUNICATION</p><h1>Criterion C</h1><p>Communicating research and encouraging action.</p></div>
-  <article class="speech">
-    <h2>Beyond Numbers: Why Women's Voices Matter</h2>
-    <p>Imagine a country where half the population has experiences, needs and ideas, yet does not have equal representation in the institutions that make important decisions. This is why women's representation in national parliaments is an important development indicator.</p>
-    <p>The indicator measures the percentage of parliamentary seats held by women. It does not measure every aspect of equality, but it helps us understand who is represented in national decision-making.</p>
-    <p>Across the world, representation differs considerably. These differences can be influenced by electoral systems, political parties, laws, education, social expectations, economic opportunities and the history of each country. Some countries have introduced quotas or policies that encourage women's participation, while others face barriers that make political participation more difficult.</p>
-    <p>Gender inequality is not only a political issue. It connects to education, healthcare, employment, safety, access to resources and unpaid care responsibilities. A woman may have the ability and qualifications to participate in leadership, but still face barriers within institutions or society.</p>
-    <p>In the immediate future, schools can teach more about equality and representation, organisations can promote fair opportunities, communities can challenge discrimination, and governments can strengthen protections and access to participation. NGOs can support education, research, awareness and community initiatives.</p>
-    <p>In the long term, meaningful change requires inclusive institutions, accessible education, fair employment opportunities, healthcare, laws that protect rights, transparent political systems and the removal of barriers to leadership. Progress should be measured using evidence rather than assumptions.</p>
-    <p>Representation alone cannot solve every inequality, but it is one part of building inclusive decision-making. Sustainable development requires that opportunities and institutions are accessible to everyone.</p>
-    <p>So, instead of asking whether equality has already been achieved, we should ask what barriers remain and what can be done to address them. Every community, institution and government has a role to play in making participation more equitable.</p>
-    <p><strong>Equality is not just about having a seat at the table. It is about having the opportunity to participate, contribute and be heard.</strong></p>
-  </article>
-  <h2>Video presentation</h2>
-  <div class="panel"><p>Record your speech and paste your video link here, or embed your video using your platform's embed code.</p><input id="videoURL" placeholder="Paste your video URL here"><button onclick="addVideo()" class="primary">Add video</button><div id="videoArea"></div></div>
+<section class="page" id="c">
+  <span class="kicker">06 · COMMUNICATION</span><h1>Criterion C</h1>
+  <article class="speech"><h2>Beyond Numbers: Why Women's Voices Matter</h2>
+  <p>Imagine a country where half the population has experiences, needs and ideas, yet does not have equal representation in the institutions that make important decisions. This is why women's representation in national parliaments is an important development indicator.</p>
+  <p>The indicator measures the percentage of parliamentary seats held by women. It does not measure every aspect of equality, but it helps us understand who is represented in national decision-making.</p>
+  <p>Across the world, representation differs considerably. These differences can be influenced by electoral systems, political parties, laws, education, social expectations, economic opportunities and the history of each country. Some countries have introduced quotas or policies that encourage women's participation, while others face barriers that make political participation more difficult.</p>
+  <p>Gender inequality is not only a political issue. It connects to education, healthcare, employment, safety, access to resources and unpaid care responsibilities. A woman may have the ability and qualifications to participate in leadership, but still face barriers within institutions or society.</p>
+  <p>In the immediate future, schools can teach more about equality and representation, organisations can promote fair opportunities, communities can challenge discrimination, and governments can strengthen protections and access to participation. NGOs can support education, research, awareness and community initiatives.</p>
+  <p>In the long term, meaningful change requires inclusive institutions, accessible education, fair employment opportunities, healthcare, laws that protect rights, transparent political systems and the removal of barriers to leadership. Progress should be measured using evidence rather than assumptions.</p>
+  <p>Representation alone cannot solve every inequality, but it is one part of building inclusive decision-making. Sustainable development requires that opportunities and institutions are accessible to everyone.</p>
+  <p>So, instead of asking whether equality has already been achieved, we should ask what barriers remain and what can be done to address them. Every community, institution and government has a role to play in making participation more equitable.</p>
+  <p><strong>Equality is not just about having a seat at the table. It is about having the opportunity to participate, contribute and be heard.</strong></p></article>
+  <h2>Presentation video</h2><article class="tile"><input id="videoLink" placeholder="Paste your YouTube link"><button onclick="embedVideo()">Embed video</button><div id="video"></div></article>
 </section>
 
-<section id="d" class="page">
-  <div class="page-heading"><p class="eyebrow">07 · PERSPECTIVES</p><h1>Criterion D</h1><p>Stakeholders, development perspectives and geographical comparison.</p></div>
-  <figure class="wide-photo"><img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1400&q=85" alt="People collaborating on community development" onerror="imgFallback(this)"><figcaption>Development is shaped by individuals, institutions and communities working together.</figcaption></figure>
-
-  <h2>Stakeholders</h2>
-  <div class="stakeholder-grid">
-    <article class="mini-card"><h3>National & local governments</h3><p>Develop policies, laws, budgets, electoral rules and programmes to address barriers and promote participation.</p></article>
-    <article class="mini-card"><h3>NGOs</h3><p>Support community programmes, advocacy, research, education and services.</p></article>
-    <article class="mini-card"><h3>International organisations</h3><p>Provide research, technical assistance, development programmes, funding and international standards.</p></article>
-    <article class="mini-card"><h3>Communities</h3><p>Challenge discrimination, participate in local decisions and support inclusive practices.</p></article>
-    <article class="mini-card"><h3>Businesses</h3><p>Promote fair employment, inclusive leadership, equal opportunities and workplace protections.</p></article>
-    <article class="mini-card"><h3>Schools & universities</h3><p>Provide education, research, awareness and opportunities for leadership and participation.</p></article>
-    <article class="mini-card"><h3>Healthcare providers</h3><p>Improve access to quality services, reproductive health education and maternal care.</p></article>
-    <article class="mini-card"><h3>Individuals & leaders</h3><p>Advocate, participate, support community initiatives and challenge unequal practices.</p></article>
+<section class="page" id="d">
+  <span class="kicker">07 · PERSPECTIVES</span><h1>Criterion D</h1>
+  <figure class="banner"><img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1300&q=85" alt="Community members collaborating" onerror="fallback(this)"><figcaption>Development involves people, institutions and communities.</figcaption></figure>
+  <h2>Stakeholders and their roles</h2>
+  <div class="four">
+    <article class="tile"><h3>Governments</h3><p>Policies, legislation, budgets, electoral systems and programmes.</p></article>
+    <article class="tile"><h3>NGOs</h3><p>Advocacy, community programmes, research, support and education.</p></article>
+    <article class="tile"><h3>International organisations</h3><p>Funding, research, technical support and development standards.</p></article>
+    <article class="tile"><h3>Communities</h3><p>Participation, awareness, collective action and challenging discrimination.</p></article>
+    <article class="tile"><h3>Businesses</h3><p>Fair employment, inclusive leadership and equal opportunities.</p></article>
+    <article class="tile"><h3>Schools</h3><p>Education, research, awareness and opportunities for participation.</p></article>
+    <article class="tile"><h3>Healthcare providers</h3><p>Access to quality services, maternal care and health education.</p></article>
+    <article class="tile"><h3>Individuals</h3><p>Participation, advocacy, support and challenging unequal practices.</p></article>
   </div>
-
-  <h2>Development analysis</h2>
-  <div class="two-grid">
-    <article class="panel">
-      <h3>Countries with higher representation</h3>
-      <p>Higher representation may be associated with electoral systems, party policies, quotas, political participation, social attitudes and access to education. However, a high percentage does not automatically indicate equal access to all resources or complete equality.</p>
-    </article>
-    <article class="panel">
-      <h3>Countries with lower representation</h3>
-      <p>Lower representation may reflect political barriers, discrimination, unequal access to resources, limited political opportunities, conflict, institutional practices or social expectations. These factors vary between countries.</p>
-    </article>
-  </div>
-
-  <h2>Social, economic and political perspectives</h2>
-  <div class="three-grid">
-    <article class="mini-card"><h3>Social</h3><p>Education, social expectations, safety, care responsibilities and access to services influence participation.</p></article>
-    <article class="mini-card"><h3>Economic</h3><p>Income, employment, infrastructure, financial resources and poverty influence opportunities to participate.</p></article>
-    <article class="mini-card"><h3>Political</h3><p>Governance, policies, electoral systems, rights, political stability and institutions affect representation.</p></article>
-  </div>
-
-  <h2>Compare countries using evidence</h2>
-  <p>Use the global map and charts to select two countries with different representation levels. Compare their social, economic and political contexts using reliable sources. Do not assume that one indicator alone explains their development.</p>
-  <div class="panel"><label for="countryA">Country 1</label><input id="countryA" placeholder="Enter country name"><label for="countryB">Country 2</label><input id="countryB" placeholder="Enter country name"><button class="primary" onclick="compareCountries()">Compare from data</button><div id="compareResult"></div></div>
+  <h2>Social, economic and political analysis</h2>
+  <div class="three"><article class="tile"><h3>Social</h3><p>Education, safety, cultural factors, care responsibilities and access to services.</p></article><article class="tile"><h3>Economic</h3><p>Income, poverty, employment, infrastructure and access to financial resources.</p></article><article class="tile"><h3>Political</h3><p>Governance, rights, policies, electoral systems, stability and institutions.</p></article></div>
+  <h2>Compare countries</h2><p>Use the map and charts to select countries with higher and lower representation. Investigate their social, economic and political contexts. Avoid assuming that a single indicator explains the overall development of a country.</p>
+  <article class="tile"><label>Country A</label><input id="country1" placeholder="Country name"><label>Country B</label><input id="country2" placeholder="Country name"><button onclick="compare()">Compare</button><div id="comparison"></div></article>
 </section>
 
-<section id="sources" class="page">
-  <div class="page-heading"><p class="eyebrow">08 · EVALUATION</p><h1>Source Evaluation & Reflection</h1><p>Evaluate evidence, reflect on learning and acknowledge sources.</p></div>
-  <h2>OPVL — World Bank indicator database</h2>
-  <div class="opvl">
-    <article><h3>Origin</h3><p>The World Bank is an international development institution. Its World Development Indicators database provides country-level development statistics, including indicators related to gender and development. The data are published online and updated as available.</p></article>
-    <article><h3>Purpose</h3><p>The database is intended to provide statistical evidence about development and allow researchers, policymakers, students and the public to compare countries and examine development trends.</p></article>
-    <article><h3>Value</h3><p>It is useful because it provides comparable country-level data, indicator definitions, historical observations and a consistent way to investigate geographical differences. It supports maps, charts and comparisons.</p></article>
-    <article><h3>Limitation</h3><p>Data may be missing, revised, modelled or published for different years. Country averages may hide inequalities within regions and communities. The indicator cannot explain the causes of inequality on its own.</p></article>
+<section class="page" id="sources">
+  <span class="kicker">08 · EVALUATION</span><h1>Sources & Reflection</h1>
+  <h2>OPVL — World Bank</h2>
+  <div class="two">
+    <article class="tile"><h3>Origin</h3><p>The World Bank is an international development institution that publishes country-level statistics through its World Development Indicators database.</p></article>
+    <article class="tile"><h3>Purpose</h3><p>To provide development statistics to researchers, policymakers, students and the public for comparison, analysis and research.</p></article>
+    <article class="tile"><h3>Value</h3><p>Provides comparable data, definitions, historical observations and a consistent source for investigating geographical differences.</p></article>
+    <article class="tile"><h3>Limitation</h3><p>Data may be missing, modelled, revised or from different years. National averages can conceal inequalities within countries and indicators do not explain causes.</p></article>
   </div>
-  <p class="note">For a stronger OPVL, add the exact publication/update date and specific data evidence from the World Bank page you used.</p>
-
-  <h2>Personal reflection</h2>
-  <article class="panel">
-    <p>Through this investigation, I developed a better understanding of how development indicators can be used to compare countries and identify geographical patterns. I learned that data should not be viewed on its own because social, economic and political factors can influence the results.</p>
-    <p>My geographical research skills improved through collecting secondary data, organising information, interpreting charts, comparing countries and evaluating sources. I also learned that national averages may not represent the experiences of everyone within a country.</p>
-    <p>My perspective on development changed because I realised that development is not only about income or infrastructure. Representation, access to opportunities, institutions and quality of life are also important. Countries can have different strengths and challenges, so comparisons need to be supported by evidence.</p>
-    <p>To improve this investigation, I could include more primary data, a wider range of countries and more detailed regional information. I could also investigate the relationship between representation and other development indicators without assuming that one causes the other.</p>
-    <p>If I investigated this topic again, I would plan data collection earlier, use a wider range of sources, check the observation years carefully and spend more time analysing anomalies. I would also improve the methods used to measure the impact of the proposed action.</p>
-  </article>
-
+  <p class="warning">Add the exact data page, publication/update date and specific evidence from the source you used to make this OPVL more precise.</p>
+  <h2>Reflection</h2><article class="tile"><p>Through this investigation, I developed a better understanding of how development indicators can be used to compare countries and identify geographical patterns. I learned that data should not be viewed on its own because social, economic and political factors can influence the results.</p><p>My geographical research skills improved through collecting secondary data, organising information, interpreting charts, comparing countries and evaluating sources. I also learned that national averages may not represent the experiences of everyone within a country.</p><p>My perspective on development changed because I realised that development is not only about income or infrastructure. Representation, access to opportunities, institutions and quality of life are also important. Countries can have different strengths and challenges, so comparisons need to be supported by evidence.</p><p>To improve this investigation, I could include more primary data, a wider range of countries and more detailed regional information. I could also investigate the relationship between representation and other development indicators without assuming that one causes the other.</p><p>If I investigated this topic again, I would plan data collection earlier, use a wider range of sources, check the observation years carefully and spend more time analysing anomalies. I would also improve the methods used to measure the impact of the proposed action.</p></article>
   <h2>Bibliography</h2>
-  <div class="bibliography">
-    <p><strong>World Bank — World Development Indicators.</strong><br><a href="https://data.worldbank.org/" target="_blank">https://data.worldbank.org/</a></p>
-    <p><strong>Inter-Parliamentary Union — Women in Parliament.</strong><br><a href="https://www.ipu.org/" target="_blank">https://www.ipu.org/</a></p>
-    <p><strong>UN Women.</strong><br><a href="https://www.unwomen.org/" target="_blank">https://www.unwomen.org/</a></p>
-    <p><strong>United Nations Sustainable Development Goals.</strong><br><a href="https://sdgs.un.org/goals" target="_blank">https://sdgs.un.org/goals</a></p>
-    <p><strong>World Bank data API.</strong><br><a href="https://api.worldbank.org/" target="_blank">https://api.worldbank.org/</a></p>
-    <p><strong>Wikimedia Commons.</strong><br><a href="https://commons.wikimedia.org/" target="_blank">https://commons.wikimedia.org/</a></p>
-    <p><strong>OpenStreetMap.</strong><br><a href="https://www.openstreetmap.org/" target="_blank">https://www.openstreetmap.org/</a></p>
-  </div>
-  <p class="note">Add the specific articles, data pages, image pages, report dates and access dates for all sources actually used. This starter bibliography is not a complete bibliography of the website.</p>
+  <div class="bibliography"><p>World Bank — <a href="https://data.worldbank.org/" target="_blank">World Development Indicators</a></p><p>Inter-Parliamentary Union — <a href="https://www.ipu.org/" target="_blank">IPU</a></p><p>UN Women — <a href="https://www.unwomen.org/" target="_blank">UN Women</a></p><p>United Nations — <a href="https://sdgs.un.org/goals" target="_blank">Sustainable Development Goals</a></p><p>World Bank — <a href="https://api.worldbank.org/" target="_blank">Data API</a></p><p>Wikimedia Commons — <a href="https://commons.wikimedia.org/" target="_blank">Images</a></p><p>OpenStreetMap — <a href="https://www.openstreetmap.org/" target="_blank">Map</a></p></div>
+  <p class="warning">Add exact source links, article/report titles, image links, dates and access dates for every source actually used.</p>
 </section>
 
-<section id="about" class="page">
-  <div class="page-heading"><p class="eyebrow">09 · AUTHOR</p><h1>About Me</h1></div>
-  <div class="about-grid">
-    <figure class="about-photo"><img src="IMG_4687.jpeg" alt="Author photograph" onerror="imgFallback(this)"></figure>
-    <article><p class="eyebrow">STUDENT RESEARCH</p><h2>Nakshatra Veernala</h2><p>This website was created as part of my Grade 8 Geography and Integrated Humanities investigation into gender inequality and women's representation in national parliaments.</p><p>Through this project, I explored development indicators, geographical patterns, research methods, source evaluation and the ways different stakeholders can contribute to more equitable development.</p><p>My aim is to communicate information clearly, explore different perspectives and encourage people to think about the importance of equal opportunities and representation.</p></article>
-  </div>
+<section class="page" id="about">
+  <span class="kicker">09 · AUTHOR</span><h1>About Me</h1>
+  <div class="split"><figure><img src="IMG_4687.jpeg" alt="Author photograph" onerror="fallback(this)"></figure><article><h2>Nakshatra Veernala</h2><p>This website was created as part of my Grade 8 Geography and Integrated Humanities investigation into gender inequality and women's representation in national parliaments.</p><p>Through this project, I explored development indicators, geographical patterns, research methods, source evaluation and the ways different stakeholders can contribute to more equitable development.</p><p>My aim is to communicate information clearly, explore different perspectives and encourage people to think about the importance of equal opportunities and representation.</p></article></div>
 </section>
 
 </main>
-
-<footer><p>BEYOND THE DIVIDE · GEOGRAPHY & DEVELOPMENT</p><p>Research, evidence, representation and equality.</p></footer>
+<footer>BEYOND THE DIVIDE · GEOGRAPHY · DEVELOPMENT · EQUALITY</footer>
 </div>
