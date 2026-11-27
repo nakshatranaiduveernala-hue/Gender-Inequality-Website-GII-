@@ -1,311 +1,484 @@
-function go(id){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(id==='indicator' && map) setTimeout(()=>map.invalidateSize(),250);
-  if(id==='trends')setTimeout(makeTrendGraphs,300);
-  if(id==='india')setTimeout(makeIndia,300);
-}
+// ========================================
+// BEYOND THE DIVIDE
+// Navigation, country map, data, chart,
+// and portrait fallback
+// ========================================
 
-function fallback(img){
-  img.src='data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="350"><rect width="100%" height="100%" fill="#dce8f2"/><text x="50%" y="50%" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#204e78">Image unavailable</text></svg>'
-  );
-  img.onerror=null;
-}
+let map;
+let countryLayer;
+let countryData = {};
+let chart;
+let geoData;
+let currentIndicator = "SG.GEN.PARL.ZS";
+let latestYearData = {};
+let countryNames = {};
+let mapInitialized = false;
 
-function script(src){
-  return new Promise((resolve,reject)=>{
-    let s=document.createElement('script');
-    s.src=src;s.onload=resolve;s.onerror=reject;
-    document.head.appendChild(s);
-  });
-}
-function css(src){
-  let l=document.createElement('link');
-  l.rel='stylesheet';l.href=src;document.head.appendChild(l);
-}
-
-const ids={
-  'SG.GEN.PARL.ZS':'Women in Parliament (%)',
-  'SP.ADO.TFRT':'Adolescent fertility rate',
-  'SH.STA.MMRT':'Maternal mortality ratio'
+const indicatorInfo = {
+  "SG.GEN.PARL.ZS": {
+    title: "Women in parliament (% seats)",
+    description: "The percentage of seats in national parliaments held by women. This indicator measures women's representation in national legislative institutions.",
+    unit: "%",
+    decimals: 1
+  },
+  "SP.ADO.TFRT": {
+    title: "Adolescent fertility rate",
+    description: "Births per 1,000 women ages 15–19. This indicator can provide contextual evidence about adolescent reproductive health and social development.",
+    unit: "",
+    decimals: 1
+  },
+  "SH.STA.MMRT": {
+    title: "Maternal mortality ratio",
+    description: "Maternal deaths per 100,000 live births. This indicator provides contextual information about maternal health.",
+    unit: "",
+    decimals: 0
+  }
 };
-let raw={},charts={},map=null,layer=null,geo=null,values={};
-let active='SG.GEN.PARL.ZS';
 
-function makeChart(id,type,data,options={}){
-  if(!window.Chart)return;
-  let el=document.getElementById(id);
-  if(!el)return;
-  if(charts[id])charts[id].destroy();
-  charts[id]=new Chart(el,{
-    type,
-    data,
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      ...options
-    }
+function go(id) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.remove("active");
   });
-}
 
-async function getData(ind){
-  let r=await fetch(`https://api.worldbank.org/v2/country/all/indicator/${ind}?format=json&per_page=20000&date=2000:2024`);
-  if(!r.ok)throw Error('Data request failed');
-  let j=await r.json();
-  return j[1]||[];
-}
+  const target = document.getElementById(id);
 
-function latest(rows){
-  let o={};
-  rows.forEach(r=>{
-    if(r.value===null||!r.countryiso3code||r.countryiso3code.length!==3)return;
-    if(!o[r.countryiso3code]||+r.date>+o[r.countryiso3code].year){
-      o[r.countryiso3code]={
-        value:+r.value,
-        year:r.date,
-        country:r.country.value,
-        code:r.countryiso3code
-      };
-    }
+  if (target) {
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll("nav a").forEach(a => {
+    a.style.background = "";
   });
-  return o;
-}
 
-async function startup(){
-  try{
-    await script('https://cdn.jsdelivr.net/npm/chart.js');
-    for(let k in ids)raw[k]=await getData(k);
-    const ind=latest(raw['SG.GEN.PARL.ZS']);
-    if(ind.IND){
-      document.getElementById('homeValue').textContent=ind.IND.value.toFixed(1)+'%';
-      document.getElementById('homeYear').textContent='India · '+ind.IND.year;
-    }
-    makeIndia();
-    makeTrendGraphs();
-    await startMap();
-  }catch(e){
-    document.getElementById('homeValue').textContent='Data unavailable';
-    document.getElementById('mapInfo').textContent='Could not load data. Check your connection.';
-    console.error(e);
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  if (id === "indicator") {
+    setTimeout(initMap, 200);
   }
 }
 
-// INDIA GRAPH
-function makeIndia(){
-  if(!raw['SG.GEN.PARL.ZS'])return;
-  let r=raw['SG.GEN.PARL.ZS'].filter(x=>x.countryiso3code==='IND'&&x.value!==null);
-  r.sort((a,b)=>+a.date-+b.date);
-  makeChart('indiaGraph','line',{
-    labels:r.map(x=>x.date),
-    datasets:[{
-      label:'India — Women in Parliament (%)',
-      data:r.map(x=>x.value),
-      borderColor:'#204e78',
-      backgroundColor:'#5683aa',
-      tension:.25
-    }]
-  },{
-    scales:{y:{beginAtZero:true}}
-  });
-}
-
-// TREND GRAPHS
-function makeTrendGraphs(){
-  if(!raw['SG.GEN.PARL.ZS'])return;
-  const r=latest(raw['SG.GEN.PARL.ZS']);
-  let arr=Object.values(r);
-  arr.sort((a,b)=>b.value-a.value);
-  let top=arr.slice(0,10);
-  let bottom=arr.slice(-10).reverse();
-
-  makeChart('highest','bar',{
-    labels:top.map(x=>x.country),
-    datasets:[{label:'Women in Parliament (%)',data:top.map(x=>x.value),backgroundColor:'#204e78'}]
-  },{indexAxis:'y'});
-
-  makeChart('lowest','bar',{
-    labels:bottom.map(x=>x.country),
-    datasets:[{label:'Women in Parliament (%)',data:bottom.map(x=>x.value),backgroundColor:'#c6a66b'}]
-  },{indexAxis:'y'});
-
-  const yrs=['2000','2005','2010','2015','2020','2024'];
-  const cc=['IND','USA','NOR','RWA','JPN'];
-  const nm={IND:'India',USA:'United States',NOR:'Norway',RWA:'Rwanda',JPN:'Japan'};
-  const cl=['#204e78','#c6a66b','#5683aa','#769a83','#9274a5'];
-
-  makeChart('overTime','line',{
-    labels:yrs,
-    datasets:cc.map((c,i)=>({
-      label:nm[c],
-      data:yrs.map(y=>{
-        let f=raw['SG.GEN.PARL.ZS'].find(x=>x.countryiso3code===c&&x.date===y);
-        return f?f.value:null;
-      }),
-      borderColor:cl[i],
-      backgroundColor:cl[i],
-      spanGaps:true,
-      tension:.25
-    }))
-  });
-
-  const mm=latest(raw['SH.STA.MMRT']);
-  const fr=latest(raw['SP.ADO.TFRT']);
-  const selected=['IND','RWA','NOR','JPN','USA'];
-
-  makeChart('mortality','bar',{
-    labels:selected.map(c=>mm[c]?.country||c),
-    datasets:[{
-      label:'Maternal mortality ratio',
-      data:selected.map(c=>mm[c]?.value??null),
-      backgroundColor:'#5683aa'
-    }]
-  });
-
-  makeChart('fertility','bar',{
-    labels:selected.map(c=>fr[c]?.country||c),
-    datasets:[{
-      label:'Adolescent fertility rate',
-      data:selected.map(c=>fr[c]?.value??null),
-      backgroundColor:'#c6a66b'
-    }]
-  });
-}
-
+// ========================================
 // MAP
-const palette=['#eff4fa','#d2e1ef','#aac8e0','#78a6cc','#467eaa','#204e78'];
+// ========================================
 
-function colour(v,min,max){
-  if(v===undefined||v===null)return '#c9cdd1';
-  if(max===min)return palette[3];
-  let i=Math.min(5,Math.floor((v-min)/(max-min)*6));
-  return palette[Math.max(0,i)];
+async function initMap() {
+  if (mapInitialized) {
+    if (map) map.invalidateSize();
+    return;
+  }
+
+  if (typeof L === "undefined") {
+    document.getElementById("map").innerHTML =
+      "Map library could not load. Check your internet connection.";
+    return;
+  }
+
+  mapInitialized = true;
+
+  map = L.map("map", {
+    worldCopyJump: true
+  }).setView([20, 0], 2);
+
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution: "&copy; OpenStreetMap contributors",
+      maxZoom: 7
+    }
+  ).addTo(map);
+
+  try {
+    const response = await fetch(
+      "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+    );
+
+    if (!response.ok) {
+      throw new Error("Map boundaries failed to load");
+    }
+
+    geoData = await response.json();
+
+    await loadIndicator();
+  } catch (error) {
+    document.getElementById("map").innerHTML =
+      "Map boundaries could not load. Please check the internet connection.";
+    console.error(error);
+  }
 }
 
-function code(feature){
-  let p=feature.properties||{};
-  return p.ISO_A3||p.ADM0_A3||p.iso_a3||p.ISO3||p['ISO3166-1-Alpha-3'];
+function getISO(feature) {
+  const p = feature.properties || {};
+
+  return (
+    p.ISO_A3 ||
+    p.ISO3 ||
+    p.ADM0_A3 ||
+    p.iso_a3 ||
+    p.iso3 ||
+    p["ISO3166-1-Alpha-3"] ||
+    ""
+  );
 }
 
-function style(feature){
-  let vals=Object.values(values).map(x=>x.value);
-  if(!vals.length)return{fillColor:'#c9cdd1',weight:.6,color:'#fff',fillOpacity:.8};
-  let min=Math.min(...vals),max=Math.max(...vals);
-  let v=values[code(feature)]?.value;
-  return{
-    fillColor:colour(v,min,max),
-    weight:.7,
-    color:'#ffffff',
-    fillOpacity:.85
+function getCountryName(feature) {
+  const p = feature.properties || {};
+
+  return (
+    p.ADMIN ||
+    p.name ||
+    p.NAME ||
+    p.name_long ||
+    p.NAME_EN ||
+    "Unknown country"
+  );
+}
+
+function getColor(value) {
+  if (value === null || value === undefined) return "#dce5ed";
+
+  if (value < 10) return "#dbeaf4";
+  if (value < 20) return "#a9cbe3";
+  if (value < 30) return "#72a7cf";
+  if (value < 40) return "#3f7fb4";
+  if (value < 50) return "#205b91";
+
+  return "#103d68";
+}
+
+function styleFeature(feature) {
+  const iso = getISO(feature);
+  const value = countryData[iso];
+
+  return {
+    fillColor: getColor(value),
+    weight: 0.6,
+    opacity: 1,
+    color: "#8fa8bc",
+    fillOpacity: 0.85
   };
 }
 
-function popup(feature){
-  let p=feature.properties||{};
-  let v=values[code(feature)];
-  if(!v)return `<b>${p.ADMIN||p.name||'Country'}</b><br>No available observation`;
-  return `<b>${v.country}</b><br>${ids[active]}: ${v.value.toLocaleString()}<br>Year: ${v.year}`;
+function onCountry(feature, layer) {
+  const iso = getISO(feature);
+  const name = getCountryName(feature);
+  const value = countryData[iso];
+
+  layer.bindPopup(
+    `<strong>${name}</strong><br>
+    ${indicatorInfo[currentIndicator].title}<br>
+    ${
+      value === undefined
+        ? "No data available"
+        : value.toFixed(indicatorInfo[currentIndicator].decimals) +
+          indicatorInfo[currentIndicator].unit
+    }`
+  );
+
+  layer.on({
+    mouseover: function(e) {
+      e.target.setStyle({
+        weight: 2,
+        color: "#071d38",
+        fillOpacity: 1
+      });
+    },
+
+    mouseout: function(e) {
+      if (countryLayer) countryLayer.resetStyle(e.target);
+    }
+  });
 }
 
-async function startMap(){
-  try{
-    css('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
-    await script('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+function updateLegend() {
+  const legend = document.getElementById("map-legend");
 
-    map=L.map('map',{worldCopyJump:true}).setView([20,0],2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      attribution:'© OpenStreetMap contributors',
-      maxZoom:6
-    }).addTo(map);
+  if (!legend) return;
 
-    const response=await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson');
-    if(!response.ok)throw Error('Boundary data unavailable');
-    geo=await response.json();
+  const labels = [
+    ["0–9", "#dbeaf4"],
+    ["10–19", "#a9cbe3"],
+    ["20–29", "#72a7cf"],
+    ["30–39", "#3f7fb4"],
+    ["40+", "#205b91"],
+    ["No data", "#dce5ed"]
+  ];
 
-    layer=L.geoJSON(geo,{
-      style,
-      onEachFeature:(f,l)=>{
-        l.bindPopup(popup(f));
-        l.on('mouseover',function(){this.setStyle({weight:2,color:'#142f4a'});});
-        l.on('mouseout',function(){layer.resetStyle(this);});
-      }
-    }).addTo(map);
+  legend.innerHTML = labels.map(item => {
+    return `
+      <div class="legend-item">
+        <span class="legend-color"
+              style="background:${item[1]}"></span>
+        <span>${item[0]}</span>
+      </div>
+    `;
+  }).join("");
+}
 
-    document.getElementById('indicatorChoice').addEventListener('change',async function(){
-      active=this.value;
-      await updateMap();
-    });
+// ========================================
+// WORLD BANK DATA
+// ========================================
 
-    await updateMap();
-    setTimeout(()=>map.invalidateSize(),400);
-  }catch(e){
-    document.getElementById('map').innerHTML='<p style="padding:20px">Map unavailable. Please check internet connection.</p>';
-    console.error(e);
+async function loadIndicator() {
+  const select = document.getElementById("indicator-select");
+
+  if (select) {
+    currentIndicator = select.value;
   }
-}
 
-async function updateMap(){
-  try{
-    if(!raw[active])raw[active]=await getData(active);
-    values=latest(raw[active]);
-    if(layer){
-      layer.setStyle(style);
-      layer.eachLayer(l=>l.setPopupContent(popup(l.feature)));
+  const definition = document.getElementById("indicator-definition");
+
+  if (definition) {
+    definition.textContent = indicatorInfo[currentIndicator].description;
+  }
+
+  if (!geoData) return;
+
+  try {
+    const url =
+      `https://api.worldbank.org/v2/country/all/indicator/${currentIndicator}?format=json&per_page=20000&date=2000:2025`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("World Bank data could not be retrieved");
     }
 
-    const vals=Object.values(values).map(x=>x.value);
-    const min=Math.min(...vals),max=Math.max(...vals);
+    const result = await response.json();
 
-    document.getElementById('mapInfo').textContent=
-      ids[active]+' · Latest available observation by country';
+    if (!result || !result[1]) {
+      throw new Error("No indicator data returned");
+    }
 
-    document.getElementById('legend').innerHTML=`
-      <strong>Colour scale</strong>
-      <p>Blue shades show the value range. Grey indicates missing data.</p>
-      <div class="legendbar">${palette.map(c=>`<span style="background:${c}"></span>`).join('')}<span style="background:#c9cdd1"></span></div>
-      <div class="legendlabels"><span>${min.toLocaleString(undefined,{maximumFractionDigits:2})}</span><span>${max.toLocaleString(undefined,{maximumFractionDigits:2})}</span><span>Missing</span></div>
-      <p>Higher representation is generally positive. Higher maternal mortality and adolescent fertility rates represent greater development challenges.</p>
-    `;
+    const entries = result[1];
 
-    const list=Object.values(values).sort((a,b)=>b.value-a.value).slice(0,10);
-    makeChart('mapGraph','bar',{
-      labels:list.map(x=>x.country),
-      datasets:[{
-        label:ids[active],
-        data:list.map(x=>x.value),
-        backgroundColor:'#204e78'
-      }]
-    },{indexAxis:'y'});
+    // Keep the latest non-null value for each country
+    latestYearData = {};
+    countryData = {};
+    countryNames = {};
 
-    map.invalidateSize();
-  }catch(e){
-    document.getElementById('mapInfo').textContent='Unable to load indicator data.';
-    console.error(e);
+    entries.forEach(entry => {
+      if (
+        entry.value !== null &&
+        entry.countryiso3code &&
+        entry.countryiso3code.length === 3
+      ) {
+        const iso = entry.countryiso3code;
+
+        if (
+          !latestYearData[iso] ||
+          Number(entry.date) > Number(latestYearData[iso].year)
+        ) {
+          latestYearData[iso] = {
+            value: Number(entry.value),
+            year: entry.date,
+            name: entry.country.value
+          };
+        }
+      }
+    });
+
+    Object.keys(latestYearData).forEach(iso => {
+      countryData[iso] = latestYearData[iso].value;
+      countryNames[iso] = latestYearData[iso].name;
+    });
+
+    drawMap();
+    populateCountrySelects();
+    updateCountryChart();
+    updateLegend();
+
+  } catch (error) {
+    console.error(error);
+
+    definition.textContent +=
+      " Data could not be loaded. Please check your connection.";
   }
 }
 
-// COMPARISON
-function compare(){
-  let a=document.getElementById('country1').value.trim().toLowerCase();
-  let b=document.getElementById('country2').value.trim().toLowerCase();
-  let out=document.getElementById('comparison');
-  if(!a||!b){out.textContent='Enter two country names.';return;}
-  let r=latest(raw['SG.GEN.PARL.ZS']);
-  let x=Object.values(r).find(v=>v.country.toLowerCase()===a);
-  let y=Object.values(r).find(v=>v.country.toLowerCase()===b);
-  if(!x||!y){out.textContent='Country not found. Try the exact World Bank name.';return;}
-  out.innerHTML=`<p><b>${x.country}:</b> ${x.value.toFixed(2)}% (${x.year})</p><p><b>${y.country}:</b> ${y.value.toFixed(2)}% (${y.year})</p><p>Difference: ${Math.abs(x.value-y.value).toFixed(2)} percentage points.</p><p>Further geographical research is required to explain this difference.</p>`;
+function drawMap() {
+  if (!geoData || !map) return;
+
+  if (countryLayer) {
+    map.removeLayer(countryLayer);
+  }
+
+  countryLayer = L.geoJSON(geoData, {
+    style: styleFeature,
+    onEachFeature: onCountry
+  }).addTo(map);
+
+  map.invalidateSize();
 }
 
-// VIDEO
-function embedVideo(){
-  let url=document.getElementById('videoLink').value.trim();
-  let id='';
-  if(url.includes('youtube.com/watch?v='))id=url.split('v=')[1].split('&')[0];
-  if(url.includes('youtu.be/'))id=url.split('youtu.be/')[1].split('?')[0];
-  if(!id){document.getElementById('video').textContent='Enter a YouTube link.';return;}
-  document.getElementById('video').innerHTML=`<iframe width="100%" height="400" src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
+// ========================================
+// COUNTRY DROPDOWNS
+// ========================================
+
+function populateCountrySelects() {
+  const countries = Object.entries(latestYearData)
+    .map(([iso, data]) => ({
+      iso,
+      name: data.name,
+      value: data.value,
+      year: data.year
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const selects = [
+    document.getElementById("country1"),
+    document.getElementById("country2"),
+    document.getElementById("country3"),
+    document.getElementById("country4")
+  ];
+
+  const defaults = ["IND", "USA", "RWA", "NOR"];
+
+  selects.forEach((select, index) => {
+    if (!select) return;
+
+    const previous = select.value;
+
+    select.innerHTML = "";
+
+    countries.forEach(country => {
+      const option = document.createElement("option");
+
+      option.value = country.iso;
+      option.textContent =
+        `${country.name} (${country.year})`;
+
+      select.appendChild(option);
+    });
+
+    if (countries.some(c => c.iso === previous)) {
+      select.value = previous;
+    } else if (countries.some(c => c.iso === defaults[index])) {
+      select.value = defaults[index];
+    }
+  });
 }
 
-startup();
+// ========================================
+// CHART
+// ========================================
+
+function updateCountryChart() {
+  const ids = ["country1", "country2", "country3", "country4"];
+
+  const chosen = ids.map(id => {
+    const select = document.getElementById(id);
+    return select ? select.value : null;
+  }).filter(Boolean);
+
+  const data = chosen.map(iso => {
+    const country = latestYearData[iso];
+
+    return country ? {
+      name: country.name,
+      value: country.value,
+      year: country.year
+    } : null;
+  }).filter(Boolean);
+
+  const canvas = document.getElementById("countryChart");
+
+  if (!canvas || typeof Chart === "undefined") return;
+
+  if (chart) {
+    chart.destroy();
+  }
+
+  chart = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: data.map(c => c.name),
+      datasets: [{
+        label: indicatorInfo[currentIndicator].title,
+        data: data.map(c => c.value),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      scales: {
+        x: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const item = data[context.dataIndex];
+
+              return `${item.value.toFixed(
+                indicatorInfo[currentIndicator].decimals
+              )} · ${item.year}`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  const note = document.getElementById("chart-note");
+
+  if (note) {
+    note.textContent =
+      "Values show the latest available observation within the selected data period for each country. Years may differ between countries.";
+  }
+}
+
+// ========================================
+// PORTRAIT FALLBACK
+// Search Wikimedia through Wikipedia API
+// ========================================
+
+async function wikiPortrait(img, person) {
+  try {
+    const url =
+      `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(person)}&prop=pageimages&format=json&pithumbsize=700&origin=*`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Portrait lookup failed");
+    }
+
+    const data = await response.json();
+    const pages = data.query.pages;
+    const page = Object.values(pages)[0];
+
+    if (page && page.thumbnail && page.thumbnail.source) {
+      img.src = page.thumbnail.source;
+    } else {
+      img.onerror = null;
+      img.style.display = "none";
+    }
+  } catch (error) {
+    img.onerror = null;
+    img.style.display = "none";
+  }
+}
+
+// ========================================
+// START
+// ========================================
+
+document.addEventListener("DOMContentLoaded", function() {
+  const indicatorSelect = document.getElementById("indicator-select");
+
+  if (indicatorSelect) {
+    currentIndicator = indicatorSelect.value;
+  }
+
+  // Initialise when the indicator section is first visited.
+});
