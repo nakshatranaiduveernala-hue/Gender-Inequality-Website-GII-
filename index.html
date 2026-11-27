@@ -1,419 +1,3371 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Beyond the Numbers explores women's representation and gender inequality through development indicators.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08162b">
+<meta name="description" content="Beyond the Numbers: Exploring gender equality, women's representation and development across countries.">
 <title>Beyond the Numbers | Gender & Development</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="shell">
-<aside class="sidebar">
-<div class="brand">
-<span class="brand-mark">B<span>·</span>N</span>
-<div><strong>BEYOND THE<br>NUMBERS</strong><small>GENDER & DEVELOPMENT</small></div>
+
+<div class="site-shell">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+<div class="brand-block">
+
+<div class="brand-symbol">
+<span>B</span>
 </div>
 
-<div class="nav-label">RESEARCH</div>
-<nav id="navigation">
-<button class="nav-btn active" data-page="home"><span>◈</span>Home</button>
-<button class="nav-btn" data-page="issue"><span>◉</span>The Issue</button>
-<button class="nav-btn" data-page="india"><span>⌁</span>India</button>
-<button class="nav-btn" data-page="trends"><span>↗</span>Trends</button>
-<button class="nav-btn" data-page="indicator"><span>◫</span>Development Indicator</button>
-<div class="nav-label">INVESTIGATION</div>
-<button class="nav-btn" data-page="criterionb"><span>⌕</span>Criterion B</button>
-<button class="nav-btn" data-page="criterionc"><span>▤</span>Criterion C</button>
-<button class="nav-btn" data-page="criteriond"><span>✧</span>Criterion D</button>
-<button class="nav-btn" data-page="sources"><span>↗</span>Sources</button>
-<button class="nav-btn" data-page="about"><span>◎</span>About Me</button>
+<div class="brand-text">
+<p class="brand-title">BEYOND</p>
+<p class="brand-subtitle">THE NUMBERS</p>
+</div>
+
+</div>
+
+<div class="sidebar-intro">
+<p class="sidebar-label">RESEARCH PORTFOLIO</p>
+<p class="sidebar-description">
+Exploring gender equality through geography, data and development.
+</p>
+</div>
+
+<nav class="main-navigation" aria-label="Main navigation">
+
+<button class="nav-item active"
+data-page="home">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</button>
+
+<button class="nav-item"
+data-page="issue">
+<i class="fa-solid fa-earth-asia"></i>
+<span>The Issue</span>
+</button>
+
+<button class="nav-item"
+data-page="india">
+<i class="fa-solid fa-landmark"></i>
+<span>India</span>
+</button>
+
+<button class="nav-item"
+data-page="trends">
+<i class="fa-solid fa-chart-line"></i>
+<span>Trends</span>
+</button>
+
+<button class="nav-item"
+data-page="indicator">
+<i class="fa-solid fa-chart-column"></i>
+<span>Development Indicator</span>
+</button>
+
+<button class="nav-item"
+data-page="criterionb">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span>Criterion B</span>
+</button>
+
+<button class="nav-item"
+data-page="criterionc">
+<i class="fa-solid fa-chart-pie"></i>
+<span>Criterion C</span>
+</button>
+
+<button class="nav-item"
+data-page="criteriond">
+<i class="fa-solid fa-lightbulb"></i>
+<span>Criterion D</span>
+</button>
+
+<button class="nav-item"
+data-page="sources">
+<i class="fa-solid fa-book"></i>
+<span>Sources</span>
+</button>
+
+<button class="nav-item"
+data-page="about">
+<i class="fa-solid fa-user"></i>
+<span>About Me</span>
+</button>
+
 </nav>
 
-<div class="side-bottom">
-<div class="side-note">A study of representation,<br>opportunity and development.</div>
-<span class="side-credit">MYP GEOGRAPHY PROJECT</span>
+<div class="sidebar-bottom">
+
+<div class="sidebar-footer-card">
+<span class="footer-mini-label">GLOBAL CONTEXT</span>
+<p>Fairness & Development</p>
 </div>
+
+<div class="sidebar-footer">
+<span class="footer-dot"></span>
+<span>GEOGRAPHY INVESTIGATION</span>
+</div>
+
+</div>
+
 </aside>
 
-<main class="main">
-<header class="topbar">
-<span class="breadcrumb" id="crumb">RESEARCH / HOME</span>
-<span class="top-pill">MYP · GEOGRAPHY</span>
+<!-- MOBILE HEADER -->
+
+<header class="mobile-header">
+
+<button class="mobile-menu-button"
+id="mobileMenuButton"
+aria-label="Open navigation">
+
+<i class="fa-solid fa-bars"></i>
+
+</button>
+
+<div class="mobile-brand">
+BEYOND THE NUMBERS
+</div>
+
 </header>
 
-<section class="page active" id="home">
-<div class="hero">
-<div class="hero-image">
-<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1800&q=85" alt="Women in a professional leadership setting" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=1800&q=85'">
-<div class="image-shade"></div>
-<div class="hero-content">
-<p class="eyebrow light">GENDER · POWER · DEVELOPMENT</p>
-<h1>Beyond<br><em>the Numbers.</em></h1>
-<p>What does women's representation reveal about opportunity, equality and the development of societies?</p>
-<a href="#research" class="hero-link" onclick="showPage('indicator');return false;">Explore the data <span>↗</span></a>
-</div>
-<div class="hero-tag">A GEOGRAPHICAL INVESTIGATION</div>
-</div>
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+<!-- HOME -->
+
+<section class="page-section active" id="home">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+GEOGRAPHY • DEVELOPMENT • EQUALITY
+</span>
+
+<span class="topline-number">
+01 / 10
+</span>
+
 </div>
 
-<div class="intro-grid" id="research">
+<div class="home-hero">
+
+<div class="hero-copy">
+
+<div class="hero-tag">
+A GLOBAL DEVELOPMENT INVESTIGATION
+</div>
+
+<h1>
+Beyond
+<span class="hero-highlight">the Numbers.</span>
+</h1>
+
+<p class="hero-description">
+Understanding the unequal representation of women
+in decision-making and what it reveals about
+development across the world.
+</p>
+
+<div class="hero-question">
+
+<span class="question-label">
+RESEARCH QUESTION
+</span>
+
+<p>
+To what extent does women's representation in
+national parliaments differ between countries,
+and how can geographical, social, economic and
+political factors help explain these differences?
+</p>
+
+</div>
+
+<div class="hero-buttons">
+
+<button class="primary-button"
+data-goto="indicator">
+
+Explore the data
+<i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+<button class="secondary-button"
+data-goto="issue">
+
+Understand the issue
+
+</button>
+
+</div>
+
+</div>
+
+<div class="hero-visual">
+
+<div class="hero-image-frame">
+
+<img
+src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1100&q=85"
+alt="Women working together in a collaborative setting"
+class="hero-image">
+
+</div>
+
+<div class="hero-image-caption">
+
+<div class="caption-marker"></div>
+
+<p>
+Representation, opportunity and the power
+to shape decisions.
+</p>
+
+</div>
+
+<div class="hero-floating-note">
+
+<span class="floating-note-number">
+SDG 05
+</span>
+
+<span class="floating-note-text">
+GENDER EQUALITY
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="home-stat-strip">
+
+<div class="stat-strip-item">
+
+<span class="stat-strip-number">
+05
+</span>
+
 <div>
-<p class="eyebrow">THE INVESTIGATION</p>
-<h2>Representation is<br>more than a statistic.</h2>
+<span class="stat-strip-title">
+Sustainable Development Goal
+</span>
+
+<span class="stat-strip-description">
+Gender Equality
+</span>
 </div>
+
+</div>
+
+<div class="stat-strip-item">
+
+<span class="stat-strip-number">
+01
+</span>
+
 <div>
-<p class="lead">Across the world, women's access to political decision-making varies. These differences are shaped by histories, institutions, education, social norms and economic conditions.</p>
-<p>This investigation examines how women's representation in national parliaments differs between countries, and explores the geographical and development factors that may help explain these patterns.</p>
-</div>
+<span class="stat-strip-title">
+Primary Indicator
+</span>
+
+<span class="stat-strip-description">
+Women in national parliament
+</span>
 </div>
 
-<div class="stats-strip">
-<div><small>DEVELOPMENT GOAL</small><strong>SDG 5</strong><span>Gender equality</span></div>
-<div><small>CORE INDICATOR</small><strong>Representation</strong><span>Women in parliament</span></div>
-<div><small>APPROACH</small><strong>Comparative</strong><span>Global & national</span></div>
 </div>
 
-<div class="image-row">
-<figure>
-<img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80" alt="People collaborating in a meeting">
-<figcaption>Leadership and participation</figcaption>
-</figure>
-<figure>
-<img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=80" alt="Portrait">
-<figcaption>Voices and visibility</figcaption>
-</figure>
-<figure>
-<img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=900&q=80" alt="Group working together">
-<figcaption>Collective action</figcaption>
-</figure>
+<div class="stat-strip-item">
+
+<span class="stat-strip-number">
+GLOBAL
+</span>
+
+<div>
+<span class="stat-strip-title">
+Geographical Focus
+</span>
+
+<span class="stat-strip-description">
+Countries and regions
+</span>
 </div>
 
-<div class="statement">
-<span>STATEMENT OF INQUIRY</span>
-<p>Unequal access to opportunities and decision-making can shape quality of life and influence the sustainable development of communities.</p>
 </div>
 
-<div class="research-question">
-<span>RESEARCH QUESTION</span>
-<h3>To what extent does women's representation in national parliaments differ between countries, and how can geographical, social, economic and political factors help explain these differences?</h3>
 </div>
+
+<div class="home-content-grid">
+
+<div class="content-panel home-introduction">
+
+<span class="section-kicker">
+THE INVESTIGATION
+</span>
+
+<h2>
+Development is more than economic growth.
+</h2>
+
+<p>
+Development is also about whether people can
+participate in decisions that affect their lives.
+Women's representation in political institutions
+provides one way to examine how opportunities,
+power and participation differ across countries.
+</p>
+
+<p>
+This investigation explores patterns in parliamentary
+representation and connects them to geographical,
+social, economic and political factors.
+</p>
+
+<button class="text-button"
+data-goto="criterionb">
+
+Explore the research process
+<i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+</div>
+
+<div class="content-panel home-sdg-panel">
+
+<img
+src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=85"
+alt="Community participation"
+class="panel-image">
+
+<div class="panel-image-overlay">
+
+<span class="section-kicker light-kicker">
+THE GLOBAL GOAL
+</span>
+
+<h2>
+Gender equality
+</h2>
+
+<p>
+SDG 5 focuses on equal opportunities,
+participation and empowerment.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="section-heading-block">
+
+<span class="section-kicker">
+THE STATEMENT OF INQUIRY
+</span>
+
+<h2>
+A connection between participation
+and sustainable development
+</h2>
+
+</div>
+
+<div class="soi-card">
+
+<div class="soi-decoration">
+<i class="fa-solid fa-quote-left"></i>
+</div>
+
+<p class="soi-text">
+Unequal access to opportunities and decision-making
+can shape quality of life and influence the
+sustainable development of communities.
+</p>
+
+<div class="soi-bottom-line"></div>
+
+</div>
+
+<div class="home-explore-grid">
+
+<div class="explore-card"
+data-goto="india">
+
+<div class="explore-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=800&q=85"
+alt="Community engagement">
+
+</div>
+
+<div class="explore-card-body">
+
+<span class="section-kicker">
+CASE STUDY
+</span>
+
+<h3>
+India
+</h3>
+
+<p>
+Explore historical and contemporary
+contributions to equality and participation.
+</p>
+
+<span class="explore-arrow">
+<i class="fa-solid fa-arrow-right"></i>
+</span>
+
+</div>
+
+</div>
+
+<div class="explore-card"
+data-goto="trends">
+
+<div class="explore-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=85"
+alt="Data visualisation">
+
+</div>
+
+<div class="explore-card-body">
+
+<span class="section-kicker">
+DATA ANALYSIS
+</span>
+
+<h3>
+Global trends
+</h3>
+
+<p>
+Compare countries, examine patterns
+and explore differences.
+</p>
+
+<span class="explore-arrow">
+<i class="fa-solid fa-arrow-right"></i>
+</span>
+
+</div>
+
+</div>
+
+<div class="explore-card"
+data-goto="criteriond">
+
+<div class="explore-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=85"
+alt="People discussing solutions">
+
+</div>
+
+<div class="explore-card-body">
+
+<span class="section-kicker">
+REFLECTION
+</span>
+
+<h3>
+Moving forward
+</h3>
+
+<p>
+Consider actions, policies and
+the challenges of achieving equality.
+</p>
+
+<span class="explore-arrow">
+<i class="fa-solid fa-arrow-right"></i>
+</span>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="page" id="issue">
-<div class="page-heading">
-<p class="eyebrow">01 / CONTEXT</p>
-<h1>The Issue</h1>
-<p class="lead">Understanding gender inequality in political representation—and why it matters.</p>
+<!-- THE ISSUE -->
+
+<section class="page-section" id="issue">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+UNDERSTANDING GENDER INEQUALITY
+</span>
+
+<span class="topline-number">
+02 / 10
+</span>
+
 </div>
 
-<div class="feature-split">
-<img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80" alt="People gathered in a civic or public setting">
+<div class="section-hero-small">
+
 <div>
-<h2>Who gets to make decisions?</h2>
-<p>Political representation refers to the presence and participation of people in elected bodies that make decisions for a community or country. Women's representation in parliament is one measurable dimension of gender equality, but it is not the whole story.</p>
-<p>When groups are excluded from decision-making, their experiences and priorities may receive less attention. Representation can help broaden debate, strengthen participation and support more inclusive institutions.</p>
-</div>
+
+<span class="section-kicker">
+THE ISSUE
+</span>
+
+<h1>
+Who gets to
+<span class="hero-highlight">
+make decisions?
+</span>
+</h1>
+
+<p class="section-lead">
+Political representation is one part of a wider
+conversation about equal access, opportunity
+and participation.
+</p>
+
 </div>
 
-<div class="three-cards">
-<article class="info-card"><span class="card-num">01</span><h3>Political barriers</h3><p>Electoral systems, party structures, campaign financing, unequal access to networks and safety concerns can influence who is able to run and be elected.</p></article>
-<article class="info-card"><span class="card-num">02</span><h3>Social barriers</h3><p>Expectations around care work, leadership, education and gender roles may affect participation and opportunity.</p></article>
-<article class="info-card"><span class="card-num">03</span><h3>Economic barriers</h3><p>Unequal access to resources, employment, income and time can make political participation harder for some people.</p></article>
+<img
+src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=85"
+alt="People participating in a discussion"
+class="section-hero-image">
+
 </div>
 
-<div class="gallery-feature">
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1500&q=80" alt="Community discussion">
-<div>
-<span class="eyebrow light">WHY IT MATTERS</span>
-<h2>Participation shapes priorities.</h2>
-<p>Representation is connected to broader questions of equality, access, accountability and the ability to influence decisions.</p>
-</div>
+<div class="issue-intro-layout">
+
+<div class="issue-intro-main">
+
+<h2>
+What is gender inequality?
+</h2>
+
+<p>
+Gender inequality occurs when people experience
+unequal opportunities, rights, resources or
+participation because of gender.
+</p>
+
+<p>
+It can appear in education, employment,
+political participation, healthcare, leadership,
+safety and access to resources.
+</p>
+
+<p>
+The extent and form of inequality vary
+between places because societies have
+different institutions, policies, histories,
+economic conditions and cultural contexts.
+</p>
+
 </div>
 
-<h2 class="section-title">Connections to development</h2>
-<div class="cards-grid">
-<article class="info-card"><h3>Quality of life</h3><p>Decision-making can influence public services, laws, safety and access to opportunity.</p></article>
-<article class="info-card"><h3>Institutions</h3><p>Inclusive institutions can give more people opportunities to participate in public life.</p></article>
-<article class="info-card"><h3>Sustainable development</h3><p>Gender equality is part of the United Nations Sustainable Development Goals, particularly SDG 5.</p></article>
-</div>
-</section>
+<div class="issue-side-note">
 
-<section class="page" id="india">
-<div class="page-heading">
-<p class="eyebrow">02 / COUNTRY FOCUS</p>
-<h1>India</h1>
-<p class="lead">Ideas, activism and leadership have helped challenge unequal access to education, rights and public decision-making.</p>
+<div class="note-icon">
+<i class="fa-solid fa-globe"></i>
 </div>
 
-<div class="india-banner">
-<img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1400&q=85" alt="India architectural landscape">
-<div>
-<span class="eyebrow light">COUNTRY CASE STUDY</span>
-<h2>India's changing landscape</h2>
-<p>India's gender equality landscape is shaped by its size, regional diversity, social structures, policies and historical movements. National averages can hide significant differences between states and communities.</p>
-</div>
+<h3>
+A geographical issue
+</h3>
+
+<p>
+The patterns of inequality are not identical
+everywhere. Geography helps investigate
+where differences occur, how they vary
+and why.
+</p>
+
 </div>
 
-<h2 class="section-title">Women who challenged barriers</h2>
-
-<div class="leader-grid">
-<article class="leader-card">
-<div class="leader-img"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Savitribai_Phule.jpg" alt="Savitribai Phule" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg?width=700'"></div>
-<div class="leader-body">
-<span class="leader-date">1831 — 1897</span>
-<h3>Savitribai Phule</h3>
-<p>Educator and social reformer who helped establish schools for girls and challenged caste and gender discrimination. Her work helped expand access to education.</p>
-<div class="tagline">EDUCATION · SOCIAL REFORM</div>
 </div>
+
+<div class="section-heading-block">
+
+<span class="section-kicker">
+DIMENSIONS OF THE ISSUE
+</span>
+
+<h2>
+Gender inequality can affect multiple
+areas of development.
+</h2>
+
+</div>
+
+<div class="issue-card-grid">
+
+<article class="issue-card">
+
+<div class="issue-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=85"
+alt="Students learning">
+
+</div>
+
+<div class="issue-card-content">
+
+<span class="issue-card-number">
+01
+</span>
+
+<h3>
+Education
+</h3>
+
+<p>
+Access to schooling, educational resources,
+subject choices and opportunities for
+continued learning can differ.
+</p>
+
+</div>
+
 </article>
 
-<article class="leader-card">
-<div class="leader-img"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Aruna_Roy.jpg" alt="Aruna Roy" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg?width=700'"></div>
-<div class="leader-body">
-<span class="leader-date">1946 —</span>
-<h3>Aruna Roy</h3>
-<p>Social activist associated with the Mazdoor Kisan Shakti Sangathan (MKSS), grassroots organising and advocacy for transparency and the Right to Information.</p>
-<div class="tagline">ACCOUNTABILITY · CIVIC ACTION</div>
-</div>
-</article>
+<article class="issue-card">
 
-<article class="leader-card">
-<div class="leader-img"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Medha_Patkar.jpg" alt="Medha Patkar" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg?width=700'"></div>
-<div class="leader-body">
-<span class="leader-date">1954 —</span>
-<h3>Medha Patkar</h3>
-<p>Activist known for work with communities affected by development projects and for advocating environmental justice, livelihoods and community rights.</p>
-<div class="tagline">COMMUNITY · ENVIRONMENTAL JUSTICE</div>
-</div>
-</article>
+<div class="issue-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=85"
+alt="Professional workplace">
+
 </div>
 
-<div class="note-panel">
-<h3>Why these examples?</h3>
-<p>These figures represent different approaches to addressing inequality—education, transparency and community advocacy. Their work is connected to broader questions about who has access to power and whose experiences shape decisions.</p>
+<div class="issue-card-content">
+
+<span class="issue-card-number">
+02
+</span>
+
+<h3>
+Economic participation
+</h3>
+
+<p>
+Employment, wages, financial resources,
+working conditions and leadership
+opportunities influence economic inclusion.
+</p>
+
 </div>
+
+</article>
+
+<article class="issue-card">
+
+<div class="issue-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=85"
+alt="Political institution">
+
+</div>
+
+<div class="issue-card-content">
+
+<span class="issue-card-number">
+03
+</span>
+
+<h3>
+Political representation
+</h3>
+
+<p>
+Participation in government and
+decision-making institutions can
+shape how societies are governed.
+</p>
+
+</div>
+
+</article>
+
+<article class="issue-card">
+
+<div class="issue-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=85"
+alt="Healthcare professionals">
+
+</div>
+
+<div class="issue-card-content">
+
+<span class="issue-card-number">
+04
+</span>
+
+<h3>
+Healthcare
+</h3>
+
+<p>
+Access to healthcare, reproductive health
+services and maternal healthcare
+can affect wellbeing.
+</p>
+
+</div>
+
+</article>
+
+</div>
+
+<div class="issue-feature">
+
+<div class="issue-feature-image">
+
+<img
+src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85"
+alt="People working collectively">
+
+</div>
+
+<div class="issue-feature-content">
+
+<span class="section-kicker">
+WHY IT MATTERS
+</span>
+
+<h2>
+Representation is about participation,
+not simply numbers.
+</h2>
+
+<p>
+Representation can influence whose
+experiences are considered in public
+decision-making. However, the number
+of women elected does not automatically
+show whether institutions are inclusive
+or whether policies produce equal outcomes.
+</p>
+
+</div>
+
+</div>
+
+<div class="issue-factors-grid">
+
+<div class="factor-panel">
+
+<span class="section-kicker">
+FACTORS
+</span>
+
+<h3>
+Why might differences exist?
+</h3>
+
+<ul class="styled-list">
+
+<li>
+Political systems and electoral rules
+</li>
+
+<li>
+Education and access to opportunities
+</li>
+
+<li>
+Economic inequality
+</li>
+
+<li>
+Social expectations and discrimination
+</li>
+
+<li>
+Political participation and representation
+</li>
+
+<li>
+Conflict and institutional stability
+</li>
+
+</ul>
+
+</div>
+
+<div class="factor-panel factor-panel-blue">
+
+<span class="section-kicker">
+GEOGRAPHICAL PERSPECTIVE
+</span>
+
+<h3>
+Why compare countries?
+</h3>
+
+<p>
+Comparing countries helps identify
+patterns, contrasts and possible
+relationships between development
+conditions and political participation.
+</p>
+
+<p>
+Comparisons must consider differences
+in data collection, historical context,
+population and political institutions.
+</p>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="page" id="trends">
-<div class="page-heading">
-<p class="eyebrow">03 / PATTERNS</p>
-<h1>Trends & Comparisons</h1>
-<p class="lead">Explore global variation and the ways representation can change over time.</p>
+<!-- INDIA -->
+
+<section class="page-section" id="india">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+INDIA • HISTORY • PARTICIPATION
+</span>
+
+<span class="topline-number">
+03 / 10
+</span>
+
 </div>
 
-<div class="visual-callout">
-<img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1300&q=80" alt="People in a group discussion">
+<div class="india-hero">
+
+<div class="india-hero-copy">
+
+<span class="section-kicker">
+INDIAN CASE STUDY
+</span>
+
+<h1>
+Voices that
+<span class="hero-highlight">
+changed India.
+</span>
+</h1>
+
+<p>
+The experiences of reformers and activists
+illustrate different approaches to challenging
+inequality and advocating for participation,
+rights and social change.
+</p>
+
+</div>
+
+<div class="india-hero-image">
+
+<img
+src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=85"
+alt="Indian historical architecture">
+
+</div>
+
+</div>
+
+<div class="india-context-panel">
+
+<div class="india-context-heading">
+
+<span class="section-kicker">
+CONTEXT
+</span>
+
+<h2>
+Social change has many contributors.
+</h2>
+
+</div>
+
+<div class="india-context-text">
+
+<p>
+India's history of social reform and activism
+includes individuals and movements that
+challenged discrimination, advocated
+education and mobilised communities.
+</p>
+
+<p>
+These examples offer a perspective on
+how social participation, public awareness,
+organising and reform can influence
+development debates.
+</p>
+
+</div>
+
+</div>
+
+<div class="leaders-grid">
+
+<!-- SAVITRIBAI PHULE -->
+
+<article class="leader-card">
+
+<div class="leader-image-container">
+
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Savitribai_Phule.jpg"
+alt="Portrait of Savitribai Phule"
+class="leader-image"
+onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Savitribai%20Phule.jpg?width=700';">
+
+<span class="leader-image-label">
+EDUCATION
+</span>
+
+</div>
+
+<div class="leader-content">
+
+<span class="leader-period">
+1831 — 1897
+</span>
+
+<h2>
+Savitribai Phule
+</h2>
+
+<p class="leader-role">
+Educator and social reformer
+</p>
+
+<p>
+Savitribai Phule was an important
+pioneer of girls' education in India.
+Together with Jyotirao Phule, she helped
+establish schools for girls and challenged
+social discrimination.
+</p>
+
+<div class="leader-impact">
+
+<span class="impact-label">
+CONTRIBUTION
+</span>
+
+<p>
+Advocacy for girls' education,
+social equality and access to learning.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+<!-- ARUNA ROY -->
+
+<article class="leader-card">
+
+<div class="leader-image-container">
+
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Aruna_Roy.jpg"
+alt="Portrait of Aruna Roy"
+class="leader-image"
+onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Aruna%20Roy.jpg?width=700';">
+
+<span class="leader-image-label">
+TRANSPARENCY
+</span>
+
+</div>
+
+<div class="leader-content">
+
+<span class="leader-period">
+1946 —
+</span>
+
+<h2>
+Aruna Roy
+</h2>
+
+<p class="leader-role">
+Activist and public accountability advocate
+</p>
+
+<p>
+Aruna Roy is known for her work with
+the Mazdoor Kisan Shakti Sangathan
+(MKSS) and advocacy for transparency,
+accountability and the Right to Information.
+</p>
+
+<div class="leader-impact">
+
+<span class="impact-label">
+CONTRIBUTION
+</span>
+
+<p>
+Grassroots participation, public
+accountability and access to information.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+<!-- MEDHA PATKAR -->
+
+<article class="leader-card">
+
+<div class="leader-image-container">
+
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Medha_Patkar.jpg"
+alt="Portrait of Medha Patkar"
+class="leader-image"
+onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Medha%20Patkar.jpg?width=700';">
+
+<span class="leader-image-label">
+COMMUNITY RIGHTS
+</span>
+
+</div>
+
+<div class="leader-content">
+
+<span class="leader-period">
+1954 —
+</span>
+
+<h2>
+Medha Patkar
+</h2>
+
+<p class="leader-role">
+Activist and community organiser
+</p>
+
+<p>
+Medha Patkar is known for her involvement
+in the Narmada Bachao Andolan and
+advocacy concerning displacement,
+development projects and affected communities.
+</p>
+
+<div class="leader-impact">
+
+<span class="impact-label">
+CONTRIBUTION
+</span>
+
+<p>
+Community mobilisation and advocacy
+concerning development and displacement.
+</p>
+
+</div>
+
+</div>
+
+</article>
+
+</div>
+
+<div class="india-comparison-panel">
+
+<span class="section-kicker">
+THREE APPROACHES
+</span>
+
+<h2>
+Different pathways to social change
+</h2>
+
+<div class="india-comparison-grid">
+
+<div class="comparison-item">
+
+<span class="comparison-number">
+01
+</span>
+
+<h3>
+Education
+</h3>
+
+<p>
+Expanding access to learning
+and challenging exclusion.
+</p>
+
+</div>
+
+<div class="comparison-item">
+
+<span class="comparison-number">
+02
+</span>
+
+<h3>
+Accountability
+</h3>
+
+<p>
+Strengthening transparency
+and citizen participation.
+</p>
+
+</div>
+
+<div class="comparison-item">
+
+<span class="comparison-number">
+03
+</span>
+
+<h3>
+Community action
+</h3>
+
+<p>
+Advocating for communities
+affected by development decisions.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TRENDS -->
+
+<section class="page-section" id="trends">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+GLOBAL PATTERNS
+</span>
+
+<span class="topline-number">
+04 / 10
+</span>
+
+</div>
+
+<div class="section-hero-small">
+
 <div>
-<h2>Countries do not follow one single path.</h2>
-<p>Political systems, policies, historical context, social norms and movements can all influence representation. Compare the indicator using the map below.</p>
-<button class="primary-btn" onclick="showPage('indicator')">Open interactive map ↗</button>
-</div>
+
+<span class="section-kicker">
+TRENDS
+</span>
+
+<h1>
+Patterns across
+<span class="hero-highlight">
+the world.
+</span>
+</h1>
+
+<p class="section-lead">
+Explore differences in women's parliamentary
+representation and consider what comparisons
+can and cannot reveal.
+</p>
+
 </div>
 
-<div class="trend-grid">
-<article class="info-card"><h3>Change over time</h3><p>Progress may occur gradually, rapidly or unevenly. A single year cannot reveal the entire trajectory.</p></article>
-<article class="info-card"><h3>Regional patterns</h3><p>Countries within the same region can have different levels of representation, so regional labels alone cannot explain outcomes.</p></article>
-<article class="info-card"><h3>Interpret carefully</h3><p>Correlation between indicators does not automatically prove causation. Context and further evidence are needed.</p></article>
+<img
+src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=85"
+alt="Government building"
+class="section-hero-image">
+
 </div>
+
+<div class="trend-content-grid">
+
+<div class="trend-intro-card">
+
+<h2>
+Why do countries differ?
+</h2>
+
+<p>
+Countries may differ in political institutions,
+electoral systems, social movements,
+economic conditions, policies and
+historical experiences.
+</p>
+
+<p>
+The map and data visualisations in this
+investigation provide an opportunity
+to explore these differences.
+</p>
+
+</div>
+
+<div class="trend-highlight-card">
+
+<div class="trend-highlight-icon">
+<i class="fa-solid fa-chart-simple"></i>
+</div>
+
+<h3>
+Compare, don't assume.
+</h3>
+
+<p>
+A statistical pattern can suggest a relationship,
+but it does not automatically establish
+a cause.
+</p>
+
+</div>
+
+</div>
+
+<div class="trend-analysis-grid">
+
+<div class="trend-analysis-card">
+
+<span class="section-kicker">
+SPATIAL PATTERNS
+</span>
+
+<h3>
+Regional differences
+</h3>
+
+<p>
+Geographical patterns may show clusters
+or contrasts between regions.
+These should be examined using data
+rather than assumptions.
+</p>
+
+</div>
+
+<div class="trend-analysis-card">
+
+<span class="section-kicker">
+TEMPORAL PATTERNS
+</span>
+
+<h3>
+Changes over time
+</h3>
+
+<p>
+Changes in representation may reflect
+policy changes, elections, institutions
+and other historical factors.
+</p>
+
+</div>
+
+<div class="trend-analysis-card">
+
+<span class="section-kicker">
+COMPARISON
+</span>
+
+<h3>
+Countries and contexts
+</h3>
+
+<p>
+Comparisons are more meaningful when
+countries' political systems, population
+and data availability are considered.
+</p>
+
+</div>
+
+</div>
+
+<div class="trend-data-callout">
+
+<div>
+
+<span class="section-kicker">
+INTERACTIVE DATA
+</span>
+
+<h2>
+Explore the map.
+</h2>
+
+<p>
+Use the development indicator section
+to examine data by country and year.
+</p>
+
+</div>
+
+<button class="primary-button"
+data-goto="indicator">
+
+Open indicator map
+<i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+</div>
+
 </section>
 
-<section class="page" id="indicator">
-<div class="page-heading">
-<p class="eyebrow">04 / DATA EXPLORER</p>
-<h1>Development Indicator</h1>
-<p class="lead">Explore country-level data from the World Bank. Change the indicator and year to investigate geographic patterns.</p>
+<!-- DEVELOPMENT INDICATOR -->
+
+<section class="page-section" id="indicator">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+DATA • COMPARISON • VISUALISATION
+</span>
+
+<span class="topline-number">
+05 / 10
+</span>
+
 </div>
 
-<div class="data-controls">
-<div><label for="indicatorSelect">Indicator</label><select id="indicatorSelect">
-<option value="SG.GEN.PARL.ZS">Women in national parliament (%)</option>
-<option value="SP.ADO.TFRT">Adolescent fertility rate</option>
-<option value="SH.STA.MMRT">Maternal mortality ratio</option>
-</select></div>
-<div><label for="yearSelect">Year</label><select id="yearSelect"></select></div>
-<button id="refreshMap" class="primary-btn">Update map</button>
+<div class="indicator-hero">
+
+<div>
+
+<span class="section-kicker">
+DEVELOPMENT INDICATOR
+</span>
+
+<h1>
+Women in
+<span class="hero-highlight">
+parliament.
+</span>
+</h1>
+
+<p class="section-lead">
+Explore the percentage of parliamentary
+seats held by women across countries.
+</p>
+
 </div>
 
-<div class="map-meta">
-<div><span class="eyebrow">GLOBAL DISTRIBUTION</span><h2 id="mapTitle">Women in national parliament</h2><p id="mapSubtitle">Share of seats held by women in national parliaments (%)</p></div>
-<span id="dataStatus" class="status">Waiting for data</span>
+<div class="indicator-hero-stat">
+
+<span class="indicator-stat-label">
+WORLD BANK INDICATOR
+</span>
+
+<span class="indicator-stat-code">
+SG.GEN.PARL.ZS
+</span>
+
+<span class="indicator-stat-description">
+Proportion of seats held by women
+in national parliaments
+</span>
+
 </div>
 
-<div id="worldMap" class="map-frame" aria-label="Interactive world choropleth map"></div>
-<div id="legend" class="legend"></div>
-<p class="map-note">Grey countries indicate missing data or a country-code match that could not be resolved. Select a country to view its data. Data source: World Bank. Values may be unavailable for some years.</p>
+</div>
 
-<div class="summary-cards">
-<article><small>COUNTRIES WITH DATA</small><strong id="dataCount">—</strong><span>Selected year</span></article>
-<article><small>GLOBAL MEAN</small><strong id="globalMean">—</strong><span id="meanUnit">Selected indicator</span></article>
-<article><small>HIGHEST VALUE</small><strong id="highest">—</strong><span id="highestCountry">—</span></article>
+<div class="indicator-explanation-grid">
+
+<div class="indicator-explanation">
+
+<h2>
+What does this indicator measure?
+</h2>
+
+<p>
+This indicator measures the proportion
+of parliamentary seats held by women.
+It provides a way to compare women's
+representation in national legislative bodies.
+</p>
+
+<p>
+It is useful for examining political
+participation, but it does not capture
+every dimension of gender equality.
+</p>
+
+</div>
+
+<div class="indicator-explanation-note">
+
+<div class="note-icon">
+<i class="fa-solid fa-circle-info"></i>
+</div>
+
+<h3>
+Interpret with care.
+</h3>
+
+<p>
+Representation is not the same as
+influence, equality or policy outcomes.
+The indicator should be interpreted
+alongside other evidence.
+</p>
+
+</div>
+
+</div>
+
+<div class="indicator-controls-panel">
+
+<div class="controls-heading">
+
+<div>
+
+<span class="section-kicker">
+INTERACTIVE EXPLORER
+</span>
+
+<h2>
+Explore the data
+</h2>
+
+</div>
+
+<span class="data-source-tag">
+WORLD BANK
+</span>
+
+</div>
+
+<div class="indicator-controls">
+
+<div class="control-group">
+
+<label for="indicatorSelect">
+Indicator
+</label>
+
+<select id="indicatorSelect">
+
+<option value="SG.GEN.PARL.ZS">
+Women in parliament (%)
+</option>
+
+<option value="SP.ADO.TFRT">
+Adolescent fertility rate
+</option>
+
+<option value="SH.STA.MMRT">
+Maternal mortality ratio
+</option>
+
+</select>
+
+</div>
+
+<div class="control-group">
+
+<label for="yearSelect">
+Year
+</label>
+
+<select id="yearSelect">
+
+</select>
+
+</div>
+
+<div class="control-group">
+
+<label for="countrySearch">
+Find a country
+</label>
+
+<input
+type="search"
+id="countrySearch"
+placeholder="Search country..."
+autocomplete="off">
+
+</div>
+
+<button class="primary-button"
+id="refreshMapButton">
+
+Update map
+<i class="fa-solid fa-rotate"></i>
+
+</button>
+
+</div>
+
+<div class="indicator-status"
+id="indicatorStatus"
+role="status">
+
+Loading data controls...
+
+</div>
+
+<div class="map-panel">
+
+<div class="map-panel-heading">
+
+<div>
+
+<span class="section-kicker">
+GEOGRAPHICAL DISTRIBUTION
+</span>
+
+<h3>
+World map
+</h3>
+
+</div>
+
+<span class="map-panel-tag">
+INTERACTIVE
+</span>
+
+</div>
+
+<div id="worldMap"
+class="world-map"
+aria-label="Interactive world map">
+
+</div>
+
+<div class="map-legend"
+id="legend">
+
+</div>
+
+</div>
+
+<div class="indicator-summary-grid"
+id="indicatorStats">
+
+<div class="summary-stat-card">
+
+<span class="summary-stat-label">
+COUNTRIES WITH DATA
+</span>
+
+<span class="summary-stat-value"
+id="countriesWithData">
+—
+</span>
+
+</div>
+
+<div class="summary-stat-card">
+
+<span class="summary-stat-label">
+GLOBAL MEAN
+</span>
+
+<span class="summary-stat-value"
+id="globalMean">
+—
+</span>
+
+</div>
+
+<div class="summary-stat-card">
+
+<span class="summary-stat-label">
+HIGHEST VALUE
+</span>
+
+<span class="summary-stat-value"
+id="highestValue">
+—
+</span>
+
+</div>
+
+<div class="summary-stat-card">
+
+<span class="summary-stat-label">
+LOWEST VALUE
+</span>
+
+<span class="summary-stat-value"
+id="lowestValue">
+—
+</span>
+
+</div>
+
 </div>
 
 <div class="chart-panel">
-<div class="chart-heading"><div><p class="eyebrow">COUNTRY COMPARISON</p><h2>Leading values</h2></div><p>Countries with the highest reported values for the selected year.</p></div>
-<canvas id="comparisonChart"></canvas>
+
+<div class="chart-panel-heading">
+
+<div>
+
+<span class="section-kicker">
+DATA VISUALISATION
+</span>
+
+<h3>
+Country comparison
+</h3>
+
+</div>
+
+</div>
+
+<div class="chart-container">
+
+<canvas id="countryChart">
+
+</canvas>
+
+</div>
+
 </div>
 
 <div class="table-panel">
-<div class="chart-heading"><div><p class="eyebrow">DATA TABLE</p><h2>Country values</h2></div><input id="countrySearch" placeholder="Search country..." aria-label="Search countries"></div>
-<div class="table-scroll">
-<table><thead><tr><th>Country</th><th>Value</th><th>Year</th></tr></thead><tbody id="dataTable"></tbody></table>
-</div>
-</div>
-</section>
 
-<section class="page" id="criterionb">
-<div class="page-heading">
-<p class="eyebrow">05 / RESEARCH DESIGN</p>
-<h1>Criterion B</h1>
-<p class="lead">Planning an investigation using a focused question, relevant sources and appropriate methods.</p>
-</div>
+<div class="table-panel-heading">
 
-<div class="criterion-intro">
-<h2>Research question</h2>
-<p class="research-text">To what extent does women's representation in national parliaments differ between countries, and how can geographical, social, economic and political factors help explain these differences?</p>
-</div>
-
-<div class="method-grid">
-<article class="info-card"><span class="card-num">01</span><h3>Focus</h3><p>Investigate the percentage of seats held by women in national parliaments and compare countries and regions.</p></article>
-<article class="info-card"><span class="card-num">02</span><h3>Data collection</h3><p>Use secondary data from the World Bank and other credible organisations. Record indicator, year, country and source.</p></article>
-<article class="info-card"><span class="card-num">03</span><h3>Geographical method</h3><p>Use a choropleth map, comparative table and charts to identify spatial variation and patterns.</p></article>
-<article class="info-card"><span class="card-num">04</span><h3>Analysis</h3><p>Compare values, consider regional and national context, and use additional evidence to explain possible influences.</p></article>
-</div>
-
-<h2 class="section-title">Method and variables</h2>
-<div class="table-scroll">
-<table>
-<thead><tr><th>Element</th><th>Description</th></tr></thead>
-<tbody>
-<tr><td>Primary indicator</td><td>Women in national parliaments, percentage of seats</td></tr>
-<tr><td>Independent comparisons</td><td>Countries, regions, years and related development context</td></tr>
-<tr><td>Outcome / data</td><td>Reported percentage for the selected country and year</td></tr>
-<tr><td>Method</td><td>Secondary data analysis, choropleth mapping and comparison</td></tr>
-<tr><td>Limitations</td><td>Data availability, comparability, national averages and potential lag in reporting</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="note-panel">
-<h3>Ethical and source considerations</h3>
-<p>Use publicly available aggregated data, avoid stereotypes and do not treat a country or region as homogeneous. Cite data sources, explain limitations and distinguish evidence from interpretation.</p>
-</div>
-</section>
-
-<section class="page" id="criterionc">
-<div class="page-heading">
-<p class="eyebrow">06 / ANALYSIS</p>
-<h1>Criterion C</h1>
-<p class="lead">Collect, present, interpret and evaluate geographical information.</p>
-</div>
-
-<div class="c-grid">
-<article class="info-card"><h3>Collect</h3><p>Gather indicator data for multiple countries and years from the World Bank API. Record missing values rather than assuming they are zero.</p></article>
-<article class="info-card"><h3>Present</h3><p>Present data through a choropleth map, summary statistics, comparison chart and table to make spatial patterns visible.</p></article>
-<article class="info-card"><h3>Interpret</h3><p>Identify high and low values, regional variation and change over time. Investigate possible explanations using additional sources.</p></article>
-<article class="info-card"><h3>Evaluate</h3><p>Consider data coverage, indicator definitions, scale, year and the limitations of making causal claims from comparisons.</p></article>
-</div>
-
-<h2 class="section-title">How to analyse your map</h2>
-<div class="analysis-steps">
-<div><span>01</span><h3>Describe</h3><p>Identify the overall pattern and range. Mention countries or regions supported by the data.</p></div>
-<div><span>02</span><h3>Compare</h3><p>Compare selected countries or regions and calculate differences where appropriate.</p></div>
-<div><span>03</span><h3>Explain</h3><p>Connect patterns to evidence about institutions, policy, social factors or history—without assuming causation.</p></div>
-<div><span>04</span><h3>Evaluate</h3><p>Explain what the data can and cannot show, and what further research would help.</p></div>
-</div>
-
-<div class="note-panel">
-<h3>Analysis workspace</h3>
-<p>Use the interactive data explorer to identify real values before writing conclusions. This section is designed to support your own evidence-based analysis, not to fabricate findings.</p>
-<button class="primary-btn" onclick="showPage('indicator')">Go to data explorer</button>
-</div>
-</section>
-
-<section class="page" id="criteriond">
-<div class="page-heading">
-<p class="eyebrow">07 / REFLECTION</p>
-<h1>Criterion D</h1>
-<p class="lead">Reflect on the implications of gender equality and propose evidence-informed action.</p>
-</div>
-
-<div class="gallery-feature">
-<img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=85" alt="People working together">
 <div>
-<span class="eyebrow light">FROM EVIDENCE TO ACTION</span>
-<h2>What could improve participation?</h2>
-<p>Meaningful change can involve institutions, communities, education, policy and participation. Actions should be grounded in evidence and evaluated over time.</p>
+
+<span class="section-kicker">
+COUNTRY DATA
+</span>
+
+<h3>
+Values by country
+</h3>
+
 </div>
+
 </div>
+
+<div class="table-scroll-container">
+
+<table id="countryTable">
+
+<thead>
+
+<tr>
+
+<th>
+Country
+</th>
+
+<th>
+Value
+</th>
+
+<th>
+Year
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="countryTableBody">
+
+<tr>
+
+<td colspan="3">
+Data will appear here.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="indicator-source-note">
+
+<p>
+<strong>Source:</strong>
+World Bank World Development Indicators.
+</p>
+
+<p>
+Values and country availability vary by
+indicator and year. Missing data should
+not be interpreted as zero.
+</p>
+
+</div>
+
+</section>
+
+<!-- CRITERION B -->
+
+<section class="page-section" id="criterionb">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+INVESTIGATION • RESEARCH • PLANNING
+</span>
+
+<span class="topline-number">
+06 / 10
+</span>
+
+</div>
+
+<div class="criteria-hero">
+
+<div>
+
+<span class="section-kicker">
+CRITERION B
+</span>
+
+<h1>
+Investigating
+<span class="hero-highlight">
+the issue.
+</span>
+</h1>
+
+<p class="section-lead">
+Planning the investigation, collecting evidence
+and selecting information relevant to the
+research question.
+</p>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=85"
+alt="Research notes and planning"
+class="criteria-hero-image">
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+B1 • RESEARCH QUESTION
+</span>
+
+<h2>
+Focused geographical investigation
+</h2>
+
+<div class="research-question-card">
+
+<span class="research-card-label">
+RESEARCH QUESTION
+</span>
+
+<p>
+To what extent does women's representation
+in national parliaments differ between
+countries, and how can geographical,
+social, economic and political factors
+help explain these differences?
+</p>
+
+</div>
+
+<div class="research-question-analysis">
+
+<div class="research-analysis-card">
+
+<h3>
+What?
+</h3>
+
+<p>
+Differences in women's representation
+in national parliaments.
+</p>
+
+</div>
+
+<div class="research-analysis-card">
+
+<h3>
+Where?
+</h3>
+
+<p>
+Countries across the world,
+with a focused case study of India.
+</p>
+
+</div>
+
+<div class="research-analysis-card">
+
+<h3>
+Why?
+</h3>
+
+<p>
+Examining geographical, social,
+economic and political factors.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+B2 • RESEARCH PLAN
+</span>
+
+<h2>
+Planning the investigation
+</h2>
+
+<p>
+The investigation uses secondary data,
+geographical comparisons, research
+and analysis to answer the question.
+</p>
+
+<div class="research-process-grid">
+
+<div class="process-card">
+
+<span class="process-number">
+01
+</span>
+
+<h3>
+Identify the issue
+</h3>
+
+<p>
+Define gender inequality and its
+connection to political participation.
+</p>
+
+</div>
+
+<div class="process-card">
+
+<span class="process-number">
+02
+</span>
+
+<h3>
+Select indicators
+</h3>
+
+<p>
+Choose relevant development indicators
+and identify their limitations.
+</p>
+
+</div>
+
+<div class="process-card">
+
+<span class="process-number">
+03
+</span>
+
+<h3>
+Collect data
+</h3>
+
+<p>
+Gather data from international
+databases and reliable sources.
+</p>
+
+</div>
+
+<div class="process-card">
+
+<span class="process-number">
+04
+</span>
+
+<h3>
+Compare locations
+</h3>
+
+<p>
+Compare countries and investigate
+spatial differences.
+</p>
+
+</div>
+
+<div class="process-card">
+
+<span class="process-number">
+05
+</span>
+
+<h3>
+Analyse patterns
+</h3>
+
+<p>
+Examine trends, relationships
+and possible explanations.
+</p>
+
+</div>
+
+<div class="process-card">
+
+<span class="process-number">
+06
+</span>
+
+<h3>
+Evaluate findings
+</h3>
+
+<p>
+Consider limitations and evaluate
+how far the question is answered.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+B3 • DATA SOURCES
+</span>
+
+<h2>
+Research sources
+</h2>
+
+<div class="research-source-grid">
+
+<div class="research-source-card">
+
+<div class="source-icon">
+<i class="fa-solid fa-database"></i>
+</div>
+
+<h3>
+World Bank
+</h3>
+
+<p>
+International development indicators
+and country-level data.
+</p>
+
+</div>
+
+<div class="research-source-card">
+
+<div class="source-icon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<h3>
+UN Women
+</h3>
+
+<p>
+Research and information concerning
+gender equality and participation.
+</p>
+
+</div>
+
+<div class="research-source-card">
+
+<div class="source-icon">
+<i class="fa-solid fa-building-columns"></i>
+</div>
+
+<h3>
+IPU
+</h3>
+
+<p>
+Information on women in national
+parliaments and political representation.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+B4 • RESEARCH METHODS
+</span>
+
+<h2>
+Methods used
+</h2>
+
+<div class="methods-table-wrap">
+
+<table class="methods-table">
+
+<thead>
+
+<tr>
+
+<th>
+Method
+</th>
+
+<th>
+Purpose
+</th>
+
+<th>
+Limitation
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+Secondary data
+</td>
+
+<td>
+Provides quantitative information
+for comparisons.
+</td>
+
+<td>
+Data availability and collection
+methods may differ.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Map analysis
+</td>
+
+<td>
+Identifies geographical
+patterns and differences.
+</td>
+
+<td>
+Patterns alone cannot explain causes.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Country comparison
+</td>
+
+<td>
+Examines similarities and
+differences between places.
+</td>
+
+<td>
+Countries may have different
+political contexts.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Source evaluation
+</td>
+
+<td>
+Assesses reliability and relevance.
+</td>
+
+<td>
+Even credible sources may
+have limitations.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="criteria-reflection-panel">
+
+<div class="reflection-icon">
+<i class="fa-solid fa-clipboard-check"></i>
+</div>
+
+<div>
+
+<span class="section-kicker">
+INVESTIGATION CHECK
+</span>
+
+<h3>
+A structured investigation
+</h3>
+
+<p>
+A clear research question, appropriate
+indicators, credible sources and
+consideration of limitations help
+make the investigation more focused.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CRITERION C -->
+
+<section class="page-section" id="criterionc">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+DATA • ANALYSIS • INTERPRETATION
+</span>
+
+<span class="topline-number">
+07 / 10
+</span>
+
+</div>
+
+<div class="criteria-hero">
+
+<div>
+
+<span class="section-kicker">
+CRITERION C
+</span>
+
+<h1>
+Making sense
+<span class="hero-highlight">
+of data.
+</span>
+</h1>
+
+<p class="section-lead">
+Analysing information, interpreting
+geographical patterns and using evidence
+to answer the research question.
+</p>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85"
+alt="Data analysis"
+class="criteria-hero-image">
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+C1 • DATA ANALYSIS
+</span>
+
+<h2>
+Analysing differences
+</h2>
+
+<p>
+The World Bank indicator allows
+comparisons of the percentage of
+parliamentary seats held by women
+between countries.
+</p>
+
+<p>
+The investigation can identify countries
+with relatively higher and lower values,
+regional differences and changes
+over time.
+</p>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+C2 • GEOGRAPHICAL PATTERNS
+</span>
+
+<h2>
+What patterns can be examined?
+</h2>
+
+<div class="analysis-grid">
+
+<div class="analysis-card">
+
+<div class="analysis-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=85"
+alt="World map">
+
+</div>
+
+<div class="analysis-card-body">
+
+<h3>
+Spatial distribution
+</h3>
+
+<p>
+Compare countries and examine
+whether values appear clustered
+or distributed unevenly.
+</p>
+
+</div>
+
+</div>
+
+<div class="analysis-card">
+
+<div class="analysis-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=85"
+alt="Charts and graphs">
+
+</div>
+
+<div class="analysis-card-body">
+
+<h3>
+Statistical comparison
+</h3>
+
+<p>
+Compare values and identify
+differences between countries.
+</p>
+
+</div>
+
+</div>
+
+<div class="analysis-card">
+
+<div class="analysis-card-image">
+
+<img
+src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=85"
+alt="Time and planning">
+
+</div>
+
+<div class="analysis-card-body">
+
+<h3>
+Temporal changes
+</h3>
+
+<p>
+Investigate changes over time
+and consider possible explanations.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+C3 • INTERPRETATION
+</span>
+
+<h2>
+Connecting data to geography
+</h2>
+
+<div class="interpretation-grid">
+
+<div class="interpretation-item">
+
+<span class="interpretation-label">
+OBSERVATION
+</span>
+
+<h3>
+What does the data show?
+</h3>
+
+<p>
+Describe the numerical or spatial
+pattern using specific values
+when available.
+</p>
+
+</div>
+
+<div class="interpretation-item">
+
+<span class="interpretation-label">
+EXPLANATION
+</span>
+
+<h3>
+Why might it occur?
+</h3>
+
+<p>
+Consider political institutions,
+social context, economic conditions
+and historical factors.
+</p>
+
+</div>
+
+<div class="interpretation-item">
+
+<span class="interpretation-label">
+EVALUATION
+</span>
+
+<h3>
+What cannot be concluded?
+</h3>
+
+<p>
+Identify data limitations and avoid
+assuming a causal relationship
+without supporting evidence.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+C4 • EVIDENCE
+</span>
+
+<h2>
+Supporting conclusions with evidence
+</h2>
+
+<div class="evidence-panel">
+
+<div class="evidence-panel-heading">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<h3>
+Evidence-based interpretation
+</h3>
+
+</div>
+
+<p>
+An effective analysis should refer to
+specific data values, comparisons
+or patterns rather than making
+unsupported generalisations.
+</p>
+
+<div class="evidence-steps">
+
+<div class="evidence-step">
+<span>01</span>
+<p>Identify a pattern.</p>
+</div>
+
+<div class="evidence-step">
+<span>02</span>
+<p>Provide numerical evidence.</p>
+</div>
+
+<div class="evidence-step">
+<span>03</span>
+<p>Explain a possible geographical factor.</p>
+</div>
+
+<div class="evidence-step">
+<span>04</span>
+<p>Evaluate the explanation.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CRITERION D -->
+
+<section class="page-section" id="criteriond">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+EVALUATION • ACTION • REFLECTION
+</span>
+
+<span class="topline-number">
+08 / 10
+</span>
+
+</div>
+
+<div class="criteria-hero">
+
+<div>
+
+<span class="section-kicker">
+CRITERION D
+</span>
+
+<h1>
+Thinking
+<span class="hero-highlight">
+forward.
+</span>
+</h1>
+
+<p class="section-lead">
+Evaluating the investigation and considering
+possible approaches to addressing
+gender inequality.
+</p>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=900&q=85"
+alt="People working together"
+class="criteria-hero-image">
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+D1 • CONCLUSION
+</span>
+
+<h2>
+Answering the research question
+</h2>
+
+<div class="conclusion-panel">
+
+<p>
+Women's representation in national
+parliaments differs between countries.
+These differences can be examined
+through geographical comparisons
+and may be connected to political,
+social, economic and historical factors.
+</p>
+
+<p>
+The extent to which these factors
+explain differences must be evaluated
+using evidence from the investigation.
+</p>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+D2 • LIMITATIONS
+</span>
+
+<h2>
+Limitations of the investigation
+</h2>
+
+<div class="limitations-grid">
+
+<div class="limitation-card">
+
+<span class="limitation-number">
+01
+</span>
+
+<h3>
+Data availability
+</h3>
+
+<p>
+Some countries may have missing
+data for particular years.
+</p>
+
+</div>
+
+<div class="limitation-card">
+
+<span class="limitation-number">
+02
+</span>
+
+<h3>
+Indicator limitations
+</h3>
+
+<p>
+Representation does not measure
+every aspect of gender equality.
+</p>
+
+</div>
+
+<div class="limitation-card">
+
+<span class="limitation-number">
+03
+</span>
+
+<h3>
+Comparability
+</h3>
+
+<p>
+Political systems and data collection
+methods can differ.
+</p>
+
+</div>
+
+<div class="limitation-card">
+
+<span class="limitation-number">
+04
+</span>
+
+<h3>
+Causation
+</h3>
+
+<p>
+A correlation or pattern does not
+prove that one factor causes another.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+D3 • POSSIBLE ACTION
+</span>
+
+<h2>
+Approaches to addressing inequality
+</h2>
 
 <div class="action-grid">
-<article class="action-card"><span>01 / INSTITUTIONS</span><h3>Inclusive political pathways</h3><p>Explore transparent candidate selection, accessible political processes and policies that reduce barriers to participation.</p></article>
-<article class="action-card"><span>02 / COMMUNITY</span><h3>Challenge stereotypes</h3><p>Promote respectful discussions about leadership, participation and the distribution of responsibilities.</p></article>
-<article class="action-card"><span>03 / EDUCATION</span><h3>Build awareness</h3><p>Share reliable information about representation and encourage civic literacy among young people.</p></article>
-<article class="action-card"><span>04 / EVALUATION</span><h3>Track progress</h3><p>Monitor representation and related indicators, and evaluate whether initiatives lead to lasting change.</p></article>
+
+<article class="action-card">
+
+<div class="action-image">
+
+<img
+src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=85"
+alt="Education">
+
 </div>
 
-<h2 class="section-title">Possible conclusion framework</h2>
-<div class="note-panel">
-<p>Use your data to answer the research question directly: describe how much countries differ, identify patterns supported by the map, explain possible geographical and contextual factors using credible sources, and evaluate the limits of the evidence. A strong conclusion should not assume that representation alone measures gender equality.</p>
+<div class="action-card-content">
+
+<span class="action-tag">
+EDUCATION
+</span>
+
+<h3>
+Expanding educational access
+</h3>
+
+<p>
+Policies and programmes that
+support equal educational
+opportunities may help reduce
+barriers to participation.
+</p>
+
 </div>
+
+</article>
+
+<article class="action-card">
+
+<div class="action-image">
+
+<img
+src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=85"
+alt="Workplace">
+
+</div>
+
+<div class="action-card-content">
+
+<span class="action-tag">
+ECONOMIC OPPORTUNITY
+</span>
+
+<h3>
+Fairer workplaces
+</h3>
+
+<p>
+Equal opportunities, fair employment
+policies and supportive workplaces
+can contribute to participation.
+</p>
+
+</div>
+
+</article>
+
+<article class="action-card">
+
+<div class="action-image">
+
+<img
+src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=85"
+alt="Political participation">
+
+</div>
+
+<div class="action-card-content">
+
+<span class="action-tag">
+POLITICAL PARTICIPATION
+</span>
+
+<h3>
+Inclusive institutions
+</h3>
+
+<p>
+Institutional reforms and participation
+initiatives may help reduce barriers
+to representation.
+</p>
+
+</div>
+
+</article>
+
+<article class="action-card">
+
+<div class="action-image">
+
+<img
+src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=85"
+alt="Community collaboration">
+
+</div>
+
+<div class="action-card-content">
+
+<span class="action-tag">
+COMMUNITY
+</span>
+
+<h3>
+Community awareness
+</h3>
+
+<p>
+Awareness, participation and
+community initiatives can help
+challenge discrimination.
+</p>
+
+</div>
+
+</article>
+
+</div>
+
+</div>
+
+<div class="criteria-content-block">
+
+<span class="section-kicker">
+D4 • EVALUATION
+</span>
+
+<h2>
+Evaluating possible solutions
+</h2>
+
+<div class="evaluation-table-wrap">
+
+<table class="evaluation-table">
+
+<thead>
+
+<tr>
+
+<th>
+Approach
+</th>
+
+<th>
+Potential benefit
+</th>
+
+<th>
+Possible limitation
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+Educational access
+</td>
+
+<td>
+May expand opportunities
+and participation.
+</td>
+
+<td>
+Access alone may not address
+all social or institutional barriers.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Inclusive policies
+</td>
+
+<td>
+May address barriers
+within institutions.
+</td>
+
+<td>
+Implementation and enforcement
+can vary.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Community initiatives
+</td>
+
+<td>
+May increase awareness
+and local participation.
+</td>
+
+<td>
+Impact and reach may
+be uneven.
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Economic support
+</td>
+
+<td>
+May strengthen access
+to opportunities.
+</td>
+
+<td>
+Structural inequality may
+remain.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="reflection-panel">
+
+<div class="reflection-panel-icon">
+<i class="fa-solid fa-lightbulb"></i>
+</div>
+
+<div>
+
+<span class="section-kicker">
+FINAL REFLECTION
+</span>
+
+<h2>
+Development requires more
+than one indicator.
+</h2>
+
+<p>
+A geographical investigation can reveal
+patterns and differences, but a broader
+understanding of development requires
+multiple indicators, perspectives and
+contextual evidence.
+</p>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="page" id="sources">
-<div class="page-heading">
-<p class="eyebrow">08 / REFERENCES</p>
-<h1>Sources</h1>
-<p class="lead">Research is only as strong as the evidence behind it. Use and cite credible, traceable sources.</p>
+<!-- SOURCES -->
+
+<section class="page-section" id="sources">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+REFERENCES • CREDIBILITY
+</span>
+
+<span class="topline-number">
+09 / 10
+</span>
+
 </div>
 
-<div class="sources-list">
-<article class="source-item"><span>01</span><div><h3>World Bank — Gender Statistics / Indicators</h3><p>Country-level development data, including representation in national parliaments, adolescent fertility and maternal mortality.</p><a href="https://data.worldbank.org/" target="_blank" rel="noopener">data.worldbank.org ↗</a><a href="https://api.worldbank.org/v2/" target="_blank" rel="noopener">World Bank API ↗</a></div></article>
-<article class="source-item"><span>02</span><div><h3>United Nations — Sustainable Development Goals</h3><p>SDG 5: Achieve gender equality and empower all women and girls.</p><a href="https://sdgs.un.org/goals/goal5" target="_blank" rel="noopener">SDG 5 ↗</a></div></article>
-<article class="source-item"><span>03</span><div><h3>UN Women</h3><p>Resources and information on women's rights, equality, leadership and participation.</p><a href="https://www.unwomen.org/" target="_blank" rel="noopener">UN Women ↗</a></div></article>
-<article class="source-item"><span>04</span><div><h3>Inter-Parliamentary Union</h3><p>Information and statistics on women in national parliaments and political representation.</p><a href="https://www.ipu.org/" target="_blank" rel="noopener">IPU ↗</a></div></article>
-<article class="source-item"><span>05</span><div><h3>Images and visual assets</h3><p>Images linked from Unsplash and Wikimedia Commons. Individual images should be checked for licensing and attribution before final submission.</p><a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons ↗</a><a href="https://unsplash.com/" target="_blank" rel="noopener">Unsplash ↗</a></div></article>
+<div class="sources-hero">
+
+<span class="section-kicker">
+SOURCES
+</span>
+
+<h1>
+Where the
+<span class="hero-highlight">
+evidence comes from.
+</span>
+</h1>
+
+<p class="section-lead">
+Reliable research depends on credible,
+relevant and carefully evaluated sources.
+</p>
+
 </div>
 
-<div class="note-panel">
-<h3>Referencing reminder</h3>
-<p>For your final bibliography, record the author or organisation, title, date or update date, URL and access date. Check image licensing and cite each image according to your school's format.</p>
+<div class="source-list">
+
+<article class="source-entry">
+
+<div class="source-entry-icon">
+<i class="fa-solid fa-database"></i>
 </div>
+
+<div class="source-entry-content">
+
+<h3>
+World Bank — World Development Indicators
+</h3>
+
+<p>
+International development data, including
+the proportion of parliamentary seats
+held by women.
+</p>
+
+<a href="https://data.worldbank.org/"
+target="_blank"
+rel="noopener noreferrer">
+Visit World Bank Data
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+
+</div>
+
+</article>
+
+<article class="source-entry">
+
+<div class="source-entry-icon">
+<i class="fa-solid fa-earth-americas"></i>
+</div>
+
+<div class="source-entry-content">
+
+<h3>
+UN Women
+</h3>
+
+<p>
+Information, research and resources
+concerning gender equality.
+</p>
+
+<a href="https://www.unwomen.org/"
+target="_blank"
+rel="noopener noreferrer">
+Visit UN Women
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+
+</div>
+
+</article>
+
+<article class="source-entry">
+
+<div class="source-entry-icon">
+<i class="fa-solid fa-building-columns"></i>
+</div>
+
+<div class="source-entry-content">
+
+<h3>
+Inter-Parliamentary Union
+</h3>
+
+<p>
+Research and statistics on parliamentary
+representation.
+</p>
+
+<a href="https://www.ipu.org/"
+target="_blank"
+rel="noopener noreferrer">
+Visit IPU
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+
+</div>
+
+</article>
+
+<article class="source-entry">
+
+<div class="source-entry-icon">
+<i class="fa-solid fa-flag"></i>
+</div>
+
+<div class="source-entry-content">
+
+<h3>
+United Nations Sustainable Development Goals
+</h3>
+
+<p>
+Background information about SDG 5
+and sustainable development.
+</p>
+
+<a href="https://sdgs.un.org/goals/goal5"
+target="_blank"
+rel="noopener noreferrer">
+Visit SDG 5
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+
+</div>
+
+</article>
+
+</div>
+
+<div class="citation-note">
+
+<span class="section-kicker">
+REFERENCE NOTE
+</span>
+
+<p>
+Specific numerical claims should be cited
+with the relevant source, publication
+or data page and year. The sources above
+are starting points for the investigation,
+not a substitute for citing the exact
+datasets and articles used.
+</p>
+
+</div>
+
 </section>
 
-<section class="page" id="about">
-<div class="page-heading">
-<p class="eyebrow">09 / THE AUTHOR</p>
-<h1>About Me</h1>
-<p class="lead">The student behind this investigation.</p>
+<!-- ABOUT ME -->
+
+<section class="page-section" id="about">
+
+<div class="page-topline">
+
+<span class="eyebrow">
+AUTHOR • REFLECTION • PRESENTATION
+</span>
+
+<span class="topline-number">
+10 / 10
+</span>
+
 </div>
 
-<div class="about-layout">
-<div class="about-photo"><img src="IMG_4687.jpeg" alt="Nakshatra Veernala"></div>
-<div class="about-text">
-<span class="eyebrow">NAKSHATRA VEERNALA · GRADE 8</span>
-<h2>Why I chose to explore this topic.</h2>
-<p>This project is an opportunity for me to explore gender inequality through geography and understand how development indicators can reveal differences between countries.</p>
-<p>I wanted to look beyond a single statistic and consider the political, social, economic and geographical factors that may influence women's representation. Through maps, research and comparison, I hope to understand the issue more critically rather than simply listing facts.</p>
-<p>As I present this investigation, I want to highlight that data represents real communities and experiences. Gender equality is not only about numbers—it is also about access, participation, opportunities and the ability to influence decisions.</p>
-<p class="signature">Thank you for exploring this investigation.</p>
+<div class="about-hero">
+
+<div class="about-hero-copy">
+
+<span class="section-kicker">
+ABOUT THE RESEARCHER
+</span>
+
+<h1>
+The perspective
+<span class="hero-highlight">
+behind the project.
+</span>
+</h1>
+
+<p class="section-lead">
+A student investigation into gender equality,
+geography and development.
+</p>
+
 </div>
+
+<div class="about-image-frame">
+
+<img
+src="IMG_4687.jpeg"
+alt="Nakshatra Veernala"
+class="about-image">
+
 </div>
+
+</div>
+
+<div class="about-profile-grid">
+
+<div class="about-profile-main">
+
+<span class="section-kicker">
+THE AUTHOR
+</span>
+
+<h2>
+Nakshatra Veernala
+</h2>
+
+<p>
+This website is part of my geography
+investigation into gender inequality
+and development.
+</p>
+
+<p>
+Through this project, I explore how
+women's representation in national
+parliaments differs between countries
+and how geographical, social, economic
+and political factors may contribute
+to these differences.
+</p>
+
+</div>
+
+<div class="about-profile-note">
+
+<div class="note-icon">
+<i class="fa-solid fa-book-open"></i>
+</div>
+
+<h3>
+Research and reflection
+</h3>
+
+<p>
+This investigation connects geographical
+data with real-world issues and encourages
+a deeper understanding of development.
+</p>
+
+</div>
+
+</div>
+
+<div class="about-speech-panel">
+
+<div class="speech-panel-heading">
+
+<span class="section-kicker">
+PRESENTATION MESSAGE
+</span>
+
+<h2>
+My message
+</h2>
+
+</div>
+
+<div class="speech-content">
+
+<p>
+When we talk about development, we often
+look at numbers, statistics and rankings.
+But behind those numbers are people,
+communities and opportunities.
+</p>
+
+<p>
+This project explores women's
+representation in national parliaments
+and how it differs across countries.
+I wanted to understand not just where
+differences exist, but what geographical,
+social, economic and political factors
+might help explain them.
+</p>
+
+<p>
+Through data, country comparisons
+and examples from India, this investigation
+shows that development is complex.
+One indicator cannot explain everything,
+and representation alone does not
+automatically mean equality.
+</p>
+
+<p>
+Understanding these patterns is important
+because participation, opportunity
+and decision-making are connected
+to the development of communities.
+</p>
+
+<p>
+My conclusion is that examining data
+is only the beginning. We also need
+to understand the context behind it,
+recognise limitations and consider
+how societies can create more equal
+opportunities.
+</p>
+
+</div>
+
+<div class="speech-footer">
+
+<span class="speech-footer-mark">
+B
+</span>
+
+<span>
+BEYOND THE NUMBERS
+</span>
+
+</div>
+
+</div>
+
+<div class="about-final-panel">
+
+<div>
+
+<span class="section-kicker">
+THANK YOU
+</span>
+
+<h2>
+Thank you for exploring
+this investigation.
+</h2>
+
+<p>
+Explore the data, question the patterns
+and look beyond the numbers.
+</p>
+
+</div>
+
+<button class="primary-button"
+data-goto="home">
+
+Return to home
+<i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+</div>
+
 </section>
 
-<footer class="footer">
-<span>BEYOND THE NUMBERS</span>
-<span>GENDER & DEVELOPMENT · MYP</span>
+<!-- FOOTER -->
+
+<footer class="site-footer">
+
+<div class="footer-brand">
+
+<span class="footer-brand-symbol">
+B
+</span>
+
+<div>
+
+<span class="footer-brand-name">
+BEYOND THE NUMBERS
+</span>
+
+<span class="footer-brand-description">
+Gender & Development
+</span>
+
+</div>
+
+</div>
+
+<div class="footer-meta">
+
+<span>
+GEOGRAPHY INVESTIGATION
+</span>
+
+<span>
+SDG 5 • GENDER EQUALITY
+</span>
+
+</div>
+
 </footer>
+
 </main>
+
 </div>
+
+<!-- EXTERNAL LIBRARIES -->
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
 <script src="script.js"></script>
+
 </body>
 </html>
