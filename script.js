@@ -51,7 +51,7 @@ const indicators = {
     unit: "%",
     description:
       "The proportion of seats held by women in national parliaments. Higher values indicate a greater proportion of parliamentary seats held by women.",
-    thresholds: [0, 10, 20, 30, 40, 50],
+    ranges: [10, 20, 30, 40, 50],
     legend: ["0–10", "10–20", "20–30", "30–40", "40–50", "50+"],
     colors: [
       "#e9f0f8",
@@ -62,12 +62,13 @@ const indicators = {
       "#123f70"
     ]
   },
+
   "SP.ADO.TFRT": {
     name: "Adolescent fertility rate",
     unit: " births per 1,000 women aged 15–19",
     description:
       "The number of births per 1,000 women aged 15–19. This indicator provides development context but does not directly measure parliamentary representation.",
-    thresholds: [0, 20, 40, 60, 80, 100],
+    ranges: [20, 40, 60, 80, 100],
     legend: ["0–20", "20–40", "40–60", "60–80", "80–100", "100+"],
     colors: [
       "#e9f0f8",
@@ -78,12 +79,13 @@ const indicators = {
       "#123f70"
     ]
   },
+
   "SH.STA.MMRT": {
     name: "Maternal mortality ratio",
     unit: " deaths per 100,000 live births",
     description:
       "Maternal deaths per 100,000 live births. This indicator offers healthcare and development context and is not a direct measure of representation.",
-    thresholds: [0, 100, 300, 500, 1000, 2000],
+    ranges: [100, 300, 500, 1000, 2000],
     legend: ["0–100", "100–300", "300–500", "500–1000", "1000–2000", "2000+"],
     colors: [
       "#e9f0f8",
@@ -103,6 +105,7 @@ let geoLayer = null;
 let map = null;
 let compareChart = null;
 let trendChart = null;
+let cachedGeoJSON = null;
 
 const mapStatus = document.getElementById("mapStatus");
 const mapLegend = document.getElementById("mapLegend");
@@ -150,10 +153,19 @@ function initializeMap() {
 
 /* ---------------- DATA FETCHING ---------------- */
 
+/*
+  IMPORTANT FIX:
+  The World Bank country.id is often an ISO-2 code.
+  The map GeoJSON generally uses ISO-3 codes.
+
+  This function now stores data using countryiso3code
+  AND country.id as a fallback.
+*/
+
 async function fetchIndicator(indicator, year) {
   const url =
     `${WB}/country/all/indicator/${indicator}` +
-    `?date=${year}&format=json&per_page=300`;
+    `?date=${year}&format=json&per_page=500`;
 
   const response = await fetch(url);
 
@@ -169,23 +181,43 @@ async function fetchIndicator(indicator, year) {
 
   json[1].forEach(item => {
     if (
-      item.country &&
-      item.country.id &&
       item.value !== null &&
-      item.value !== undefined
+      item.value !== undefined &&
+      item.country
     ) {
-      values[item.country.id] = {
+      const record = {
         value: Number(item.value),
         country: item.country.value,
         year: item.date
       };
+
+      /*
+        The ISO-3 code is the primary matching key.
+        The ISO-2 code is retained as a backup.
+      */
+
+      if (
+        item.countryiso3code &&
+        item.countryiso3code !== ""
+      ) {
+        values[item.countryiso3code] = record;
+      }
+
+      if (item.country.id) {
+        values[item.country.id] = record;
+      }
     }
   });
 
   return values;
 }
 
-async function fetchCountrySeries(country, indicator, start = 1990, end = 2024) {
+async function fetchCountrySeries(
+  country,
+  indicator,
+  start = 1990,
+  end = 2024
+) {
   const url =
     `${WB}/country/${country}/indicator/${indicator}` +
     `?date=${start}:${end}&format=json&per_page=100`;
@@ -209,15 +241,35 @@ async function fetchCountrySeries(country, indicator, start = 1990, end = 2024) 
 
 /* ---------------- MAP COLOUR SCALE ---------------- */
 
+/*
+  FIXED COLOUR CLASSIFICATION
+
+  Instead of incorrectly checking the thresholds
+  as lower boundaries, the map now checks each
+  upper boundary correctly.
+
+  Example for parliamentary representation:
+  0–10 = colour 1
+  10–20 = colour 2
+  20–30 = colour 3
+  30–40 = colour 4
+  40–50 = colour 5
+  50+ = colour 6
+*/
+
 function getColour(value, indicator) {
-  if (value === null || value === undefined || !Number.isFinite(value)) {
+  if (
+    value === null ||
+    value === undefined ||
+    !Number.isFinite(value)
+  ) {
     return "#cbd2da";
   }
 
   const info = indicators[indicator];
 
-  for (let i = 0; i < info.thresholds.length; i++) {
-    if (value < info.thresholds[i]) {
+  for (let i = 0; i < info.ranges.length; i++) {
+    if (value < info.ranges[i]) {
       return info.colors[i];
     }
   }
@@ -231,7 +283,9 @@ function getLegendHTML(indicator) {
   return info.legend.map((label, i) => {
     return `
       <div class="legend-item">
-        <div class="legend-color" style="background:${info.colors[i]}"></div>
+        <div class="legend-color"
+             style="background:${info.colors[i]}">
+        </div>
         <span>${label}</span>
       </div>
     `;
@@ -243,19 +297,37 @@ function getLegendHTML(indicator) {
   `;
 }
 
-/* ---------------- MAP STYLING ---------------- */
+/* ---------------- MAP COUNTRY IDENTIFICATION ---------------- */
 
 function countryCode(feature) {
   const p = feature.properties || {};
 
-  return (
-    p.ISO_A3 ||
-    p.ADM0_A3 ||
-    p.iso_a3 ||
-    p.ISO3 ||
-    feature.id ||
-    ""
-  );
+  /*
+    Prefer recognised ISO-3 identifiers.
+    Avoid using -99 as a real country code.
+  */
+
+  const candidates = [
+    p.ISO_A3,
+    p.ISO_A3_EH,
+    p.ADM0_A3,
+    p.iso_a3,
+    p.ISO3,
+    feature.id
+  ];
+
+  for (const code of candidates) {
+    if (
+      code &&
+      code !== "-99" &&
+      code !== "-1" &&
+      code !== "undefined"
+    ) {
+      return String(code).toUpperCase();
+    }
+  }
+
+  return "";
 }
 
 function countryName(feature) {
@@ -266,25 +338,63 @@ function countryName(feature) {
     p.name ||
     p.NAME ||
     p.NAME_EN ||
+    p.NAME_LONG ||
     "Country"
   );
 }
 
+/*
+  If the GeoJSON uses an ISO-2 code,
+  the World Bank data also contains ISO-2 keys.
+  This fallback makes the map more resilient.
+*/
+
+function getCountryRecord(feature) {
+  const p = feature.properties || {};
+
+  const iso3 = countryCode(feature);
+
+  const iso2 =
+    p.ISO_A2 ||
+    p.iso_a2 ||
+    p.ISO2 ||
+    "";
+
+  if (iso3 && mapValues[iso3]) {
+    return mapValues[iso3];
+  }
+
+  if (iso2 && mapValues[iso2]) {
+    return mapValues[iso2];
+  }
+
+  if (p.ADM0_A3 && mapValues[p.ADM0_A3]) {
+    return mapValues[p.ADM0_A3];
+  }
+
+  return null;
+}
+
+/* ---------------- MAP STYLING ---------------- */
+
 function mapStyle(feature) {
-  const code = countryCode(feature);
-  const record = mapValues[code];
+  const record = getCountryRecord(feature);
 
   return {
-    fillColor: record ? getColour(record.value, currentIndicator) : "#cbd2da",
+    fillColor: record
+      ? getColour(record.value, currentIndicator)
+      : "#cbd2da",
+
     weight: 0.7,
     color: "#ffffff",
     fillOpacity: 0.9
   };
 }
 
+/* ---------------- COUNTRY POPUPS ---------------- */
+
 function onCountryClick(feature, layer) {
-  const code = countryCode(feature);
-  const record = mapValues[code];
+  const record = getCountryRecord(feature);
   const name = countryName(feature);
 
   if (record) {
@@ -304,11 +414,16 @@ function onCountryClick(feature, layer) {
   }
 }
 
+/* ---------------- UPDATE MAP LAYER ---------------- */
+
 function updateMapLayer(geojson) {
-  if (geoLayer) map.removeLayer(geoLayer);
+  if (geoLayer) {
+    map.removeLayer(geoLayer);
+  }
 
   geoLayer = L.geoJSON(geojson, {
     style: mapStyle,
+
     onEachFeature: function(feature, layer) {
       onCountryClick(feature, layer);
 
@@ -319,7 +434,10 @@ function updateMapLayer(geojson) {
             color: "#c9a96a",
             fillOpacity: 1
           });
+
+          e.target.bringToFront();
         },
+
         mouseout: function(e) {
           geoLayer.resetStyle(e.target);
         }
@@ -334,9 +452,10 @@ async function loadMapData() {
   initializeMap();
 
   currentYear = yearSelect.value;
-  currentIndicator = document.getElementById("indicatorSelect").value;
+  currentIndicator =
+    document.getElementById("indicatorSelect").value;
 
-  mapStatus.textContent = "Loading…";
+  mapStatus.textContent = "Loading data…";
 
   const definition = indicators[currentIndicator];
 
@@ -348,37 +467,70 @@ async function loadMapData() {
   mapLegend.innerHTML = getLegendHTML(currentIndicator);
 
   try {
-    mapValues = await fetchIndicator(currentIndicator, currentYear);
+    /*
+      Load World Bank values.
+    */
 
-    const geoResponse = await fetch(
-      "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+    mapValues = await fetchIndicator(
+      currentIndicator,
+      currentYear
     );
 
-    if (!geoResponse.ok) throw new Error("Map file unavailable");
+    /*
+      Load GeoJSON only once.
+      Reuse it when switching indicators and years.
+    */
 
-    const geojson = await geoResponse.json();
+    if (!cachedGeoJSON) {
+      const geoResponse = await fetch(
+        "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+      );
 
-    updateMapLayer(geojson);
+      if (!geoResponse.ok) {
+        throw new Error("Map file unavailable");
+      }
 
-    mapStatus.textContent = `Data loaded · ${currentYear}`;
+      cachedGeoJSON = await geoResponse.json();
+    }
+
+    /*
+      Draw the map using the newly loaded values.
+    */
+
+    updateMapLayer(cachedGeoJSON);
+
+    map.invalidateSize();
+
+    const countriesWithData = Object.keys(mapValues).length;
+
+    mapStatus.textContent =
+      `Data loaded · ${currentYear} · ${countriesWithData} records`;
+
+    /*
+      Refresh the comparison and table.
+    */
 
     updateComparison();
     updateDataTable();
+
   } catch (error) {
     mapStatus.textContent = "Data could not be loaded";
 
-    console.error(error);
+    console.error("Map loading error:", error);
 
     dataTable.innerHTML =
       `<tr><td colspan="4">Data unavailable. Please try again.</td></tr>`;
   }
 }
 
-document.getElementById("mapUpdate").addEventListener("click", loadMapData);
+document.getElementById("mapUpdate")
+  .addEventListener("click", loadMapData);
 
-document.getElementById("indicatorSelect").addEventListener("change", () => {
-  currentIndicator = document.getElementById("indicatorSelect").value;
-});
+document.getElementById("indicatorSelect")
+  .addEventListener("change", () => {
+    currentIndicator =
+      document.getElementById("indicatorSelect").value;
+  });
 
 /* ---------------- COMPARISON CHART ---------------- */
 
@@ -411,10 +563,13 @@ async function updateComparison() {
         2024
       );
 
-      const record = series.find(item => item.year === Number(currentYear));
+      const record = series.find(
+        item => item.year === Number(currentYear)
+      );
 
       labels.push(country.name);
       values.push(record ? record.value : null);
+
     } catch (error) {
       labels.push(country.name);
       values.push(null);
@@ -433,8 +588,10 @@ function renderComparisonChart(labels, values) {
 
   compareChart = new Chart(ctx, {
     type: "bar",
+
     data: {
       labels,
+
       datasets: [{
         label: indicators[currentIndicator].name,
         data: values,
@@ -444,9 +601,11 @@ function renderComparisonChart(labels, values) {
         borderRadius: 3
       }]
     },
+
     options: {
       responsive: true,
       maintainAspectRatio: false,
+
       plugins: {
         legend: {
           display: true,
@@ -454,29 +613,36 @@ function renderComparisonChart(labels, values) {
             color: "#18304d"
           }
         },
+
         tooltip: {
           callbacks: {
             label: function(context) {
               if (context.raw === null) return "No data";
+
               return `${context.raw.toLocaleString()} ${indicators[currentIndicator].unit}`;
             }
           }
         }
       },
+
       scales: {
         x: {
           ticks: {
             color: "#18304d"
           },
+
           grid: {
             display: false
           }
         },
+
         y: {
           beginAtZero: true,
+
           ticks: {
             color: "#18304d"
           },
+
           grid: {
             color: "rgba(24,48,77,.08)"
           }
@@ -486,7 +652,8 @@ function renderComparisonChart(labels, values) {
   });
 }
 
-document.getElementById("compareUpdate").addEventListener("click", updateComparison);
+document.getElementById("compareUpdate")
+  .addEventListener("click", updateComparison);
 
 /* ---------------- TABLE ---------------- */
 
@@ -494,11 +661,14 @@ async function updateDataTable() {
   const selected = getSelectedCountries("countrySelect");
 
   if (!selected.length) {
-    dataTable.innerHTML = "<tr><td colspan='4'>No countries selected.</td></tr>";
+    dataTable.innerHTML =
+      "<tr><td colspan='4'>No countries selected.</td></tr>";
+
     return;
   }
 
-  dataTable.innerHTML = "<tr><td colspan='4'>Loading data…</td></tr>";
+  dataTable.innerHTML =
+    "<tr><td colspan='4'>Loading data…</td></tr>";
 
   let rows = "";
 
@@ -511,18 +681,26 @@ async function updateDataTable() {
         2024
       );
 
-      const record = series.find(item => item.year === Number(currentYear));
+      const record = series.find(
+        item => item.year === Number(currentYear)
+      );
 
       rows += `
         <tr>
           <td>${country.name}</td>
-          <td>${record ? record.value.toLocaleString(undefined, {
-            maximumFractionDigits: 2
-          }) : "Unavailable"}</td>
+
+          <td>${record
+            ? record.value.toLocaleString(undefined, {
+                maximumFractionDigits: 2
+              })
+            : "Unavailable"}</td>
+
           <td>${indicators[currentIndicator].name}</td>
+
           <td>${record ? record.year : currentYear}</td>
         </tr>
       `;
+
     } catch (error) {
       rows += `
         <tr>
@@ -558,15 +736,18 @@ async function loadTrendChart() {
 
       datasets.push({
         label: country.name,
+
         data: series.map(item => ({
           x: item.year,
           y: item.value
         })),
+
         borderWidth: 2,
         pointRadius: 1.5,
         tension: 0.25,
         fill: false
       });
+
     } catch (error) {
       console.error(error);
     }
@@ -582,24 +763,30 @@ function renderTrendChart(datasets) {
 
   trendChart = new Chart(ctx, {
     type: "line",
+
     data: {
       datasets
     },
+
     options: {
       responsive: true,
       maintainAspectRatio: false,
+
       interaction: {
         mode: "nearest",
         intersect: false
       },
+
       plugins: {
         legend: {
           position: "bottom",
+
           labels: {
             color: "#18304d",
             padding: 15
           }
         },
+
         tooltip: {
           callbacks: {
             label: function(context) {
@@ -608,33 +795,41 @@ function renderTrendChart(datasets) {
           }
         }
       },
+
       scales: {
         x: {
           type: "linear",
           min: 1990,
           max: 2024,
+
           title: {
             display: true,
             text: "Year",
             color: "#18304d"
           },
+
           ticks: {
             color: "#18304d"
           },
+
           grid: {
             display: false
           }
         },
+
         y: {
           beginAtZero: true,
+
           title: {
             display: true,
             text: "Women in parliament (%)",
             color: "#18304d"
           },
+
           ticks: {
             color: "#18304d"
           },
+
           grid: {
             color: "rgba(24,48,77,.08)"
           }
@@ -644,7 +839,8 @@ function renderTrendChart(datasets) {
   });
 }
 
-document.getElementById("loadTrend").addEventListener("click", loadTrendChart);
+document.getElementById("loadTrend")
+  .addEventListener("click", loadTrendChart);
 
 /* ---------------- INITIAL LOAD ---------------- */
 
